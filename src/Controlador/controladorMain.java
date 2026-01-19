@@ -4,6 +4,9 @@
  */
 package Controlador;
 
+import Modelo.clasesSO.*;
+import java.lang.System.Logger.Level;
+
 /**
  *
  * @author joseg
@@ -14,7 +17,12 @@ public class controladorMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+    var log=System.getLogger("logSO");
+    log.log(Level.INFO, "hola");
+              
+    RelojSO nuevoreloj=new RelojSO();
+    nuevoreloj.start();
+        
     }
     
 }
