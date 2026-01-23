@@ -4,6 +4,8 @@
  */
 package Modelo.clasesSO;
 
+import Modelo.EDD.Lista;
+
 /**
  * Esta es la clase con los métodos necesarios para hacer un proceso.
  * Servirá como un SO que pueda realizar instrucciones privilegiadas
@@ -33,4 +35,56 @@ ráfagas de CPU o E/S.
  */
 public class RTOSmaster {
     
+    /**
+     * Función para hacer procesos, debería ejecutarse en main.
+     * @param ID ID del proceso
+     * @param Nombre Nombre del proceso
+     * @param Status Status del proceso
+     * @param Bound Bound del proceso
+     * @param PC PC del proceso
+     * @param MAR MAR del proceso
+     * @param Prioridad PRIORIDAD del proceso
+     * @param duracion duracion del proceso
+     */
+    public void hacerP(int ID, String Nombre, String Status, String Bound, int PC, int MAR, int Prioridad, int duracion){
+        Proceso P1=new Proceso(ID, Nombre, Status, Bound, PC, MAR, Prioridad, duracion);
+    }
+    
+        /**
+     * Función para hacer lista de 20 procesos, debería ejecutarse en main.
+     * ID del proceso (se ponen los numeros de los procesos en consecución)
+     * Nombre Nombre del proceso
+     * Status Status del proceso
+     * Bound Bound del proceso
+     * PC PC del proceso
+     * MAR MAR del proceso
+     * Prioridad PRIORIDAD del proceso
+     * duracion on del proceso
+     * @return Lista de 20 procesos con todos sus atributos random 
+     */
+    
+    
+    //ver si puedo cambiarlo a listaSimple
+    public Lista veintePRand(){
+        Lista pList20=new Lista();
+        for(int counter=0; counter<20; counter++){
+        RTOSmaster hola=new RTOSmaster();
+        hola.hacerP(1,"hola", "BLOQUEADO", "CPU", 19199, 20200, 2020, 1);
+        
+        /*
+        Hacer MAR aleatorio que no se repita entre otros parametros aleatorios
+        */
+        
+        /*
+        Hacer PC aleatorio que no se repita entre otros parametros aleatorios, ni este entre otros procesos ya hechos
+        */
+        
+        /*
+        Hacer MAR aleatorio que no se repita entre otros parametros aleatorios
+        */
+        
+        
+    };
+        
+    }
 }

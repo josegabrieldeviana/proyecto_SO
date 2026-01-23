@@ -20,9 +20,9 @@ public class controladorMain {
     var log=System.getLogger("logSO");
     log.log(Level.INFO, "hola");
               
-    RelojSO nuevoreloj=new RelojSO();
-    nuevoreloj.start();
-        
+    Proceso p=new Proceso(1,"hola", "BLOQUEADO", "CPU", 19199, 20200, 2020, 1);
+    p.start();
+    
     }
     
 }

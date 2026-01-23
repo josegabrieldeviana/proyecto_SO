@@ -11,11 +11,23 @@ package Modelo.clasesSO;
 public class Proceso extends Thread {
     public int ID;
     public String Nombre;
-    public PStatus Status;
-    public PCPUoES Bound; //¿CPU o E/S bound?
+    public String Status; //cambiado de pStatus a String
+    public String Bound; //cambiado de pStatus a String
     public int PC;
     public int MAR;
     public int Prioridad;
+    public int duracion;
+
+    public Proceso(int ID, String Nombre, String Status, String Bound, int PC, int MAR, int Prioridad, int duracion) {
+        this.ID = ID;
+        this.Nombre = Nombre;
+        this.Status = Status;
+        this.Bound = Bound;
+        this.PC = PC;
+        this.MAR = MAR;
+        this.Prioridad = Prioridad;
+        this.duracion = duracion;
+    }
     
     
     /**
@@ -25,7 +37,7 @@ public class Proceso extends Thread {
      */
     @Override
     public void run(){
-        for(int i=0; i<= 5; i++){
+        for(int i=duracion; i<=duracion; i--){
             System.out.println(i);
             try {
                 Thread.sleep(1000);}
@@ -44,11 +56,11 @@ public class Proceso extends Thread {
         return Nombre;
     }
 
-    public PStatus getStatus() {
+    public String getStatus() {
         return Status;
     }
 
-    public PCPUoES getBound() {
+    public String getBound() {
         return Bound;
     }
 
@@ -64,6 +76,78 @@ public class Proceso extends Thread {
         return Prioridad;
     }
 
+    
+    public int getDuracion() {
+        return duracion;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public void setNombre(String Nombre) {
+        this.Nombre = Nombre;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
+    }
+    
+
+    public void setSNuevo(){
+        this.Status = "NUEVO";
+    }
+    
+    public void setSListo(){
+        this.Status = "LISTO";
+    }
+    
+    public void setSSuspendido(){
+        this.Status = "SUSPENDIDO";
+    }
+    
+    public void setSTerminado(){
+        this.Status = "TERMINADO";
+    }
+    
+    public void setSBloqueado(){
+        this.Status = "BLOQUEADO";
+    }
+    
+    
+    public void setSLISTOySUSPENDIDO(){
+        this.Status = "NUEVO";
+    }
+    
+    public void setSBLOQUEADOySUSPENDIDO(){
+        this.Status="BLOQUEADOySUSPENDIDO";
+    }
+    
+
+    public void setBoundCPU() {
+        this.Bound = "CPU";
+    }
+    
+    public void setBoundES(){
+        this.Bound="ES";
+    }
+
+    public void setPC(int PC) {
+        this.PC = PC;
+    }
+
+    public void setMAR(int MAR) {
+        this.MAR = MAR;
+    }
+
+    public void setPrioridad(int Prioridad) {
+        this.Prioridad = Prioridad;
+    }
+
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
+    }
+    
     
     
     

@@ -6,12 +6,13 @@ package Modelo.clasesSO;
 
 /**
  *
+ * Se asume que 1 ciclo de reloj= 1 seg 
  * @author joseg
  */
 public class RelojSO extends Thread {
     @Override
     public void run(){
-        for(int i=5; i > 0; i--){
+        for(int i=0; i > 0; i++){
             System.out.println(i);
             try {
                 Thread.sleep(1000);
