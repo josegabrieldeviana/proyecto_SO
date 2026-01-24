@@ -12,6 +12,8 @@ import java.lang.System.Logger.Level;
  * @author joseg
  */
 public class controladorMain {
+    
+    //int static randNum=Math.random();
 
     /**
      * @param args the command line arguments
@@ -22,6 +24,7 @@ public class controladorMain {
               
     Proceso p=new Proceso(1,"hola", "BLOQUEADO", "CPU", 19199, 20200, 2020, 1);
     p.start();
+    //System.out.println(randNum);
     
     }
     

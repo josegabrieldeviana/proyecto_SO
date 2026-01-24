@@ -68,8 +68,9 @@ public class RTOSmaster {
     public Lista veintePRand(){
         Lista pList20=new Lista();
         for(int counter=0; counter<20; counter++){
-        RTOSmaster hola=new RTOSmaster();
-        hola.hacerP(1,"hola", "BLOQUEADO", "CPU", 19199, 20200, 2020, 1);
+        /*
+            
+        */
         
         /*
         Hacer MAR aleatorio que no se repita entre otros parametros aleatorios
@@ -85,6 +86,6 @@ public class RTOSmaster {
         
         
     };
-        
+        return pList20;
     }
 }
