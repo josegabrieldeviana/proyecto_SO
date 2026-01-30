@@ -4,6 +4,8 @@
  */
 package Controlador;
 
+import Modelo.EDD.Lista;
+import Modelo.EDD.ListaSimple;
 import Modelo.clasesSO.*;
 import java.lang.System.Logger.Level;
 
@@ -21,11 +23,16 @@ public class controladorMain {
     public static void main(String[] args) {
     var log=System.getLogger("logSO");
     log.log(Level.INFO, "hola");
-              
-    Proceso p=new Proceso(1,"hola", "BLOQUEADO", "CPU", 19199, 20200, 2020, 1);
-    p.start();
-    //System.out.println(randNum);
     
+    ListaSimple listaRandomPrueba=new ListaSimple();
+    listaRandomPrueba.hacerListaString("Monitoreo");
+    listaRandomPrueba.hacerListaString("Control_Térmico");
+    String nombre=listaRandomPrueba.imprimirListas();
+        System.out.println(nombre);
+        
+    RTOSmaster RTOS1=new RTOSmaster();
+    RTOS1.xPRand(20);
+        
     }
     
 }

@@ -13,20 +13,39 @@ public class Proceso extends Thread {
     public String Nombre;
     public String Status; //cambiado de pStatus a String
     public String Bound; //cambiado de pStatus a String
-    public int PC;
-    public int MAR;
+   
+    //EJECUCIÓN TECNICA
+    public int PC; //INCREMENTA 1 POR CICLO
+    public int MAR; //INCREMENTA 1 POR CICLO
     public int Prioridad;
-    public int duracion;
+    
+    
+    //PLANIFICACIÓN Y TIEMPO REAL
+    public int deadlineOriginal; //Tiempo límite asignado
+    public int tiempoRestanteDeadline; // "Cuenta regresiva visual"
+    
+    // Entrada / Salida (E/S)
+    public int ciclosParaGenerarExcepcion; // 
+    public int ciclosParaSatisfacerIO; //
+    
+    // Para algoritmos dinámicos
+    public int tiempoLlegada; // Útil para FCFS y SRT
 
-    public Proceso(int ID, String Nombre, String Status, String Bound, int PC, int MAR, int Prioridad, int duracion) {
-        this.ID = ID;
+
+
+    public Proceso(int ID, String Nombre, String Status, String Bound, int PC, int MAR, int Prioridad, int deadlineOriginal, int tiempoRestanteDeadline, int ciclosParaGenerarExcepcion, int ciclosParaSatisfacerIO, int cantidadInstrucc) {
+        this.ID = ID; //ID DE 4 DIGIYOS
         this.Nombre = Nombre;
         this.Status = Status;
-        this.Bound = Bound;
-        this.PC = PC;
-        this.MAR = MAR;
-        this.Prioridad = Prioridad;
-        this.duracion = duracion;
+        this.Bound = Bound; 
+        this.PC = PC; // 6 dígitos aleatorios
+        this.MAR = MAR; // 6 dígitos aleatorios
+        this.Prioridad = Prioridad; // prioridad del 1 al 10, con thread priorite
+        this.deadlineOriginal = deadlineOriginal; //MAX 10 SEGUNDAS
+        this.tiempoRestanteDeadline = tiempoRestanteDeadline; //MAX de 1 a 10 SEGUNDOS
+        this.ciclosParaGenerarExcepcion = ciclosParaGenerarExcepcion; //1 a 10 ciclos para gen expectación
+        this.ciclosParaSatisfacerIO = ciclosParaSatisfacerIO; //1 a 10 ciclos para gen expectación
+        this.tiempoLlegada = cantidadInstrucc; //número de dos digitos
     }
     
     
@@ -37,7 +56,7 @@ public class Proceso extends Thread {
      */
     @Override
     public void run(){
-        for(int i=duracion; i<=duracion; i--){
+        for(int i=deadlineOriginal; i<=deadlineOriginal; i--){
             System.out.println(i);
             try {
                 Thread.sleep(1000);}
@@ -48,6 +67,10 @@ public class Proceso extends Thread {
      *
      * @return
      */
+    
+    /*
+    GETTERS
+    */
     public int getID() {
         return ID;
     }
@@ -77,10 +100,33 @@ public class Proceso extends Thread {
     }
 
     
-    public int getDuracion() {
-        return duracion;
+    public int getDeadlineOriginal() {
+        return deadlineOriginal;
+    }
+    
+    
+        public int getTiempoRestanteDeadline() {
+        return tiempoRestanteDeadline;
     }
 
+    public int getCiclosParaGenerarExcepcion() {
+        return ciclosParaGenerarExcepcion;
+    }
+
+    public int getCiclosParaSatisfacerIO() {
+        return ciclosParaSatisfacerIO;
+    }
+
+    public int getTiempoLlegada() {
+        return tiempoLlegada;
+    }
+
+    
+    
+    
+    /*
+    SETTERS
+    */
     public void setID(int ID) {
         this.ID = ID;
     }
@@ -144,10 +190,30 @@ public class Proceso extends Thread {
         this.Prioridad = Prioridad;
     }
 
-    public void setDuracion(int duracion) {
-        this.duracion = duracion;
+    public void setDeadlineOriginal(int deadlineOriginal) {
+        this.deadlineOriginal = deadlineOriginal;
     }
     
+        public void setBound(String Bound) {
+        this.Bound = Bound;
+    }
+
+    public void setTiempoRestanteDeadline(int tiempoRestanteDeadline) {
+        this.tiempoRestanteDeadline = tiempoRestanteDeadline;
+    }
+
+    public void setCiclosParaGenerarExcepcion(int ciclosParaGenerarExcepcion) {
+        this.ciclosParaGenerarExcepcion = ciclosParaGenerarExcepcion;
+    }
+
+    public void setCiclosParaSatisfacerIO(int ciclosParaSatisfacerIO) {
+        this.ciclosParaSatisfacerIO = ciclosParaSatisfacerIO;
+    }
+
+    public void setTiempoLlegada(int tiempoLlegada) {
+        this.tiempoLlegada = tiempoLlegada;
+    }
+
     
     
     
