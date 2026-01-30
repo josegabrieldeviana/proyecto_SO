@@ -110,6 +110,8 @@ public class ListaSimple {
         }
     }
     
+    
+    
    public String sumarListas(ListaSimple lista2){
        String num1 = this.imprimirListas(); //primero hacemos las listas, las convertimos ambas en String con ImprimirListas
        String num2 = lista2.imprimirListas(); //y aqui tambien, que es la que pusimos en los parametros; ahora lo vemos con imprimirLista
@@ -142,7 +144,7 @@ public class ListaSimple {
         Nodo aux=this.first;
         
         while (aux!=null){
-            listastring+=aux.data;
+            listastring+=" "+aux.data;
             aux=aux.next;
         }
         return listastring;
@@ -151,5 +153,47 @@ public class ListaSimple {
     
     
     
+    public void hacerListaString(String dato){
+        Nodo last=new Nodo(dato);
+        Nodo aux=this.first;
+        if(this.first==null){
+            this.first = last;
+        }else{
+         while (aux.next!=null){
+            aux=aux.next;
+        }
+        aux.next=last; //aquí el apuntador del ultimo apunta hacia el ultimo
+        }
+    }
+    
+//    
+//    /**Método encargado de escoger un nombre random de una lista de 7 posibles procesos y devolverlo.
+//     * Tiene capacidad MAXIMA de 7 nombres para procesos NORMALES síncronos, este método es usado
+//     * en el método de generar "x" procesos, qué es util al principio del programa y al generar 20 procesos.
+//    * 
+//    * @return se escoge UNO de los 7 objetos de la lista simple.
+//    * 
+//    */
+//        public void escogerRandomPNORMAL(int dato, int pos){ //
+//            
+//        int contador=1;
+//        Nodo nuevo = new Nodo(dato);
+//        Nodo aux=this.first;
+//        while (aux.next!=null){
+//            aux=aux.next;
+//        }
+//        aux.next = nuevo;
+//        
+//        if(pos > 0){
+//            aux = this.first;
+//            while (pos > contador){ //aqui lo ponemos para que la posición del recorrido este justo
+//                aux=aux.next;
+//                contador++;
+//                
+//            }
+//            nuevo.next=aux; //aqui ya decimos que el aux apunta hacia el nuevo.
+//        }
+//         //
+//    }
     
 }
