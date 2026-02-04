@@ -111,7 +111,7 @@ public class RTOSmaster {
             paramList.addLast(ID); // añado un ID.
             LOG.log(Level.TRACE, "añadido ID"); // TESTING PURPOSES ONLY
             // en cada ciclo de este for, se agregará un parametro aleatorio
-            for (int i = 0; i < 12; i++) {
+            for (int i = 0; i < 14; i++) {
                 if (i == 0) {
                     // NOMBRE
                     double critRandomDOUBLE = Math.random() * 10;
@@ -298,7 +298,7 @@ public class RTOSmaster {
 
                 if (i == 7) {
                     // ciclos para generar excepción
-                    double critRandomDOUBLE = (Math.random() * 10)+1; //pongo al menos 1 ciclo 
+                    double critRandomDOUBLE = (Math.random() * 10) + 1; // pongo al menos 1 ciclo
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
@@ -309,7 +309,7 @@ public class RTOSmaster {
 
                 if (i == 8) {
                     // ciclosParaSatisfacerIO
-                    double critRandomDOUBLE = (Math.random() * 10)+1;
+                    double critRandomDOUBLE = (Math.random() * 10) + 1;
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
@@ -319,8 +319,8 @@ public class RTOSmaster {
                 }
 
                 if (i == 9) {
-                    // cantidad de instrucciones
-                    double critRandomDOUBLE = Math.random() * 100+15;
+                    // cantidad de instrucciones (tiempo llegada)
+                    double critRandomDOUBLE = Math.random() * 100 + 15;
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
@@ -329,44 +329,63 @@ public class RTOSmaster {
 
                 }
 
+                if (i == 10) {
+                    // cantidadInstrucciones
+                    double critRandomDOUBLE = (Math.random() * 10) + 1; // genera del 1 al 10
+                    int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
+                    System.out.println(critRandomINT); // temporal
+                    paramList.addLast(critRandomINT);
+                }
+
+                if (i == 11) {
+                    // duracionCicloInstruccion
+                    double critRandomDOUBLE = (Math.random() * 5) + 1; // genera del 1 al 5
+                    int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
+                    System.out.println(critRandomINT); // temporal
+                    paramList.addLast(critRandomINT);
+                }
+
             }
-            
+
             /*
-            Despuéspaso todos los parametros de la lista para hacer un proceso
-            */
-            int idDelProceso = (int) paramList.BuscarPosicion(0);                 // 4 dígitos
+             * Despuéspaso todos los parametros de la lista para hacer un proceso
+             */
+            int idDelProceso = (int) paramList.BuscarPosicion(0); // 4 dígitos
             String nombreDelProceso = (String) paramList.BuscarPosicion(1);
-            String estatusDelProceso =(String) paramList.BuscarPosicion(2);
-            String tipoDeBound =(String) paramList.BuscarPosicion(3);         // CPU-Bound o I/O-Bound
-            int programCounter =(int) paramList.BuscarPosicion(4);             // 6 dígitos
-            int memoryAddressRegister =(int) paramList.BuscarPosicion(5);      // 6 dígitos
-            int prioridadDelHilo = (int) paramList.BuscarPosicion(6);                // Rango 1 al 10
-            int deadlineOriginalSegundos = (int) paramList.BuscarPosicion(7);       // Máximo 10
-            int tiempoRestanteDeadline = (int) paramList.BuscarPosicion(8);          // Entre 1 y 10
-            int ciclosParaExcepcion = (int) paramList.BuscarPosicion(9);             // Entre 1 y 10
-            int ciclosParaSatisfacerIO = (int) paramList.BuscarPosicion(10);          // Entre 1 y 10
-            int tiempoLlegada = (int) paramList.BuscarPosicion(11);        // 2 dígitos (se asigna a tiempoLlegada)
+            String estatusDelProceso = (String) paramList.BuscarPosicion(2);
+            String tipoDeBound = (String) paramList.BuscarPosicion(3); // CPU-Bound o I/O-Bound
+            int programCounter = (int) paramList.BuscarPosicion(4); // 6 dígitos
+            int memoryAddressRegister = (int) paramList.BuscarPosicion(5); // 6 dígitos
+            int prioridadDelHilo = (int) paramList.BuscarPosicion(6); // Rango 1 al 10
+            int deadlineOriginalSegundos = (int) paramList.BuscarPosicion(7); // Máximo 10
+            int tiempoRestanteDeadline = (int) paramList.BuscarPosicion(8); // Entre 1 y 10
+            int ciclosParaExcepcion = (int) paramList.BuscarPosicion(9); // Entre 1 y 10
+            int ciclosParaSatisfacerIO = (int) paramList.BuscarPosicion(10); // Entre 1 y 10
+            int tiempoLlegada = (int) paramList.BuscarPosicion(11); // 2 dígitos (se asigna a tiempoLlegada)
+            int cantidadInstrucciones = (int) paramList.BuscarPosicion(12); // Entre 1 y 10
+            int duracionCicloInstruccion = (int) paramList.BuscarPosicion(13); // Entre 1 y 5
 
             // --- Instancia del Objeto ---
 
             Proceso NuevoProceso = new Proceso(
-                idDelProceso,
-                nombreDelProceso,
-                estatusDelProceso,
-                tipoDeBound,
-                programCounter,
-                memoryAddressRegister,
-                prioridadDelHilo,
-                deadlineOriginalSegundos,
-                tiempoRestanteDeadline,
-                ciclosParaExcepcion,
-                ciclosParaSatisfacerIO,
-                tiempoLlegada
-            );
+                    idDelProceso,
+                    nombreDelProceso,
+                    estatusDelProceso,
+                    tipoDeBound,
+                    programCounter,
+                    memoryAddressRegister,
+                    prioridadDelHilo,
+                    deadlineOriginalSegundos,
+                    tiempoRestanteDeadline,
+                    ciclosParaExcepcion,
+                    ciclosParaSatisfacerIO,
+                    tiempoLlegada,
+                    cantidadInstrucciones,
+                    duracionCicloInstruccion);
 
             pList.addLast(NuevoProceso);
             paramList.vaciar();
-            //metodo para imprimir todos los atributos
+            // metodo para imprimir todos los atributos
         }
         ;
         return pList;

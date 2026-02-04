@@ -30,9 +30,13 @@ public class Proceso extends Thread {
     // Para algoritmos dinámicos
     public int tiempoLlegada; // Útil para FCFS y SRT
 
+    // Parámetros de instrucción
+    public int cantidadInstrucciones; // Cantidad de instrucciones del proceso (1-10)
+    public int duracionCicloInstruccion; // Duración de cada ciclo de instrucción (1-5)
+
     public Proceso(int ID, String Nombre, String Status, String Bound, int PC, int MAR, int Prioridad,
             int deadlineOriginal, int tiempoRestanteDeadline, int ciclosParaGenerarExcepcion,
-            int ciclosParaSatisfacerIO, int cantidadInstrucc) {
+            int ciclosParaSatisfacerIO, int cantidadInstrucc, int cantidadInstrucciones, int duracionCicloInstruccion) {
         this.ID = ID; // ID DE 4 DIGIYOS
         this.Nombre = Nombre;
         this.Status = Status;
@@ -45,6 +49,8 @@ public class Proceso extends Thread {
         this.ciclosParaGenerarExcepcion = ciclosParaGenerarExcepcion; // 1 a 10 ciclos para gen expectación
         this.ciclosParaSatisfacerIO = ciclosParaSatisfacerIO; // 1 a 10 ciclos para gen expectación
         this.tiempoLlegada = cantidadInstrucc; // número de dos digitos
+        this.cantidadInstrucciones = cantidadInstrucciones; // 1 a 10 instrucciones
+        this.duracionCicloInstruccion = duracionCicloInstruccion; // 1 a 5 duración del ciclo
     }
 
     /**
@@ -107,6 +113,14 @@ public class Proceso extends Thread {
 
     public int getTiempoLlegada() {
         return tiempoLlegada;
+    }
+
+    public int getCantidadInstrucciones() {
+        return cantidadInstrucciones;
+    }
+
+    public int getDuracionCicloInstruccion() {
+        return duracionCicloInstruccion;
     }
 
     /*
@@ -196,6 +210,14 @@ public class Proceso extends Thread {
         this.tiempoLlegada = tiempoLlegada;
     }
 
+    public void setCantidadInstrucciones(int cantidadInstrucciones) {
+        this.cantidadInstrucciones = cantidadInstrucciones;
+    }
+
+    public void setDuracionCicloInstruccion(int duracionCicloInstruccion) {
+        this.duracionCicloInstruccion = duracionCicloInstruccion;
+    }
+
     public String toString() {
         return "--- DETALLES DEL PROCESO ---\n" +
                 "ID del Proceso: " + this.ID + "\n" +
@@ -210,6 +232,8 @@ public class Proceso extends Thread {
                 "Ciclos para Generar Excepción: " + this.ciclosParaGenerarExcepcion + "\n" +
                 "Ciclos para Satisfacer I/O: " + this.ciclosParaSatisfacerIO + "\n" +
                 "Cantidad de Instrucciones (Tiempo Llegada): " + this.tiempoLlegada + "\n" +
+                "Cantidad de Instrucciones: " + this.cantidadInstrucciones + "\n" +
+                "Duración del Ciclo de Instrucción: " + this.duracionCicloInstruccion + "\n" +
                 "----------------------------";
     }
 
@@ -319,6 +343,21 @@ public class Proceso extends Thread {
         System.out.println(this.tiempoLlegada);
         if (this.tiempoLlegada < 0) {
             System.err.println("[ERROR] tiempoLlegada negativo: " + this.tiempoLlegada);
+        }
+
+        // Cantidad de Instrucciones
+        System.out.print("Cantidad de Instrucciones: ");
+        System.out.println(this.cantidadInstrucciones);
+        if (this.cantidadInstrucciones < 1 || this.cantidadInstrucciones > 10) {
+            System.err.println("[ERROR] cantidadInstrucciones fuera de rango (1-10): " + this.cantidadInstrucciones);
+        }
+
+        // Duración del Ciclo de Instrucción
+        System.out.print("Duración del Ciclo de Instrucción: ");
+        System.out.println(this.duracionCicloInstruccion);
+        if (this.duracionCicloInstruccion < 1 || this.duracionCicloInstruccion > 5) {
+            System.err
+                    .println("[ERROR] duracionCicloInstruccion fuera de rango (1-5): " + this.duracionCicloInstruccion);
         }
 
         System.out.println("====================================");
