@@ -298,7 +298,7 @@ public class RTOSmaster {
 
                 if (i == 7) {
                     // ciclos para generar excepción
-                    double critRandomDOUBLE = Math.random() * 10;
+                    double critRandomDOUBLE = (Math.random() * 10)+1; //pongo al menos 1 ciclo 
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
@@ -309,7 +309,7 @@ public class RTOSmaster {
 
                 if (i == 8) {
                     // ciclosParaSatisfacerIO
-                    double critRandomDOUBLE = Math.random() * 10;
+                    double critRandomDOUBLE = (Math.random() * 10)+1;
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
@@ -320,7 +320,7 @@ public class RTOSmaster {
 
                 if (i == 9) {
                     // cantidad de instrucciones
-                    double critRandomDOUBLE = Math.random() * 100;
+                    double critRandomDOUBLE = Math.random() * 100+15;
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera

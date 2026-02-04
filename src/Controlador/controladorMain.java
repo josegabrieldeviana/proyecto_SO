@@ -33,21 +33,28 @@ public class controladorMain {
     
   //      System.out.println(nombrePrueba);
     RTOSmaster RTOS1=new RTOSmaster();
-    Lista lista1P=RTOS1.xPRand(1);
+    Lista lista1P=RTOS1.xPRand(2);
     Lista lista2P=RTOS1.xPRand(1);
     Lista lista3P=RTOS1.xPRand(1);
     
     Object lista3PIndex1= lista3P.BuscarPosicion(1);
-        System.out.println(lista3PIndex1+"hola");
+    System.out.println(lista3PIndex1+"hola");
 
    
     
-String nLista1=lista1P.printString();
-System.out.println(nLista1); 
-String nLista2=lista2P.printString();
-System.out.println(nLista2); 
-String nLista3=lista3P.printString();
-System.out.println(nLista3); 
+//String nLista1=lista1P.printString();
+//System.out.println(nLista1); 
+//String nLista2=lista2P.printString();
+//System.out.println(nLista2); 
+//String nLista3=lista3P.printString();
+//System.out.println(nLista3);
+
+Proceso P1DEBUG=(Proceso) lista1P.buscarLast();
+Proceso P2DEBUG=(Proceso) lista1P.BuscarPosicion(0);
+P1DEBUG.debugPrint();
+P2DEBUG.debugPrint();
+
+
     }
     
     
