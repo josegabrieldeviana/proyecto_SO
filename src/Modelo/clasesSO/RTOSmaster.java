@@ -77,7 +77,7 @@ public class RTOSmaster {
      * 
      * @return genera una lista tipo "List" de "x" procesos random.
      */
-    public Lista xPRand(int numeroProcesosGen) {
+    public void xPRand(int numeroProcesosGen, Lista colaNuevo) {
 
         var log = System.getLogger("LogSO");
         log.log(Level.INFO, "INICIALIZACIÓN DE  " + numeroProcesosGen + "    "
@@ -98,7 +98,7 @@ public class RTOSmaster {
         // System.out.println(nombrePruebaLista);
         //
 
-        Lista pList = new Lista(); // lista en que se van a poner procesos, después de pasar de paramlist los
+        //Lista pList = new Lista(); // lista en que se van a poner procesos, después de pasar de paramlist los
                                    // parametros
 
         var LOG = System.getLogger("logSO");
@@ -107,7 +107,8 @@ public class RTOSmaster {
         // un for para cada proceso
         for (int counter = 0; counter < numeroProcesosGen; counter++) {
             Lista paramList = new Lista(); // lista en que se van a poner parametros
-            int ID = counter + 1;
+            int sizeList=colaNuevo.size();
+            int ID = counter + 1 + sizeList;
             paramList.addLast(ID); // añado un ID.
             LOG.log(Level.TRACE, "añadido ID"); // TESTING PURPOSES ONLY
             // en cada ciclo de este for, se agregará un parametro aleatorio
@@ -320,12 +321,8 @@ public class RTOSmaster {
 
                 if (i == 9) {
                     // cantidad de instrucciones (tiempo llegada)
-                    double critRandomDOUBLE = Math.random() * 100 + 15;
-                    // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
-                    // 8 se repite.
-                    int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
-                    System.out.println(critRandomINT); // temporal
-                    paramList.addLast(critRandomINT);
+                    //es 0, porque aun no ha llegado a a la cola de listos
+                    paramList.addLast(0);
 
                 }
 
@@ -382,12 +379,13 @@ public class RTOSmaster {
                     tiempoLlegada,
                     cantidadInstrucciones,
                     duracionCicloInstruccion);
-
-            pList.addLast(NuevoProceso);
+            
+            NuevoProceso.debugPrint();
+            colaNuevo.addLast(NuevoProceso);
             paramList.vaciar();
+            
             // metodo para imprimir todos los atributos
         }
         ;
-        return pList;
     }
 }

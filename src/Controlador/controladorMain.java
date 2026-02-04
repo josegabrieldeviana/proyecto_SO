@@ -24,26 +24,11 @@ public class controladorMain {
     var log=System.getLogger("logSO");
     log.log(Level.INFO, "hola");
     
-    
-    //Lista pruebaList=new Lista();//prueba para metodo stringList
-    //pruebaList.addLast("Monitoreo AAAA");
-    //pruebaList.addLast("Control_Térmico AAAA");
-    
-    //String nombrePrueba=pruebaList.printString();
-    
-  //      System.out.println(nombrePrueba);
+    Lista colaNuevo=new Lista(); //puede funcionar como pila por addfirst o deletefirst, etc
     RTOSmaster RTOS1=new RTOSmaster();
-    Lista lista1P=RTOS1.xPRand(2);
-    Lista lista2P=RTOS1.xPRand(1);
-    Lista lista3P=RTOS1.xPRand(1);
-    
-
-
-Proceso P1DEBUG=(Proceso) lista1P.buscarLast();
-Proceso P2DEBUG=(Proceso) lista1P.BuscarPosicion(0);
-P1DEBUG.debugPrint();
-P2DEBUG.debugPrint();
-
+    RTOS1.xPRand(10, colaNuevo);
+    RTOS1.xPRand(20, colaNuevo);
+    RTOS1.xPRand(1, colaNuevo);
 
 
     }
