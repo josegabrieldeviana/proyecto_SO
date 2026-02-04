@@ -24,26 +24,27 @@ public class Lista<T> {
      */
     public Lista(Nodo<T> n) {
         this.Head = this.Tail = n;
-        
+
     }
-    
-    public boolean isEmpty(){
+
+    public boolean isEmpty() {
         return this.Head == null;
     }
-    
+
     public int size() {
         int i = 0;
-        
+
         if (isEmpty()) {
             return 0;
         }
         Nodo<T> aux = this.Head;
-        while (aux != null){
+        while (aux != null) {
             aux = aux.getNext();
             i++;
         }
         return i;
     }
+
     /**
      *
      * @param dataL
@@ -60,7 +61,7 @@ public class Lista<T> {
             this.Head = n;
         }
     }
-    
+
     /**
      *
      * @param dataL
@@ -71,12 +72,12 @@ public class Lista<T> {
             this.Head = n;
             this.Tail = n;
 
-        }else{
+        } else {
             this.Tail.setNext(n);
             this.Tail = n;
         }
     }
-    
+
     public void add(T dataL, int i) {
         if (isEmpty() || i == 0) {
             this.addFirst(dataL);
@@ -86,7 +87,7 @@ public class Lista<T> {
             this.add(dataL, size() + i);
         } else {
             Nodo<T> n = new Nodo(dataL);
-            Nodo aux = this.Head; 
+            Nodo aux = this.Head;
             int count = 0;
             while (count < i - 1) {
                 aux = aux.getNext();
@@ -94,24 +95,24 @@ public class Lista<T> {
             }
             n.setNext(aux.getNext());
             aux.setNext(n);
-        } 
+        }
     }
-    
-    public T deleteFirst(){
+
+    public T deleteFirst() {
         if (isEmpty()) {
             return null;
-        }else if(size() == 1){
+        } else if (size() == 1) {
             this.Head = null;
             this.Tail = null;
             return null;
-        }else{
-        Nodo<T> temp = this.Head;
-        this.Head = this.Head.getNext();
-        temp.setNext(null);
-        return temp.getData();
+        } else {
+            Nodo<T> temp = this.Head;
+            this.Head = this.Head.getNext();
+            temp.setNext(null);
+            return temp.getData();
         }
     }
-    
+
     public T deleteLast() {
         if (isEmpty()) {
             return null;
@@ -126,8 +127,8 @@ public class Lista<T> {
         temp.setNext(null);
         return temp.getData();
     }
-    
-    public T delete(int i){
+
+    public T delete(int i) {
         if (isEmpty()) {
             return null;
         } else if (i == 0) {
@@ -152,6 +153,29 @@ public class Lista<T> {
             return del.getData();
         }
     }
+
+    /**
+     * 
+     * @param i El índice del objeto que queremos conseguir.
+     * @return el objeto que queremos obtener que corresponde al índice "i"
+     *         insertado.
+     */
+    public T BuscarPosicion(int i) {
+        if (isEmpty()) {
+            return null;
+        }
+        Nodo<T> aux = this.Head;
+        int count = 0;
+        while (aux != null) {
+            if (count == i) {
+                return aux.getData();
+            }
+            aux = aux.getNext();
+            count++;
+        }
+        return null;
+    }
+
     public void print() {
         if (isEmpty()) {
             System.out.println("Lista Vacia");
@@ -159,43 +183,59 @@ public class Lista<T> {
             Nodo aux = this.Head;
             int i = 0;
             while (aux != null) {
-                System.out.print(aux.getData() );
+                System.out.print(aux.getData());
                 aux = aux.getNext();
                 i++;
             }
             System.out.println("");
         }
     }
-    
+
     /**
-     *
+     * 
      * @param dato
      * @return
      */
-    public boolean buscar(T dato){
+    public boolean buscar(T dato) {
         Nodo aux = this.Head;
-        
-        while(aux != null){
-            if(aux.getData().toString().equals(dato.toString())){
-               return true;
+
+        while (aux != null) {
+            if (aux.getData().toString().equals(dato.toString())) {
+                return true;
             }
         }
         return false;
     }
-    
-    public T buscarLast(){
-    if(this.Head==null){
-        return null;
+
+    public T buscarLast() {
+        if (this.Head == null) {
+            return null;
+        }
+        if (this.Head.getNext() == null) {
+            return this.Head.getData();
+        }
+
+        Nodo<T> current = this.Head;
+        while (current.getNext() != null) {
+            current = current.getNext();
+        }
+        return current.getData();
     }
-    if(this.Head.getNext()==null){
-        return this.Head.getData();
+
+    /**
+     * Imprime todas las strings de una Lista.
+     * 
+     * @return
+     */
+    public String printString() {
+        String stringList = "";
+        Nodo aux = this.Head;
+
+        while (aux != null) {
+            stringList += " " + aux.data;
+            aux = aux.next;
+        }
+        return stringList;
     }
-    
-    Nodo<T> current=this.Head;
-    while(current.getNext()!=null){
-        current=current.getNext();
-    }
-    return current.getData();
-    }
-   
+
 }

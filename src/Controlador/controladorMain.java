@@ -24,15 +24,32 @@ public class controladorMain {
     var log=System.getLogger("logSO");
     log.log(Level.INFO, "hola");
     
-    ListaSimple listaRandomPrueba=new ListaSimple();
-    listaRandomPrueba.hacerListaString("Monitoreo");
-    listaRandomPrueba.hacerListaString("Control_Térmico");
-    String nombre=listaRandomPrueba.imprimirListas();
-        System.out.println(nombre);
-        
+    
+    //Lista pruebaList=new Lista();//prueba para metodo stringList
+    //pruebaList.addLast("Monitoreo AAAA");
+    //pruebaList.addLast("Control_Térmico AAAA");
+    
+    //String nombrePrueba=pruebaList.printString();
+    
+  //      System.out.println(nombrePrueba);
     RTOSmaster RTOS1=new RTOSmaster();
-    RTOS1.xPRand(20);
-        
+    Lista lista1P=RTOS1.xPRand(1);
+    Lista lista2P=RTOS1.xPRand(1);
+    Lista lista3P=RTOS1.xPRand(1);
+    
+    Object lista3PIndex1= lista3P.BuscarPosicion(1);
+        System.out.println(lista3PIndex1+"hola");
+
+    
+    
+String nLista1=lista1P.printString();
+System.out.println(nLista1); 
+String nLista2=lista2P.printString();
+System.out.println(nLista2); 
+String nLista3=lista3P.printString();
+System.out.println(nLista3); 
     }
+    
+    
     
 }
