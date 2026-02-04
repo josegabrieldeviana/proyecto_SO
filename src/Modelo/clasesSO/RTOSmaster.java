@@ -108,7 +108,7 @@ public class RTOSmaster {
         for (int counter = 0; counter < numeroProcesosGen; counter++) {
             Lista paramList = new Lista(); // lista en que se van a poner parametros
             int ID = counter + 1;
-            pList.addLast(ID); // añado un ID.
+            paramList.addLast(ID); // añado un ID.
             LOG.log(Level.TRACE, "añadido ID"); // TESTING PURPOSES ONLY
             // en cada ciclo de este for, se agregará un parametro aleatorio
             for (int i = 0; i < 12; i++) {
@@ -123,37 +123,37 @@ public class RTOSmaster {
                                                                               // entre casos de nombres
                     switch (critRandomINT) {
                         case 0:
-                            pList.addLast("Monitoreo_Altitud");
+                            paramList.addLast("Monitoreo_Altitud");
                             break;
                         case 1:
-                            pList.addLast("Control_Termico");
+                            paramList.addLast("Control_Termico");
                             break;
                         case 2:
-                            pList.addLast("P_Telemetria");
+                            paramList.addLast("P_Telemetria");
                             break;
                         case 3:
-                            pList.addLast("Orientacion_Solar");
+                            paramList.addLast("Orientacion_Solar");
                             break;
                         case 4:
-                            pList.addLast("Control_Termico");
+                            paramList.addLast("Control_Termico");
                             break;
                         case 5:
-                            pList.addLast("P_Análisis_Cientifico");
+                            paramList.addLast("P_Análisis_Cientifico");
                             break;
                         case 6:
-                            pList.addLast("P_Captura_Camara");
+                            paramList.addLast("P_Captura_Camara");
                             break;
                         case 7:
-                            pList.addLast("Muestreo_Radiacion");
+                            paramList.addLast("Muestreo_Radiacion");
                             break;
                         case 8:
-                            pList.addLast("P_Telemetria");
+                            paramList.addLast("P_Telemetria");
                             break;
                         case 9:
-                            pList.addLast("Orientacion_Solar");
+                            paramList.addLast("Orientacion_Solar");
                             break;
                         case 10:
-                            pList.addLast("Control_Térmico");
+                            paramList.addLast("Control_Térmico");
                             break;
 
                         // STATUS
@@ -170,40 +170,40 @@ public class RTOSmaster {
                     System.out.println(critRandomINT); // temporal
                     String critRandomSTRING = String.valueOf(critRandomINT); // convierto a String para poder elegir
                                                                              // entre casos de nombres
-                    pList.addLast("NUEVO");
+                    paramList.addLast("NUEVO");
                     switch (critRandomINT) {
                         case 0:
-                            pList.addLast("ES");
+                            paramList.addLast("ES");
                             break;
                         case 1:
-                            pList.addLast("ES");
+                            paramList.addLast("ES");
                             break;
                         case 2:
-                            pList.addLast("ES");
+                            paramList.addLast("ES");
                             break;
                         case 3:
-                            pList.addLast("ES");
+                            paramList.addLast("ES");
                             break;
                         case 4:
-                            pList.addLast("ES");
+                            paramList.addLast("ES");
                             break;
                         case 5:
-                            pList.addLast("ES");
+                            paramList.addLast("ES");
                             break;
                         case 6:
-                            pList.addLast("CPU");
+                            paramList.addLast("CPU");
                             break;
                         case 7:
-                            pList.addLast("CPU");
+                            paramList.addLast("CPU");
                             break;
                         case 8:
-                            pList.addLast("CPU");
+                            paramList.addLast("CPU");
                             break;
                         case 9:
-                            pList.addLast("CPU");
+                            paramList.addLast("CPU");
                             break;
                         case 10:
-                            pList.addLast("CPU");
+                            paramList.addLast("CPU");
                             break;
                     }
                 }
@@ -214,7 +214,7 @@ public class RTOSmaster {
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
-                    pList.addLast(critRandomINT);
+                    paramList.addLast(critRandomINT);
                 }
 
                 if (i == 3) {
@@ -223,7 +223,7 @@ public class RTOSmaster {
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
-                    pList.addLast(critRandomINT);
+                    paramList.addLast(critRandomINT);
                 }
 
                 if (i == 4) {
@@ -237,37 +237,37 @@ public class RTOSmaster {
                                                                              // entre casos de nombres
                     switch (critRandomINT) {
                         case 0:
-                            pList.addLast(1);
+                            paramList.addLast(1);
                             break;
                         case 1:
-                            pList.addLast(2);
+                            paramList.addLast(2);
                             break;
                         case 2:
-                            pList.addLast(3);
+                            paramList.addLast(3);
                             break;
                         case 3:
-                            pList.addLast(4);
+                            paramList.addLast(4);
                             break;
                         case 4:
-                            pList.addLast(5);
+                            paramList.addLast(5);
                             break;
                         case 5:
-                            pList.addLast(6);
+                            paramList.addLast(6);
                             break;
                         case 6:
-                            pList.addLast(7);
+                            paramList.addLast(7);
                             break;
                         case 7:
-                            pList.addLast(8);
+                            paramList.addLast(8);
                             break;
                         case 8:
-                            pList.addLast(9);
+                            paramList.addLast(9);
                             break;
                         case 9:
-                            pList.addLast(10);
+                            paramList.addLast(10);
                             break;
                         case 10:
-                            pList.addLast(10);
+                            paramList.addLast(10);
                             break;
 
                         // STATUS
@@ -281,7 +281,7 @@ public class RTOSmaster {
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
                     System.out.println(critRandomINT); // temporal
-                    pList.addLast(critRandomINT);
+                    paramList.addLast(critRandomINT);
 
                 }
 
@@ -292,7 +292,7 @@ public class RTOSmaster {
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
                     System.out.println(critRandomINT); // temporal
-                    pList.addLast(critRandomINT);
+                    paramList.addLast(critRandomINT);
 
                 }
 
@@ -303,7 +303,7 @@ public class RTOSmaster {
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
                     System.out.println(critRandomINT); // temporal
-                    pList.addLast(critRandomINT);
+                    paramList.addLast(critRandomINT);
 
                 }
 
@@ -314,7 +314,7 @@ public class RTOSmaster {
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
                     System.out.println(critRandomINT); // temporal
-                    pList.addLast(critRandomINT);
+                    paramList.addLast(critRandomINT);
 
                 }
 
@@ -325,11 +325,48 @@ public class RTOSmaster {
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
                     System.out.println(critRandomINT); // temporal
-                    pList.addLast(critRandomINT);
+                    paramList.addLast(critRandomINT);
 
                 }
 
             }
+            
+            /*
+            Despuéspaso todos los parametros de la lista para hacer un proceso
+            */
+            int idDelProceso = (int) paramList.BuscarPosicion(0);                 // 4 dígitos
+            String nombreDelProceso = (String) paramList.BuscarPosicion(1);
+            String estatusDelProceso =(String) paramList.BuscarPosicion(2);
+            String tipoDeBound =(String) paramList.BuscarPosicion(3);         // CPU-Bound o I/O-Bound
+            int programCounter =(int) paramList.BuscarPosicion(4);             // 6 dígitos
+            int memoryAddressRegister =(int) paramList.BuscarPosicion(5);      // 6 dígitos
+            int prioridadDelHilo = (int) paramList.BuscarPosicion(6);                // Rango 1 al 10
+            int deadlineOriginalSegundos = (int) paramList.BuscarPosicion(7);       // Máximo 10
+            int tiempoRestanteDeadline = (int) paramList.BuscarPosicion(8);          // Entre 1 y 10
+            int ciclosParaExcepcion = (int) paramList.BuscarPosicion(9);             // Entre 1 y 10
+            int ciclosParaSatisfacerIO = (int) paramList.BuscarPosicion(10);          // Entre 1 y 10
+            int tiempoLlegada = (int) paramList.BuscarPosicion(11);        // 2 dígitos (se asigna a tiempoLlegada)
+
+            // --- Instancia del Objeto ---
+
+            Proceso NuevoProceso = new Proceso(
+                idDelProceso,
+                nombreDelProceso,
+                estatusDelProceso,
+                tipoDeBound,
+                programCounter,
+                memoryAddressRegister,
+                prioridadDelHilo,
+                deadlineOriginalSegundos,
+                tiempoRestanteDeadline,
+                ciclosParaExcepcion,
+                ciclosParaSatisfacerIO,
+                tiempoLlegada
+            );
+
+            pList.addLast(NuevoProceso);
+            paramList.vaciar();
+            //metodo para imprimir todos los atributos
         }
         ;
         return pList;

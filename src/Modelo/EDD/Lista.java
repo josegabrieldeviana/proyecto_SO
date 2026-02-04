@@ -237,5 +237,10 @@ public class Lista<T> {
         }
         return stringList;
     }
+    
+        public void vaciar() {
+        this.Head = null;
+        this.Tail = null;
+    }
 
 }

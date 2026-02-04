@@ -40,7 +40,7 @@ public class controladorMain {
     Object lista3PIndex1= lista3P.BuscarPosicion(1);
         System.out.println(lista3PIndex1+"hola");
 
-    
+   
     
 String nLista1=lista1P.printString();
 System.out.println(nLista1); 

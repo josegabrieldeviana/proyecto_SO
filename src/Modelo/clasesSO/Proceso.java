@@ -54,15 +54,7 @@ public class Proceso extends Thread {
      ejecución, y se necesita siempre tener en cuenta 
      
      */
-    @Override
-    public void run(){
-        for(int i=deadlineOriginal; i<=deadlineOriginal; i--){
-            System.out.println(i);
-            try {
-                Thread.sleep(1000);}
-            catch (InterruptedException ex) {
-                System.getLogger(Proceso.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);            
-                    }}}
+      
     /**
      *
      * @return
@@ -214,9 +206,42 @@ public class Proceso extends Thread {
         this.tiempoLlegada = tiempoLlegada;
     }
 
+    public String toString() {
+        return "Nombre de proceso:" + this.Nombre + " " + this.Status + " " + ;
+    }public String toString() {
+    return "--- DETALLES DEL PROCESO ---\n" +
+           "ID del Proceso: " + this.ID + "\n" +
+           "Nombre: " + this.Nombre + "\n" +
+           "Estatus Actual: " + this.Status + "\n" +
+           "Tipo de Bound: " + this.Bound + "\n" +
+           "Program Counter (PC): " + this.PC + "\n" +
+           "Memory Address Register (MAR): " + this.MAR + "\n" +
+           "Prioridad: " + this.Prioridad + "\n" +
+           "Deadline Original: " + this.deadlineOriginal + " seg\n" +
+           "Tiempo Restante Deadline: " + this.tiempoRestanteDeadline + " seg\n" +
+           "Ciclos para Generar Excepción: " + this.ciclosParaGenerarExcepcion + "\n" +
+           "Ciclos para Satisfacer I/O: " + this.ciclosParaSatisfacerIO + "\n" +
+           "Cantidad de Instrucciones (Tiempo Llegada): " + this.tiempoLlegada + "\n" +
+           "----------------------------";
+}
+
     
-    
-    
+    /**
+     
+                idDelProceso,
+                nombreDelProceso,
+                estatusDelProceso,
+                tipoDeBound,
+                programCounter,
+                memoryAddressRegister,
+                prioridadDelHilo,
+                deadlineOriginalSegundos,
+                tiempoRestanteDeadline,
+                ciclosParaExcepcion,
+                ciclosParaSatisfacerIO,
+                tiempoLlegada
+     
+     */
     
     
 } 
