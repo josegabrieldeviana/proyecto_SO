@@ -27,6 +27,8 @@ public class controladorMain {
     Lista colaNuevo=new Lista(); //puede funcionar como pila por addfirst o deletefirst, etc
     RTOSmaster RTOS1=new RTOSmaster();
     RTOS1.xPRand(10, colaNuevo);
+    
+    
     RTOS1.xPRand(20, colaNuevo);
     RTOS1.xPRand(1, colaNuevo);
 
