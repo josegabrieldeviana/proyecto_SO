@@ -7,6 +7,7 @@ package Controlador;
 import Modelo.EDD.Lista;
 import Modelo.EDD.ListaSimple;
 import Modelo.clasesSO.*;
+import Vista.Vista_1;
 import java.lang.System.Logger.Level;
 
 /**
@@ -22,7 +23,6 @@ public class controladorMain {
      */
     public static void main(String[] args) {
     var log=System.getLogger("logSO");
-    log.log(Level.INFO, "hola");
     
     Lista colaNuevo=new Lista(); //puede funcionar como pila por addfirst o deletefirst, etc
     RTOSmaster RTOS1=new RTOSmaster();
@@ -31,7 +31,9 @@ public class controladorMain {
     
     RTOS1.xPRand(20, colaNuevo);
     RTOS1.xPRand(1, colaNuevo);
-
+    
+    Vista_1 vista=new Vista_1();
+    vista.setVisible(true);
 
     }
     
