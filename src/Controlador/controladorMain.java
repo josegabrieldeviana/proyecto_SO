@@ -25,15 +25,15 @@ public class controladorMain {
     var log=System.getLogger("logSO");
     
     Lista colaNuevo=new Lista(); //puede funcionar como pila por addfirst o deletefirst, etc
-    RTOSmaster RTOS1=new RTOSmaster();
-    RTOS1.xPRand(10, colaNuevo);
-    
+    RTOSmaster RTOS1=new RTOSmaster(0); //inicializo el RTOS con el PSW en 0 (modo kernel).
+    RTOS1.xPRand(10, colaNuevo); //lo que XPrand va a hacer es PONER adentro de una colaNuevo los procesos
     
     RTOS1.xPRand(20, colaNuevo);
     RTOS1.xPRand(1, colaNuevo);
     
-    Vista_1 vista=new Vista_1();
+    Vista_1 vista=new Vista_1(RTOS1);
     vista.setVisible(true);
+    
 
     }
     

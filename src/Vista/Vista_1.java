@@ -4,6 +4,15 @@
  */
 package Vista;
 
+import Modelo.clasesSO.RTOSmaster;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import raven.tabbed.TabbedPaneCustom;
+
 /**
  *
  * @author joseg
@@ -11,12 +20,22 @@ package Vista;
 public class Vista_1 extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Vista_1.class.getName());
+    private final RTOSmaster RTOSref;
 
     /**
      * Creates new form Vista_1
      */
-    public Vista_1() {
+    public Vista_1(RTOSmaster par0) {
         initComponents();
+        this.RTOSref=par0;
+        if (par0.PSW==0) {
+            modoU.setVisible(false);
+            modoK.setVisible(true);
+        }else{
+            modoU.setVisible(true);
+            modoK.setVisible(false);
+            
+        }
     }
 
     /**
@@ -31,9 +50,10 @@ public class Vista_1 extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         GestionCargaTAB = new raven.tabbed.TabbedPaneCustom();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
+        vistaGCProcesos = new javax.swing.JPanel();
+        PSWbutton = new javax.swing.JButton();
+        vistaMemoria = new javax.swing.JPanel();
+        vistaMetricas = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -41,25 +61,27 @@ public class Vista_1 extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        TRDtext = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        newStatus = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        readyStatus = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        readySStatus = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        runningStatus = new javax.swing.JTable();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable6 = new javax.swing.JTable();
+        exitStatus = new javax.swing.JTable();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jTable7 = new javax.swing.JTable();
+        blockedStatus = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        outputStreamConsole = new javax.swing.JTextArea();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTable8 = new javax.swing.JTable();
+        blockedSStatus = new javax.swing.JTable();
         jLabel10 = new javax.swing.JLabel();
+        modoU = new javax.swing.JLabel();
+        modoK = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -81,50 +103,68 @@ public class Vista_1 extends javax.swing.JFrame {
         GestionCargaTAB.setSelectedColor(new java.awt.Color(0, 153, 0));
         GestionCargaTAB.setUnselectedColor(new java.awt.Color(102, 102, 102));
 
-        jPanel3.setBackground(new java.awt.Color(204, 204, 204));
+        vistaGCProcesos.setBackground(new java.awt.Color(204, 204, 204));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        PSWbutton.setText("test");
+        PSWbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PSWbuttonMouseClicked(evt);
+            }
+        });
+        PSWbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PSWbuttonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout vistaGCProcesosLayout = new javax.swing.GroupLayout(vistaGCProcesos);
+        vistaGCProcesos.setLayout(vistaGCProcesosLayout);
+        vistaGCProcesosLayout.setHorizontalGroup(
+            vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                .addGap(117, 117, 117)
+                .addComponent(PSWbutton)
+                .addContainerGap(423, Short.MAX_VALUE))
+        );
+        vistaGCProcesosLayout.setVerticalGroup(
+            vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                .addGap(152, 152, 152)
+                .addComponent(PSWbutton)
+                .addContainerGap(620, Short.MAX_VALUE))
+        );
+
+        GestionCargaTAB.addTab("Gestión y carga de procesos", vistaGCProcesos);
+
+        vistaMemoria.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout vistaMemoriaLayout = new javax.swing.GroupLayout(vistaMemoria);
+        vistaMemoria.setLayout(vistaMemoriaLayout);
+        vistaMemoriaLayout.setHorizontalGroup(
+            vistaMemoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 612, Short.MAX_VALUE)
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        vistaMemoriaLayout.setVerticalGroup(
+            vistaMemoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 795, Short.MAX_VALUE)
         );
 
-        GestionCargaTAB.addTab("Gestión y carga de procesos", jPanel3);
+        GestionCargaTAB.addTab("Memoria", vistaMemoria);
 
-        jPanel4.setBackground(new java.awt.Color(204, 204, 204));
+        vistaMetricas.setBackground(new java.awt.Color(204, 204, 204));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout vistaMetricasLayout = new javax.swing.GroupLayout(vistaMetricas);
+        vistaMetricas.setLayout(vistaMetricasLayout);
+        vistaMetricasLayout.setHorizontalGroup(
+            vistaMetricasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 612, Short.MAX_VALUE)
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        vistaMetricasLayout.setVerticalGroup(
+            vistaMetricasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 795, Short.MAX_VALUE)
         );
 
-        GestionCargaTAB.addTab("Memoria", jPanel4);
-
-        jPanel5.setBackground(new java.awt.Color(204, 204, 204));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 612, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 795, Short.MAX_VALUE)
-        );
-
-        GestionCargaTAB.addTab("Metricas", jPanel5);
+        GestionCargaTAB.addTab("Metricas", vistaMetricas);
 
         jPanel6.setBackground(new java.awt.Color(204, 204, 204));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -157,20 +197,20 @@ public class Vista_1 extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("RUNNING");
-        jPanel6.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+        jPanel6.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
 
-        jLabel8.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel8.setText("TRD=TIEMPO RESTANTE DEADLINE");
-        jPanel6.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+        TRDtext.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        TRDtext.setForeground(new java.awt.Color(0, 0, 0));
+        TRDtext.setText("TRD=TIEMPO RESTANTE DEADLINE");
+        jPanel6.add(TRDtext, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         jLabel9.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("CONSOLA");
         jPanel6.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 520, -1, -1));
 
-        jTable3.setBackground(new java.awt.Color(204, 204, 204));
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        newStatus.setBackground(new java.awt.Color(204, 204, 204));
+        newStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -178,12 +218,12 @@ public class Vista_1 extends javax.swing.JFrame {
                 "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(newStatus);
 
         jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, 400, 200));
 
-        jTable4.setBackground(new java.awt.Color(204, 204, 204));
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        readyStatus.setBackground(new java.awt.Color(204, 204, 204));
+        readyStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -191,12 +231,12 @@ public class Vista_1 extends javax.swing.JFrame {
                 "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
             }
         ));
-        jScrollPane4.setViewportView(jTable4);
+        jScrollPane4.setViewportView(readyStatus);
 
         jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 50, 400, 200));
 
-        jTable5.setBackground(new java.awt.Color(204, 204, 204));
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+        readySStatus.setBackground(new java.awt.Color(204, 204, 204));
+        readySStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -204,12 +244,12 @@ public class Vista_1 extends javax.swing.JFrame {
                 "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
             }
         ));
-        jScrollPane5.setViewportView(jTable5);
+        jScrollPane5.setViewportView(readySStatus);
 
         jPanel6.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 280, 400, 220));
 
-        jTable2.setBackground(new java.awt.Color(204, 204, 204));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        runningStatus.setBackground(new java.awt.Color(204, 204, 204));
+        runningStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -217,12 +257,12 @@ public class Vista_1 extends javax.swing.JFrame {
                 "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(runningStatus);
 
         jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 400, 200));
 
-        jTable6.setBackground(new java.awt.Color(204, 204, 204));
-        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+        exitStatus.setBackground(new java.awt.Color(204, 204, 204));
+        exitStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -230,12 +270,12 @@ public class Vista_1 extends javax.swing.JFrame {
                 "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
             }
         ));
-        jScrollPane6.setViewportView(jTable6);
+        jScrollPane6.setViewportView(exitStatus);
 
-        jPanel6.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 530, 400, 220));
+        jPanel6.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 530, 390, 220));
 
-        jTable7.setBackground(new java.awt.Color(204, 204, 204));
-        jTable7.setModel(new javax.swing.table.DefaultTableModel(
+        blockedStatus.setBackground(new java.awt.Color(204, 204, 204));
+        blockedStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -243,18 +283,18 @@ public class Vista_1 extends javax.swing.JFrame {
                 "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
             }
         ));
-        jScrollPane7.setViewportView(jTable7);
+        jScrollPane7.setViewportView(blockedStatus);
 
         jPanel6.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 400, 220));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        outputStreamConsole.setColumns(20);
+        outputStreamConsole.setRows(5);
+        jScrollPane1.setViewportView(outputStreamConsole);
 
         jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 540, 820, 210));
 
-        jTable8.setBackground(new java.awt.Color(204, 204, 204));
-        jTable8.setModel(new javax.swing.table.DefaultTableModel(
+        blockedSStatus.setBackground(new java.awt.Color(204, 204, 204));
+        blockedSStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -262,7 +302,7 @@ public class Vista_1 extends javax.swing.JFrame {
                 "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
             }
         ));
-        jScrollPane8.setViewportView(jTable8);
+        jScrollPane8.setViewportView(blockedSStatus);
 
         jPanel6.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 280, 400, 220));
 
@@ -271,6 +311,14 @@ public class Vista_1 extends javax.swing.JFrame {
         jLabel10.setText("EXIT");
         jPanel6.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 510, -1, -1));
 
+        modoU.setFont(new java.awt.Font("Consolas", 1, 24)); // NOI18N
+        modoU.setForeground(new java.awt.Color(102, 255, 102));
+        modoU.setText("MODO: USUARIO");
+
+        modoK.setFont(new java.awt.Font("Consolas", 1, 24)); // NOI18N
+        modoK.setForeground(new java.awt.Color(255, 102, 102));
+        modoK.setText("MODO: KERNEL");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -278,9 +326,16 @@ public class Vista_1 extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(GestionCargaTAB, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(modoK)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(modoU)))
+                .addContainerGap(162, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,7 +345,11 @@ public class Vista_1 extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(GestionCargaTAB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
+                        .addGap(11, 11, 11)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(modoK)
+                            .addComponent(modoU))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -309,6 +368,298 @@ public class Vista_1 extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void PSWbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PSWbuttonMouseClicked
+        if (this.RTOSref.PSW==0) {
+            this.RTOSref.PSW=1;
+        }else{
+            this.RTOSref.PSW=0;
+        }
+    }//GEN-LAST:event_PSWbuttonMouseClicked
+
+    private void PSWbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PSWbuttonActionPerformed
+    
+    }//GEN-LAST:event_PSWbuttonActionPerformed
+
+    public TabbedPaneCustom getGestionCargaTAB() {
+        return GestionCargaTAB;
+    }
+
+    public void setGestionCargaTAB(TabbedPaneCustom GestionCargaTAB) {
+        this.GestionCargaTAB = GestionCargaTAB;
+    }
+
+    public JButton getPSWbutton() {
+        return PSWbutton;
+    }
+
+    public void setPSWbutton(JButton PSWbutton) {
+        this.PSWbutton = PSWbutton;
+    }
+
+    public JLabel getTRDtext() {
+        return TRDtext;
+    }
+
+    public void setTRDtext(JLabel TRDtext) {
+        this.TRDtext = TRDtext;
+    }
+
+    public JTable getBlockedSStatus() {
+        return blockedSStatus;
+    }
+
+    public void setBlockedSStatus(JTable blockedSStatus) {
+        this.blockedSStatus = blockedSStatus;
+    }
+
+    public JTable getBlockedStatus() {
+        return blockedStatus;
+    }
+
+    public void setBlockedStatus(JTable blockedStatus) {
+        this.blockedStatus = blockedStatus;
+    }
+
+    public JTable getExitStatus() {
+        return exitStatus;
+    }
+
+    public void setExitStatus(JTable exitStatus) {
+        this.exitStatus = exitStatus;
+    }
+
+    public JLabel getjLabel1() {
+        return jLabel1;
+    }
+
+    public void setjLabel1(JLabel jLabel1) {
+        this.jLabel1 = jLabel1;
+    }
+
+    public JLabel getjLabel10() {
+        return jLabel10;
+    }
+
+    public void setjLabel10(JLabel jLabel10) {
+        this.jLabel10 = jLabel10;
+    }
+
+    public JLabel getjLabel2() {
+        return jLabel2;
+    }
+
+    public void setjLabel2(JLabel jLabel2) {
+        this.jLabel2 = jLabel2;
+    }
+
+    public JLabel getjLabel3() {
+        return jLabel3;
+    }
+
+    public void setjLabel3(JLabel jLabel3) {
+        this.jLabel3 = jLabel3;
+    }
+
+    public JLabel getjLabel4() {
+        return jLabel4;
+    }
+
+    public void setjLabel4(JLabel jLabel4) {
+        this.jLabel4 = jLabel4;
+    }
+
+    public JLabel getjLabel5() {
+        return jLabel5;
+    }
+
+    public void setjLabel5(JLabel jLabel5) {
+        this.jLabel5 = jLabel5;
+    }
+
+    public JLabel getjLabel7() {
+        return jLabel7;
+    }
+
+    public void setjLabel7(JLabel jLabel7) {
+        this.jLabel7 = jLabel7;
+    }
+
+    public JLabel getjLabel9() {
+        return jLabel9;
+    }
+
+    public void setjLabel9(JLabel jLabel9) {
+        this.jLabel9 = jLabel9;
+    }
+
+    public JPanel getjPanel1() {
+        return jPanel1;
+    }
+
+    public void setjPanel1(JPanel jPanel1) {
+        this.jPanel1 = jPanel1;
+    }
+
+    public JPanel getjPanel2() {
+        return jPanel2;
+    }
+
+    public void setjPanel2(JPanel jPanel2) {
+        this.jPanel2 = jPanel2;
+    }
+
+    public JPanel getjPanel6() {
+        return jPanel6;
+    }
+
+    public void setjPanel6(JPanel jPanel6) {
+        this.jPanel6 = jPanel6;
+    }
+
+    public JScrollPane getjScrollPane1() {
+        return jScrollPane1;
+    }
+
+    public void setjScrollPane1(JScrollPane jScrollPane1) {
+        this.jScrollPane1 = jScrollPane1;
+    }
+
+    public JScrollPane getjScrollPane2() {
+        return jScrollPane2;
+    }
+
+    public void setjScrollPane2(JScrollPane jScrollPane2) {
+        this.jScrollPane2 = jScrollPane2;
+    }
+
+    public JScrollPane getjScrollPane3() {
+        return jScrollPane3;
+    }
+
+    public void setjScrollPane3(JScrollPane jScrollPane3) {
+        this.jScrollPane3 = jScrollPane3;
+    }
+
+    public JScrollPane getjScrollPane4() {
+        return jScrollPane4;
+    }
+
+    public void setjScrollPane4(JScrollPane jScrollPane4) {
+        this.jScrollPane4 = jScrollPane4;
+    }
+
+    public JScrollPane getjScrollPane5() {
+        return jScrollPane5;
+    }
+
+    public void setjScrollPane5(JScrollPane jScrollPane5) {
+        this.jScrollPane5 = jScrollPane5;
+    }
+
+    public JScrollPane getjScrollPane6() {
+        return jScrollPane6;
+    }
+
+    public void setjScrollPane6(JScrollPane jScrollPane6) {
+        this.jScrollPane6 = jScrollPane6;
+    }
+
+    public JScrollPane getjScrollPane7() {
+        return jScrollPane7;
+    }
+
+    public void setjScrollPane7(JScrollPane jScrollPane7) {
+        this.jScrollPane7 = jScrollPane7;
+    }
+
+    public JScrollPane getjScrollPane8() {
+        return jScrollPane8;
+    }
+
+    public void setjScrollPane8(JScrollPane jScrollPane8) {
+        this.jScrollPane8 = jScrollPane8;
+    }
+
+    public JLabel getModoK() {
+        return modoK;
+    }
+
+    public void setModoK(JLabel modoK) {
+        this.modoK = modoK;
+    }
+
+    public JLabel getModoU() {
+        return modoU;
+    }
+
+    public void setModoU(JLabel modoU) {
+        this.modoU = modoU;
+    }
+
+    public JTable getNewStatus() {
+        return newStatus;
+    }
+
+    public void setNewStatus(JTable newStatus) {
+        this.newStatus = newStatus;
+    }
+
+    public JTextArea getOutputStreamConsole() {
+        return outputStreamConsole;
+    }
+
+    public void setOutputStreamConsole(JTextArea outputStreamConsole) {
+        this.outputStreamConsole = outputStreamConsole;
+    }
+
+    public JTable getReadySStatus() {
+        return readySStatus;
+    }
+
+    public void setReadySStatus(JTable readySStatus) {
+        this.readySStatus = readySStatus;
+    }
+
+    public JTable getReadyStatus() {
+        return readyStatus;
+    }
+
+    public void setReadyStatus(JTable readyStatus) {
+        this.readyStatus = readyStatus;
+    }
+
+    public JTable getRunningStatus() {
+        return runningStatus;
+    }
+
+    public void setRunningStatus(JTable runningStatus) {
+        this.runningStatus = runningStatus;
+    }
+
+    public JPanel getVistaGCProcesos() {
+        return vistaGCProcesos;
+    }
+
+    public void setVistaGCProcesos(JPanel vistaGCProcesos) {
+        this.vistaGCProcesos = vistaGCProcesos;
+    }
+
+    public JPanel getVistaMemoria() {
+        return vistaMemoria;
+    }
+
+    public void setVistaMemoria(JPanel vistaMemoria) {
+        this.vistaMemoria = vistaMemoria;
+    }
+
+    public JPanel getVistaMetricas() {
+        return vistaMetricas;
+    }
+
+    public void setVistaMetricas(JPanel vistaMetricas) {
+        this.vistaMetricas = vistaMetricas;
+    }
 
     /**
      * @param args the command line arguments
@@ -332,11 +683,17 @@ public class Vista_1 extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Vista_1().setVisible(true));
+        
+        java.awt.EventQueue.invokeLater(() -> new Vista_1(null).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private raven.tabbed.TabbedPaneCustom GestionCargaTAB;
+    private javax.swing.JButton PSWbutton;
+    private javax.swing.JLabel TRDtext;
+    private javax.swing.JTable blockedSStatus;
+    private javax.swing.JTable blockedStatus;
+    private javax.swing.JTable exitStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -344,13 +701,9 @@ public class Vista_1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -360,13 +713,15 @@ public class Vista_1 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTable jTable5;
-    private javax.swing.JTable jTable6;
-    private javax.swing.JTable jTable7;
-    private javax.swing.JTable jTable8;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel modoK;
+    private javax.swing.JLabel modoU;
+    private javax.swing.JTable newStatus;
+    private javax.swing.JTextArea outputStreamConsole;
+    private javax.swing.JTable readySStatus;
+    private javax.swing.JTable readyStatus;
+    private javax.swing.JTable runningStatus;
+    private javax.swing.JPanel vistaGCProcesos;
+    private javax.swing.JPanel vistaMemoria;
+    private javax.swing.JPanel vistaMetricas;
     // End of variables declaration//GEN-END:variables
 }
