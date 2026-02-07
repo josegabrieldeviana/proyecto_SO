@@ -4,6 +4,7 @@
  */
 package Controlador;
 
+import Modelo.Algoritmos_Plan.RoundRobin;
 import Modelo.EDD.Lista;
 import Modelo.EDD.ListaSimple;
 import Modelo.clasesSO.*;
@@ -34,7 +35,8 @@ public class controladorMain {
     Vista_1 vista=new Vista_1(RTOS1);
     vista.setVisible(true);
     
-
+    
+    RoundRobin robin1=new RoundRobin(RTOS1);
     }
     
     
