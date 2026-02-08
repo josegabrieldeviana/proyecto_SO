@@ -4,15 +4,17 @@
  */
 package Modelo.clasesSO;
 
+import java.util.concurrent.Semaphore;
+
 /**
  * 
  * 
- * Aquí va a estar un solo proceso que se ejecute
+ * Aquí va a estar un solo proceso que se ejecute, por ello
+ * es que se va a poner solo 1 en el semaforo.
  * 
  * 
  * @author joseg
  */
 public class CPU {
-    public Proceso velocidadCPU; //cuantos procesos puede ejecutar a la vaz
-                                 //debe ser 1
+    public final Semaphore capacidadCPU=new Semaphore(1);
 }

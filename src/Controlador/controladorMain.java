@@ -37,6 +37,9 @@ public class controladorMain {
     
     
     RoundRobin robin1=new RoundRobin(RTOS1);
+    
+    Proceso P1=(Proceso) colaNuevo.buscarLast();
+   
     }
     
     
