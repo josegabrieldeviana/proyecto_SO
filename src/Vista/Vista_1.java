@@ -11,6 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableModel;
+import Modelo.EDD.Lista;
+import Modelo.EDD.Nodo;
+import Modelo.clasesSO.Proceso;
 import raven.tabbed.TabbedPaneCustom;
 
 /**
@@ -21,14 +25,23 @@ public class Vista_1 extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Vista_1.class.getName());
     private final RTOSmaster RTOSref;
+    private final Lista<Proceso> colaNuevo;
+    private javax.swing.JButton btnGenerar20;
 
     /**
      * Creates new form Vista_1
      */
-    public Vista_1(RTOSmaster par0) {
-        initComponents();
+    public Vista_1(RTOSmaster par0, Lista<Proceso> colaNuevo) {
         this.RTOSref = par0;
-        if (par0.PSW == 0) {
+        this.colaNuevo = colaNuevo;
+
+  
+        initComponents();
+
+        // Actualizar tabla inicialmente
+        actualizarTableNuevos();
+
+        if (par0 != null && par0.PSW == 0) {
             // Modo KERNEL
             modoU.setVisible(false);
             modoK.setVisible(true);
@@ -48,7 +61,7 @@ public class Vista_1 extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
@@ -56,6 +69,17 @@ public class Vista_1 extends javax.swing.JFrame {
         GestionCargaTAB = new raven.tabbed.TabbedPaneCustom();
         vistaGCProcesos = new javax.swing.JPanel();
         PSWbutton = new javax.swing.JButton();
+        gen20 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        gen1 = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        gen21 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        gen2 = new javax.swing.JButton();
         vistaMemoria = new javax.swing.JPanel();
         vistaMetricas = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -90,11 +114,13 @@ public class Vista_1 extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 100, Short.MAX_VALUE));
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
         jPanel2Layout.setVerticalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 100, Short.MAX_VALUE));
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,20 +145,110 @@ public class Vista_1 extends javax.swing.JFrame {
             }
         });
 
+        gen20.setText("Generar");
+        gen20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gen20ActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setText("Generar tarea de emergencia");
+
+        jRadioButton1.setForeground(new java.awt.Color(0, 0, 0));
+        jRadioButton1.setText("CPU");
+
+        jRadioButton2.setForeground(new java.awt.Color(0, 0, 0));
+        jRadioButton2.setText("E/S");
+
+        gen1.setText("Generar");
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(204, 0, 0));
+        jLabel8.setText("El valor \"Bound\" será aleatorio si no se especifica");
+
+        jLabel11.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel11.setText("Generar 20 procesos aleatorios");
+
+        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel12.setText("Abrir JSON de procesos");
+
+        gen21.setText("Abrir directorio");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FCFS", "Round Robin", "SRT", "Prioridad Estática Preemptiva", "EDF" }));
+
+        gen2.setText("INICIAR SIMULACIÓN");
+
         javax.swing.GroupLayout vistaGCProcesosLayout = new javax.swing.GroupLayout(vistaGCProcesos);
         vistaGCProcesos.setLayout(vistaGCProcesosLayout);
         vistaGCProcesosLayout.setHorizontalGroup(
-                vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(vistaGCProcesosLayout.createSequentialGroup()
-                                .addGap(117, 117, 117)
-                                .addComponent(PSWbutton)
-                                .addContainerGap(423, Short.MAX_VALUE)));
+            vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                        .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                        .addComponent(jLabel11)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(gen20, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                        .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel8)
+                                            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                                .addComponent(jRadioButton1)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jRadioButton2)
+                                                .addGap(116, 116, 116))
+                                            .addComponent(jLabel6))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(gen1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(5, 5, 5)))
+                                .addGap(88, 88, 88))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, vistaGCProcesosLayout.createSequentialGroup()
+                                .addComponent(gen2)
+                                .addGap(38, 38, 38)))
+                        .addComponent(PSWbutton))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addGap(96, 96, 96)
+                        .addComponent(gen21)))
+                .addContainerGap(132, Short.MAX_VALUE))
+        );
         vistaGCProcesosLayout.setVerticalGroup(
-                vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(vistaGCProcesosLayout.createSequentialGroup()
-                                .addGap(152, 152, 152)
-                                .addComponent(PSWbutton)
-                                .addContainerGap(620, Short.MAX_VALUE)));
+            vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(gen21))
+                        .addGap(18, 18, 18)
+                        .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(gen20)
+                            .addComponent(jLabel11)))
+                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                        .addGap(66, 66, 66)
+                        .addComponent(PSWbutton)))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jRadioButton2)
+                    .addComponent(gen1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addGap(40, 40, 40)
+                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(gen2))
+                .addContainerGap(547, Short.MAX_VALUE))
+        );
 
         GestionCargaTAB.addTab("Gestión y carga de procesos", vistaGCProcesos);
 
@@ -141,11 +257,13 @@ public class Vista_1 extends javax.swing.JFrame {
         javax.swing.GroupLayout vistaMemoriaLayout = new javax.swing.GroupLayout(vistaMemoria);
         vistaMemoria.setLayout(vistaMemoriaLayout);
         vistaMemoriaLayout.setHorizontalGroup(
-                vistaMemoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 612, Short.MAX_VALUE));
+            vistaMemoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 612, Short.MAX_VALUE)
+        );
         vistaMemoriaLayout.setVerticalGroup(
-                vistaMemoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 795, Short.MAX_VALUE));
+            vistaMemoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 795, Short.MAX_VALUE)
+        );
 
         GestionCargaTAB.addTab("Memoria", vistaMemoria);
 
@@ -154,11 +272,13 @@ public class Vista_1 extends javax.swing.JFrame {
         javax.swing.GroupLayout vistaMetricasLayout = new javax.swing.GroupLayout(vistaMetricas);
         vistaMetricas.setLayout(vistaMetricasLayout);
         vistaMetricasLayout.setHorizontalGroup(
-                vistaMetricasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 612, Short.MAX_VALUE));
+            vistaMetricasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 612, Short.MAX_VALUE)
+        );
         vistaMetricasLayout.setVerticalGroup(
-                vistaMetricasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 795, Short.MAX_VALUE));
+            vistaMetricasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 795, Short.MAX_VALUE)
+        );
 
         GestionCargaTAB.addTab("Metricas", vistaMetricas);
 
@@ -207,72 +327,78 @@ public class Vista_1 extends javax.swing.JFrame {
 
         newStatus.setBackground(new java.awt.Color(204, 204, 204));
         newStatus.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
-                }));
+            },
+            new String [] {
+                "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
+            }
+        ));
         jScrollPane3.setViewportView(newStatus);
 
         jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, 400, 200));
 
         readyStatus.setBackground(new java.awt.Color(204, 204, 204));
         readyStatus.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
-                }));
+            },
+            new String [] {
+                "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
+            }
+        ));
         jScrollPane4.setViewportView(readyStatus);
 
         jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 50, 400, 200));
 
         readySStatus.setBackground(new java.awt.Color(204, 204, 204));
         readySStatus.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
-                }));
+            },
+            new String [] {
+                "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
+            }
+        ));
         jScrollPane5.setViewportView(readySStatus);
 
         jPanel6.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 280, 400, 220));
 
         runningStatus.setBackground(new java.awt.Color(204, 204, 204));
         runningStatus.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
-                }));
+            },
+            new String [] {
+                "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
+            }
+        ));
         jScrollPane2.setViewportView(runningStatus);
 
         jPanel6.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 400, 200));
 
         exitStatus.setBackground(new java.awt.Color(204, 204, 204));
         exitStatus.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
-                }));
+            },
+            new String [] {
+                "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
+            }
+        ));
         jScrollPane6.setViewportView(exitStatus);
 
         jPanel6.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 530, 390, 220));
 
         blockedStatus.setBackground(new java.awt.Color(204, 204, 204));
         blockedStatus.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
-                }));
+            },
+            new String [] {
+                "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
+            }
+        ));
         jScrollPane7.setViewportView(blockedStatus);
 
         jPanel6.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 400, 220));
@@ -285,12 +411,13 @@ public class Vista_1 extends javax.swing.JFrame {
 
         blockedSStatus.setBackground(new java.awt.Color(204, 204, 204));
         blockedSStatus.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
-                }));
+            },
+            new String [] {
+                "ID", "Prioridad", "Nombre", "MAR", "PC", "TRD"
+            }
+        ));
         jScrollPane8.setViewportView(blockedSStatus);
 
         jPanel6.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 280, 400, 220));
@@ -311,61 +438,89 @@ public class Vista_1 extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(GestionCargaTAB, javax.swing.GroupLayout.PREFERRED_SIZE, 617,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(26, 26, 26)
-                                                .addComponent(modoK)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(modoU)))
-                                .addContainerGap(162, Short.MAX_VALUE)));
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(GestionCargaTAB, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(modoK)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(modoU)))
+                .addContainerGap(162, Short.MAX_VALUE))
+        );
         jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(GestionCargaTAB, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(11, 11, 11)
-                                                .addGroup(jPanel1Layout
-                                                        .createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(modoK)
-                                                        .addComponent(modoU))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                        javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addContainerGap()));
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(GestionCargaTAB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(modoK)
+                            .addComponent(modoU))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE,
-                                javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    /**USADO para debuggear como es que las clases instanciadas en main pueden alterar el modo
-    
-    */
+    private void gen20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gen20ActionPerformed
+//    if (RTOSref != null) 
+                    RTOSref.xPRand(20, colaNuevo);
+                    actualizarTableNuevos();
+                    outputStreamConsole.append("[SISTEMA] Se han generado 20 procesos aleatorios adicionales.\n");
+    }//GEN-LAST:event_gen20ActionPerformed
+
+
+
+    public void actualizarTableNuevos() {
+        if (colaNuevo == null)
+            return;
+
+        DefaultTableModel model = (DefaultTableModel) newStatus.getModel();
+        model.setRowCount(0); // Limpiar tabla
+
+        Nodo<Proceso> aux = colaNuevo.Head; //vas a conseguir el primero de los nodos
+        while (aux != null) { //mientras que no haya ningún proceso anteriormente... (carga inicial de procesos aleatorios)
+            Proceso p = aux.getData(); //consigues la referencia del proceso p
+            model.addRow(new Object[] {
+                    p.getID(),
+                    p.getPrioridad(),
+                    p.getNombre(),
+                    p.getMAR(),
+                    p.getPC(),
+                    p.getTiempoRestanteDeadline()
+            });
+            aux = aux.getNext();
+        }
+    }
+
+    /**
+     * USADO para debuggear como es que las clases instanciadas en main pueden
+     * alterar el modo
+     * 
+     */
     private void PSWbuttonMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_PSWbuttonMouseClicked
         // Cambiar el PSW
         if (this.RTOSref.PSW == 0) {
@@ -694,7 +849,7 @@ public class Vista_1 extends javax.swing.JFrame {
 
         /* Create and display the form */
 
-        java.awt.EventQueue.invokeLater(() -> new Vista_1(null).setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Vista_1(null, null).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -704,17 +859,28 @@ public class Vista_1 extends javax.swing.JFrame {
     private javax.swing.JTable blockedSStatus;
     private javax.swing.JTable blockedStatus;
     private javax.swing.JTable exitStatus;
+    private javax.swing.JButton gen1;
+    private javax.swing.JButton gen2;
+    private javax.swing.JButton gen20;
+    private javax.swing.JButton gen21;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

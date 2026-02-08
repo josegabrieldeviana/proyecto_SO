@@ -7,14 +7,11 @@ package Modelo.clasesSO;
 import java.util.concurrent.Semaphore;
 
 /**
- * Introduces la cantidad de procesos cuantificados en la RAM
- * Por default van a ser el doble que la memoria principal siempre
- * 
- * Aquí van a estar las colas de estado READY y BLOCKED
+ * Usualmente hay más procesos en disco que en MP.
  * 
  * 
  * @author joseg
  */
-public class RAM {
-    public final Semaphore capacidadRAM=new Semaphore(10);
+public class DISCO {
+    public final Semaphore capacidadDISCO=new Semaphore(30);
 }
