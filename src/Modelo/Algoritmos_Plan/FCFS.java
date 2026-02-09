@@ -5,6 +5,7 @@
 package Modelo.Algoritmos_Plan;
 
 import Modelo.clasesSO.RTOSmaster;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,6 +19,7 @@ public class FCFS {
      */
     public RTOSmaster RTOS; 
 
-    public FCFS(RTOSmaster RTOS) {
+    public FCFS(RTOSmaster RTOS, DefaultTableModel modelNew) {
         this.RTOS = RTOS;
+        
 }}
