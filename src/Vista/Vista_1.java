@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import Modelo.EDD.Lista;
 import Modelo.EDD.Nodo;
 import Modelo.clasesSO.Proceso;
+import Modelo.clasesSO.RelojSO;
 import raven.tabbed.TabbedPaneCustom;
 
 /**
@@ -26,21 +27,24 @@ public class Vista_1 extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Vista_1.class.getName());
     private final RTOSmaster RTOSref;
     private final Lista<Proceso> colaNuevo;
+    private final RelojSO relojref;
     private javax.swing.JButton btnGenerar20;
 
     /**
      * Creates new form Vista_1
      */
-    public Vista_1(RTOSmaster par0, Lista<Proceso> colaNuevo) {
+    public Vista_1(RTOSmaster par0, Lista<Proceso> colaNuevo, RelojSO relojNuevo) {
         this.RTOSref = par0;
         this.colaNuevo = colaNuevo;
+        this.relojref= relojNuevo;
 
   
         initComponents();
 
         // Actualizar tabla inicialmente
         actualizarTableNuevos();
-
+        
+        
         if (par0 != null && par0.PSW == 0) {
             // Modo KERNEL
             modoU.setVisible(false);
@@ -52,6 +56,10 @@ public class Vista_1 extends javax.swing.JFrame {
             modoK.setVisible(false);
             PSWbutton.setText("Modo: USUARIO");
         }
+        
+        relojNuevo.start();
+        //relojNUMERO.setText(text);
+        
     }
 
     /**
@@ -78,8 +86,17 @@ public class Vista_1 extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         gen21 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        gen2 = new javax.swing.JButton();
+        politicasCOMBOBOX = new javax.swing.JComboBox<>();
+        genSim = new javax.swing.JButton();
+        relojNUMERO = new javax.swing.JLabel();
+        ciclosText = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        duraCiclospinner = new javax.swing.JSpinner();
+        jLabel15 = new javax.swing.JLabel();
+        sOmsCiclosCOMBOBOX = new javax.swing.JComboBox<>();
+        resetCiclo = new javax.swing.JButton();
+        relojTEXT2 = new javax.swing.JLabel();
         vistaMemoria = new javax.swing.JPanel();
         vistaMetricas = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -162,6 +179,11 @@ public class Vista_1 extends javax.swing.JFrame {
         jRadioButton2.setText("E/S");
 
         gen1.setText("Generar");
+        gen1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gen1ActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(204, 0, 0));
@@ -175,9 +197,45 @@ public class Vista_1 extends javax.swing.JFrame {
 
         gen21.setText("Abrir directorio");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FCFS", "Round Robin", "SRT", "Prioridad Estática Preemptiva", "EDF" }));
+        politicasCOMBOBOX.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FCFS", "Round Robin", "SRT", "Prioridad Estática Preemptiva", "EDF" }));
 
-        gen2.setText("INICIAR SIMULACIÓN");
+        genSim.setText("INICIAR SIMULACIÓN");
+        genSim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                genSimActionPerformed(evt);
+            }
+        });
+
+        relojNUMERO.setFont(new java.awt.Font("Consolas", 1, 36)); // NOI18N
+        relojNUMERO.setForeground(new java.awt.Color(0, 0, 0));
+        relojNUMERO.setText("0");
+
+        ciclosText.setFont(new java.awt.Font("Consolas", 1, 24)); // NOI18N
+        ciclosText.setForeground(new java.awt.Color(0, 0, 0));
+        ciclosText.setText("ciclos");
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(204, 0, 0));
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(204, 0, 0));
+        jLabel14.setText("Si hay error que el RTOS no puede manejar, se reinicia todo (se hace SHUTDOWN y restart en reloj y procesos)");
+
+        jLabel15.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel15.setText("Duración de ciclo (en segundos)");
+
+        sOmsCiclosCOMBOBOX.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "mS", "S" }));
+
+        resetCiclo.setText("Setear valor de ciclo");
+        resetCiclo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetCicloActionPerformed(evt);
+            }
+        });
+
+        relojTEXT2.setFont(new java.awt.Font("Consolas", 1, 24)); // NOI18N
+        relojTEXT2.setForeground(new java.awt.Color(0, 0, 0));
+        relojTEXT2.setText("RELOJ :");
 
         javax.swing.GroupLayout vistaGCProcesosLayout = new javax.swing.GroupLayout(vistaGCProcesos);
         vistaGCProcesos.setLayout(vistaGCProcesosLayout);
@@ -185,38 +243,62 @@ public class Vista_1 extends javax.swing.JFrame {
             vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(vistaGCProcesosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                        .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(politicasCOMBOBOX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addGap(96, 96, 96)
+                                .addComponent(gen21))
+                            .addComponent(jLabel14))
+                        .addContainerGap(123, Short.MAX_VALUE))
+                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                        .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(gen20, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                        .addComponent(jRadioButton1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jRadioButton2))
+                                    .addComponent(jLabel6))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(gen1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(5, 5, 5)))
+                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addComponent(PSWbutton)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(vistaGCProcesosLayout.createSequentialGroup()
                         .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(vistaGCProcesosLayout.createSequentialGroup()
-                                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel13))
+                            .addComponent(relojNUMERO)
+                            .addComponent(ciclosText)
+                            .addComponent(relojTEXT2))
+                        .addGap(48, 48, 48)
+                        .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                .addGap(67, 67, 67)
+                                .addComponent(genSim)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, vistaGCProcesosLayout.createSequentialGroup()
+                                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(vistaGCProcesosLayout.createSequentialGroup()
-                                        .addComponent(jLabel11)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(gen20, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(duraCiclospinner)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(sOmsCiclosCOMBOBOX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(vistaGCProcesosLayout.createSequentialGroup()
                                         .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel8)
-                                            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
-                                                .addComponent(jRadioButton1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jRadioButton2)
-                                                .addGap(116, 116, 116))
-                                            .addComponent(jLabel6))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(gen1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(5, 5, 5)))
-                                .addGap(88, 88, 88))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, vistaGCProcesosLayout.createSequentialGroup()
-                                .addComponent(gen2)
-                                .addGap(38, 38, 38)))
-                        .addComponent(PSWbutton))
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addGap(96, 96, 96)
-                        .addComponent(gen21)))
-                .addContainerGap(132, Short.MAX_VALUE))
+                                            .addComponent(resetCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel15))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGap(81, 81, 81))))))
         );
         vistaGCProcesosLayout.setVerticalGroup(
             vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,10 +326,31 @@ public class Vista_1 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addGap(40, 40, 40)
-                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(gen2))
-                .addContainerGap(547, Short.MAX_VALUE))
+                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, vistaGCProcesosLayout.createSequentialGroup()
+                        .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(politicasCOMBOBOX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(genSim))
+                        .addGap(45, 45, 45)
+                        .addComponent(relojTEXT2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                        .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(duraCiclospinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(sOmsCiclosCOMBOBOX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resetCiclo))
+                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                        .addComponent(relojNUMERO)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ciclosText)))
+                .addGap(218, 218, 218)
+                .addComponent(jLabel13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
+                .addComponent(jLabel14)
+                .addGap(20, 20, 20))
         );
 
         GestionCargaTAB.addTab("Gestión y carga de procesos", vistaGCProcesos);
@@ -491,6 +594,18 @@ public class Vista_1 extends javax.swing.JFrame {
                     actualizarTableNuevos();
                     outputStreamConsole.append("[SISTEMA] Se han generado 20 procesos aleatorios adicionales.\n");
     }//GEN-LAST:event_gen20ActionPerformed
+
+    private void gen1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gen1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_gen1ActionPerformed
+
+    private void genSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genSimActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_genSimActionPerformed
+
+    private void resetCicloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetCicloActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_resetCicloActionPerformed
 
 
 
@@ -849,7 +964,7 @@ public class Vista_1 extends javax.swing.JFrame {
 
         /* Create and display the form */
 
-        java.awt.EventQueue.invokeLater(() -> new Vista_1(null, null).setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Vista_1(null, null, null).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -858,16 +973,20 @@ public class Vista_1 extends javax.swing.JFrame {
     private javax.swing.JLabel TRDtext;
     private javax.swing.JTable blockedSStatus;
     private javax.swing.JTable blockedStatus;
+    private javax.swing.JLabel ciclosText;
+    private javax.swing.JSpinner duraCiclospinner;
     private javax.swing.JTable exitStatus;
     private javax.swing.JButton gen1;
-    private javax.swing.JButton gen2;
     private javax.swing.JButton gen20;
     private javax.swing.JButton gen21;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton genSim;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -893,9 +1012,14 @@ public class Vista_1 extends javax.swing.JFrame {
     private javax.swing.JLabel modoU;
     private javax.swing.JTable newStatus;
     private javax.swing.JTextArea outputStreamConsole;
+    private javax.swing.JComboBox<String> politicasCOMBOBOX;
     private javax.swing.JTable readySStatus;
     private javax.swing.JTable readyStatus;
+    private javax.swing.JLabel relojNUMERO;
+    private javax.swing.JLabel relojTEXT2;
+    private javax.swing.JButton resetCiclo;
     private javax.swing.JTable runningStatus;
+    private javax.swing.JComboBox<String> sOmsCiclosCOMBOBOX;
     private javax.swing.JPanel vistaGCProcesos;
     private javax.swing.JPanel vistaMemoria;
     private javax.swing.JPanel vistaMetricas;
