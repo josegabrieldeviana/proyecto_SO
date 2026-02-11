@@ -36,6 +36,7 @@ public class Proceso extends Thread {
     // Parámetros de instrucción
     public int cantidadInstrucciones; // Cantidad de instrucciones del proceso (1-10)
     public int duracionCicloInstruccion; // Duración de cada ciclo de instrucción (1-5)
+    public int burstTime; // multiplicación de cantidad de instrucciones y numero de ciclos
 
     public Proceso(int ID, String Nombre, String Status, String Bound, int PC, int MAR, int Prioridad,
             int deadlineOriginal, int tiempoRestanteDeadline, int ciclosParaGenerarExcepcion,
@@ -54,6 +55,7 @@ public class Proceso extends Thread {
         this.tiempoLlegada = cantidadInstrucc; // número de dos digitos
         this.cantidadInstrucciones = cantidadInstrucciones; // 1 a 10 instrucciones
         this.duracionCicloInstruccion = duracionCicloInstruccion; // 1 a 5 duración del ciclo
+        this.burstTime = this.cantidadInstrucciones * this.duracionCicloInstruccion;
     }
 
     /**
@@ -124,6 +126,10 @@ public class Proceso extends Thread {
 
     public int getDuracionCicloInstruccion() {
         return duracionCicloInstruccion;
+    }
+
+    public int getBurstTime() {
+        return burstTime;
     }
 
     /*
@@ -215,10 +221,16 @@ public class Proceso extends Thread {
 
     public void setCantidadInstrucciones(int cantidadInstrucciones) {
         this.cantidadInstrucciones = cantidadInstrucciones;
+        this.burstTime = this.cantidadInstrucciones * this.duracionCicloInstruccion;
     }
 
     public void setDuracionCicloInstruccion(int duracionCicloInstruccion) {
         this.duracionCicloInstruccion = duracionCicloInstruccion;
+        this.burstTime = this.cantidadInstrucciones * this.duracionCicloInstruccion;
+    }
+
+    public void setBurstTime(int burstTime) {
+        this.burstTime = burstTime;
     }
 
     public String toString() {
@@ -237,6 +249,7 @@ public class Proceso extends Thread {
                 "Cantidad de Instrucciones (Tiempo Llegada): " + this.tiempoLlegada + "\n" +
                 "Cantidad de Instrucciones: " + this.cantidadInstrucciones + "\n" +
                 "Duración del Ciclo de Instrucción: " + this.duracionCicloInstruccion + "\n" +
+                "Burst Time: " + this.burstTime + "\n" +
                 "----------------------------";
     }
 
@@ -361,6 +374,14 @@ public class Proceso extends Thread {
         if (this.duracionCicloInstruccion < 1 || this.duracionCicloInstruccion > 5) {
             System.err
                     .println("[ERROR] duracionCicloInstruccion fuera de rango (1-5): " + this.duracionCicloInstruccion);
+        }
+
+        // Burst Time
+        System.out.print("Burst Time: ");
+        System.out.println(this.burstTime);
+        if (this.burstTime != this.cantidadInstrucciones * this.duracionCicloInstruccion) {
+            System.err.println(
+                    "[ERROR] burstTime no coincide con la operacion (instrucciones * duracion): " + this.burstTime);
         }
 
         System.out.println("====================================");
@@ -492,12 +513,15 @@ public class Proceso extends Thread {
         }
 
         System.out.println("[INFO] Transición exitosa: " + estadoActual + " -> " + estadoDestino);
-        //System.out.println("[INFO] Transición exitosa: " + estadoActual + " -> " + estadoDestino + " En la cola..."+ ColasEstadoDestino.BuscarPosicion(indiceCola).printString()); PARA PROPOSITOS DE DEBUGGING.
+        // System.out.println("[INFO] Transición exitosa: " + estadoActual + " -> " +
+        // estadoDestino + " En la cola..."+
+        // ColasEstadoDestino.BuscarPosicion(indiceCola).printString()); PARA PROPOSITOS
+        // DE DEBUGGING.
         return true;
     }
-    
-    public void run(){
-    
+
+    public void run() {
+
     }
 
 }
