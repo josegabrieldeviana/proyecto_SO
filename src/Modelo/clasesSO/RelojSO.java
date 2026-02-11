@@ -12,7 +12,7 @@ package Modelo.clasesSO;
  */
 public class RelojSO extends Thread {
 
-    private long sleepTime = 1000; // Default: 1 second
+    private static long sleepTime = 1000; // Default: 1 second
     private int ciclos = 0;
     private boolean activo = true;
 
@@ -30,11 +30,11 @@ public class RelojSO extends Thread {
     }
 
     public synchronized void setCicloDuracion(long ms) {
-        this.sleepTime = ms;
+        RelojSO.sleepTime = ms;
     }
 
-    public synchronized long getCicloDuracion() {
-        return this.sleepTime;
+    public static synchronized long getCicloDuracion() {
+        return RelojSO.sleepTime;
     }
 
     public synchronized int getCiclos() {

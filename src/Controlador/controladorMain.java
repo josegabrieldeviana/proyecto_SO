@@ -31,8 +31,8 @@ public class controladorMain {
          * LAS COMPONENTES
          */
         CPU cpu = new CPU(1); //se inicializa la cantidad de int del semaforo
-        RAM ram = new RAM(100);
-        DISCO disco = new DISCO(150);
+        RAM ram = new RAM(100); //100 procesos max en memoria
+        DISCO disco = new DISCO(150);//si no hay espacio en memoria, se va a suspended en ms
 
         
 
@@ -92,7 +92,7 @@ public class controladorMain {
         Proceso P1 = (Proceso) colaNuevo.buscarLast();
         P1.cambiarEstado("RUNNING", colasPorEstado);
         
-        //FCFS FCFS = new FCFS(colasPorEstado, cpu, disco, ram);
+        FCFS FCFS=new FCFS(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM);
         
         //P1.debugPrint();
 

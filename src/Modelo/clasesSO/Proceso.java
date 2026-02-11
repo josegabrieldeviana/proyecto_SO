@@ -224,11 +224,26 @@ public class Proceso extends Thread {
         this.burstTime = this.cantidadInstrucciones * this.duracionCicloInstruccion;
     }
 
+    /*
+     * PARA REESTABLECER EL CICLO DE DURACIÓN DE INSTRUCCIÓN
+     * PARA REESTABLECER EL CICLO DE DURACIÓN DE INSTRUCCIÓN
+     * PARA REESTABLECER EL CICLO DE DURACIÓN DE INSTRUCCIÓN
+     * PARA REESTABLECER EL CICLO DE DURACIÓN DE INSTRUCCIÓN
+     * PARA REESTABLECER EL CICLO DE DURACIÓN DE INSTRUCCIÓN
+     * PARA REESTABLECER EL CICLO DE DURACIÓN DE INSTRUCCIÓN
+     * PARA REESTABLECER EL CICLO DE DURACIÓN DE INSTRUCCIÓN
+     * 
+     * CADA VEZ QUE SE CAMBIA LA DURACIÓN DE UN CICLO
+     * 
+     */
     public void setDuracionCicloInstruccion(int duracionCicloInstruccion) {
         this.duracionCicloInstruccion = duracionCicloInstruccion;
         this.burstTime = this.cantidadInstrucciones * this.duracionCicloInstruccion;
     }
 
+    /*
+     * No se si utilice este método
+     */
     public void setBurstTime(int burstTime) {
         this.burstTime = burstTime;
     }
@@ -520,8 +535,23 @@ public class Proceso extends Thread {
         return true;
     }
 
-    public void run() {
-
+    @Override
+    public void run() { //EL BURST TIME (S)=CANTIDAD DE INSTRUCCIONES EN UN PROCESO*N INSTRUCCIONES EN UN CICLO=TIEMPO EN CPU.
+        for (int i = 0; i < burstTime; i++) { //CICLO
+            try {
+                System.out.println("[DEBUG] DURACION DE PROCESO RUNNING"+RelojSO.getCicloDuracion());
+                Thread.sleep(RelojSO.getCicloDuracion()); //VA A ESTAR ACTIVO EL THREAD POR EL TIEMPO EN CADA CICLO
+                this.PC++;
+                this.MAR++;
+                System.out.println("[DEBUG] SEGUNDOS EN EJECUCIÓN DE PROCESO......"+i);
+            } catch (InterruptedException ex) {
+                System.err.println("[ERROR] Proceso " + this.ID + " interrumpido.");
+                return;
+            }
+        }
+        this.Status = "TERMINADO";
+        System.out.println(
+                "[INFO] Proceso " + this.ID + " ha terminado su ejecución después de " + burstTime + " ciclos.");
     }
 
 }
