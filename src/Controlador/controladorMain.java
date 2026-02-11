@@ -4,6 +4,7 @@
  */
 package Controlador;
 
+import Modelo.Algoritmos_Plan.FCFS;
 import Modelo.Algoritmos_Plan.RoundRobin;
 import Modelo.EDD.Lista;
 import Modelo.EDD.ListaSimple;
@@ -25,31 +26,79 @@ public class controladorMain {
     public static void main(String[] args) {
         var log = System.getLogger("logSO");
 
-        Lista<Proceso> colaNuevo = new Lista<>(); // puede funcionar como pila por addfirst o deletefirst, etc
+        
+        /*
+         * LAS COMPONENTES
+         */
+        CPU cpu = new CPU();
+        RAM ram = new RAM();
+        DISCO disco = new DISCO();
+
         RTOSmaster RTOS1 = new RTOSmaster(0); // inicializo el RTOS con el PSW en 0 (modo kernel).
 
-        // Generación inicial de 10 procesos random
-        RTOS1.xPRand(10, colaNuevo);
         
-        RelojSO reloj=new RelojSO();
+        Lista<Proceso> colaNuevo = new Lista<>(); // puede funcionar como pila por addfirst o deletefirst, etc
+        RTOS1.xPRand(10, colaNuevo); //LOS 10 PROCESOS INICIALES
 
-        Vista_1 vista = new Vista_1(RTOS1, colaNuevo, reloj);
-        vista.setVisible(true);
+        /*
+         * DEBUGGING LOGICA
+         */
+        Lista<Proceso> colaListo = new Lista<>(); // puede funcionar como pila por addfirst o deletefirst, etc
+        Lista<Proceso> colaBloqueados = new Lista<>(); // puede funcionar como pila por addfirst o deletefirst, etc
+        Lista<Proceso> colaExit = new Lista<>(); // puede funcionar como pila por addfirst o deletefirst, etc
+        Lista<Proceso> colaReadyS = new Lista<>(); // puede funcionar como pila por addfirst o deletefirst, etc
+        Lista<Proceso> colaBlockedS = new Lista<>(); // puede funcionar como pila por addfirst o deletefirst, etc
+        Lista<Proceso> colaRunning = new Lista<>(); // puede funcionar como pila por addfirst o deletefirst, etc
+        
+        /*
+        LISTA DE LISTA POR ESTADOS
+        */
+        
+        Lista<Lista<Proceso>> colasPorEstado = new Lista<>();
+        
+        
+        colasPorEstado.addLast(colaNuevo); // 0: NEW
+        colasPorEstado.addLast(colaListo); // 1: READY
+        colasPorEstado.addLast(colaRunning); // 2: RUNNING
+        colasPorEstado.addLast(colaBloqueados); // 3: BLOCKED
+        colasPorEstado.addLast(colaReadyS); // 4: READYSUSPENDED
+        colasPorEstado.addLast(colaBlockedS); // 5: BLOCKEDSUSPENDED
+        colasPorEstado.addLast(colaExit); // 6: EXIT
+
+        
+        
+        
+        
+
+        RelojSO reloj = new RelojSO();
+
+        /*
+         * GUI (LO COMENTAMOS PARA ENFOCARNOS EN ALGORITMOS)
+         */
+        // Vista_1 vista = new Vista_1(RTOS1, colaNuevo, reloj);
+        // vista.setVisible(true);
+
+        
+
 
         RoundRobin robin1 = new RoundRobin(RTOS1);
 
-        Proceso P1 = (Proceso) colaNuevo.buscarLast();
-        
-        /*
-        DEBUG DE CPU Y RAM
-        
-        
-        PONER PROCESOS EN CPU 
+        /* FCFS 
+        SOLO PARA UNA SOLA VEZ QUE SE EJECUTA (SE INSTANCIA)
+        EN EL MAIN DE VISTA SERÁ CADA VEZ QUE SE PRESIONA EL BOTÓN
         */
-        CPU cpu=new CPU();
-        RAM ram=new RAM();
-        DISCO disco=new DISCO();
+        Proceso P1 = (Proceso) colaNuevo.buscarLast();
+        P1.cambiarEstado("RUNNING", colasPorEstado);
         
+        FCFS FCFS = new FCFS(colasPorEstado, cpu, disco, ram);
+        
+        //P1.debugPrint();
+
+        /* ROUNRROBIN */
+
+        /* SRT */
+
+
     }
 
 }

@@ -4,6 +4,11 @@
  */
 package Modelo.Algoritmos_Plan;
 
+import Modelo.EDD.Lista;
+import Modelo.clasesSO.CPU;
+import Modelo.clasesSO.DISCO;
+import Modelo.clasesSO.Proceso;
+import Modelo.clasesSO.RAM;
 import Modelo.clasesSO.RTOSmaster;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,7 +24,43 @@ public class FCFS {
      */
     public RTOSmaster RTOS; 
 
-    public FCFS(RTOSmaster RTOS, DefaultTableModel modelNew) {
-        this.RTOS = RTOS;
+    
+    //PARA CUANDO HAGA LA INTEGRACIÓN CON EL DEFAULT MODEL CUSTOM QUE TENGA LAS LISTAS Y TAL.
+ //   public FCFS(RTOSmaster RTOS, DefaultTableModel modelNew) {
+ //       this.RTOS = RTOS;
         
-}}
+//}
+    
+    public FCFS(Lista<Lista<Proceso>> colasPorEstado, CPU cpu, DISCO disco, RAM ram) {
+        
+
+
+        //iterar por los new y pasarlo a ready
+        for (int i = 0; i < colasPorEstado.BuscarPosicion(0).size(); i++) {
+            Proceso PNuevoIteracion = colasPorEstado.BuscarPosicion(0).BuscarPosicion(i);
+            PNuevoIteracion.cambiarEstado("READY", colasPorEstado);
+            
+            //entrando a RAM a quedarse ahí
+        }
+        //iterar por los ready y pasarlo a running
+        for (int i = 0; i < colasPorEstado.BuscarPosicion(1).size(); i++) {
+            Proceso PReadyIteracion=colasPorEstado.BuscarPosicion(1).BuscarPosicion(i);
+            PReadyIteracion.cambiarEstado("RUNNING", colasPorEstado);
+            
+            //entrando a CPU a iniciarse
+            PReadyIteracion.start();
+            /*
+            aqui abajo hago sección critica para cada uno de los recursos y después se va-
+            */
+        }
+        //iterar por los running y pasarlo a exit
+        for (int i = 0; i < colasPorEstado.BuscarPosicion(2).size(); i++) {
+            Proceso PRunningIteracion=colasPorEstado.BuscarPosicion(2).BuscarPosicion(i);
+            PRunningIteracion.cambiarEstado("EXIT", colasPorEstado);
+            
+            ////sacando a 
+        }
+}
+
+
+}

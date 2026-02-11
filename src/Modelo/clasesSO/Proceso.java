@@ -5,6 +5,8 @@
  */
 package Modelo.clasesSO;
 
+import Modelo.EDD.Lista;
+
 /**
  *
  * @author JGDV
@@ -390,11 +392,14 @@ public class Proceso extends Thread {
      * - EJECUCION -> BLOQUEADO
      * - EJECUCION -> SUSPENDIDO
      * 
+     * 
+     * 
+     * 
      * @param nuevoEstado El nuevo estado al que se desea cambiar (en mayúsculas)
      * @return true si el cambio fue exitoso, false si la transición no es válida
      * @throws IllegalArgumentException si el nuevo estado es nulo o vacío
      */
-    public boolean cambiarEstado(String nuevoEstado) {
+    public boolean cambiarEstado(String nuevoEstado, Lista<Lista<Proceso>> ColasEstadoDestino) {
         // Validar que el nuevo estado no sea nulo o vacío
         if (nuevoEstado == null || nuevoEstado.isEmpty()) {
             throw new IllegalArgumentException("El nuevo estado no puede ser nulo o vacío");
@@ -405,34 +410,89 @@ public class Proceso extends Thread {
         String estadoActual = this.Status.toUpperCase();
 
         // Validar transiciones imposibles
-        if (estadoActual.equals("LISTO") && estadoDestino.equals("BLOQUEADO")) {
-            System.err.println("[ERROR] Transición imposible: LISTO -> BLOQUEADO");
+        if (estadoActual.equals("READY") && estadoDestino.equals("BLOCKED")) {
+            System.err.println("[ERROR] Transición imposible: READY -> BLOCKED");
             return false;
         }
 
-        if (estadoActual.equals("BLOQUEADO") && estadoDestino.equals("EJECUCION")) {
-            System.err.println("[ERROR] Transición imposible: BLOQUEADO -> EJECUCION");
+        if (estadoActual.equals("BLOCKED") && estadoDestino.equals("RUNNING")) {
+            System.err.println("[ERROR] Transición imposible: BLOCKED -> RUNNING");
             return false;
         }
 
-        if (estadoActual.equals("NUEVO") && estadoDestino.equals("BLOQUEADO")) {
-            System.err.println("[ERROR] Transición imposible: NUEVO -> BLOQUEADO");
+        if (estadoActual.equals("NEW") && estadoDestino.equals("BLOCKED")) {
+            System.err.println("[ERROR] Transición imposible: NEW -> BLOCKED");
             return false;
         }
 
-        if (estadoActual.equals("EJECUCION") && estadoDestino.equals("BLOQUEADO")) {
-            System.err.println("[ERROR] Transición imposible: EJECUCION -> BLOQUEADO");
+        if (estadoActual.equals("RUNNING") && estadoDestino.equals("BLOCKED")) {
+            System.err.println("[ERROR] Transición imposible: RUNNING -> BLOCKED");
             return false;
         }
 
-        if (estadoActual.equals("EJECUCION") && estadoDestino.equals("SUSPENDIDO")) {
-            System.err.println("[ERROR] Transición imposible: EJECUCION -> SUSPENDIDO");
+        if (estadoActual.equals("RUNNING")
+                && (estadoDestino.equals("READYSUSPENDED") || estadoDestino.equals("SUSPENDIDO"))) {
+            System.err.println("[ERROR] Transición imposible: RUNNING -> SUSPENDIDO");
             return false;
         }
 
         // Si la transición es válida, cambiar el estado
         this.Status = estadoDestino;
+
+        // Identificar el índice de la cola de destino
+        int indiceCola = -1;
+        switch (estadoDestino) {
+            case "NEW":
+            case "NUEVO":
+                indiceCola = 0;
+                break;
+            case "READY":
+            case "LISTO":
+                indiceCola = 1;
+                break;
+            case "RUNNING":
+            case "EJECUCION":
+                indiceCola = 2;
+                break;
+            case "BLOCKED":
+            case "BLOQUEADO":
+                indiceCola = 3;
+                break;
+            case "READYSUSPENDED":
+            case "SUSPENDIDO":
+                indiceCola = 4;
+                break;
+            case "BLOCKEDSUSPENDED":
+            case "BLOQUEADOYSUSPENDIDO":
+                indiceCola = 5;
+                break;
+            case "EXIT":
+            case "TERMINADO":
+                indiceCola = 6;
+                break;
+            default:
+                System.err.println("[ERROR] Estado desconocido: " + estadoDestino);
+                return false;
+        }
+
+        // Añadir el proceso a la cola correspondiente
+        if (ColasEstadoDestino != null) {
+            Lista<Proceso> colaDestino = ColasEstadoDestino.BuscarPosicion(indiceCola);
+            if (colaDestino != null) {
+                colaDestino.addLast(this);
+                System.out
+                        .println("[INFO] Proceso añadido a la cola " + estadoDestino + " (indice " + indiceCola + ")");
+            } else {
+                System.err.println("[ERROR] La cola de destino para el índice " + indiceCola + " es nula.");
+                return false;
+            }
+        } else {
+            System.err.println("[ERROR] La lista de colas ColasEstadoDestino es nula.");
+            return false;
+        }
+
         System.out.println("[INFO] Transición exitosa: " + estadoActual + " -> " + estadoDestino);
+        //System.out.println("[INFO] Transición exitosa: " + estadoActual + " -> " + estadoDestino + " En la cola..."+ ColasEstadoDestino.BuscarPosicion(indiceCola).printString()); PARA PROPOSITOS DE DEBUGGING.
         return true;
     }
 

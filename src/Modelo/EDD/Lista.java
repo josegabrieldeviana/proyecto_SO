@@ -17,7 +17,16 @@ public class Lista<T> {
         this.Head = this.Tail = null;
 
     }
-
+    
+    /*
+    *
+    */
+    
+//    public String nombreDebug(){
+//      return this.  
+//    }
+    
+    
     /**
      *
      * @param n
