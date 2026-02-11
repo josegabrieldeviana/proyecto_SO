@@ -69,46 +69,6 @@ public class ProcesoTableModel extends AbstractTableModel {
         fireTableRowsInserted(row, row);
     }
 
-    /**
-     * Añade un proceso usando solo los 6 atributos visibles en la tabla.
-     * El resto de los parámetros del constructor de Proceso se rellenan con valores
-     * por defecto.
-     * 
-     * @param rowData Arreglo de 6 objetos: [ID, Prioridad, Nombre, MAR, PC, TRD]
-     */
-    public void addProceso(Object[] rowData) {
-        if (rowData.length < 6)
-            return;
-
-        // Cast de los 6 atributos de la tabla
-        int id = (int) rowData[0];
-        int prioridad = (int) rowData[1];
-        String nombre = (String) rowData[2];
-        int mar = (int) rowData[3];
-        int pc = (int) rowData[4];
-        int trd = (int) rowData[5];
-
-        // Crear Proceso con valores por defecto para los campos ocultos
-        Proceso p = new Proceso(
-                id, // ID
-                nombre, // Nombre
-                "NUEVO", // Status (default)
-                "CPU", // Bound (default)
-                pc, // PC
-                mar, // MAR
-                prioridad, // Prioridad
-                trd, // deadlineOriginal (usamos TRD como inicial)
-                trd, // tiempoRestanteDeadline
-                5, // ciclosParaGenerarExcepcion (default)
-                5, // ciclosParaSatisfacerIO (default)
-                0, // cantidadInstrucc/tiempoLlegada (default)
-                10, // cantidadInstrucciones (default)
-                1 // duracionCicloInstruccion (default)
-        );
-
-        this.addProceso(p);
-    }
-
     public void deleteProceso(int rowIndex) {
         if (procesos.delete(rowIndex) != null) {
             fireTableRowsDeleted(rowIndex, rowIndex);

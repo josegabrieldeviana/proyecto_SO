@@ -691,15 +691,15 @@ public class Vista_1 extends javax.swing.JFrame {
         if (colaNuevo == null)
             return;
 
-        ProcesoTableModel model = (ProcesoTableModel) newStatus.getModel(); //casteamos el tablemodel custom de 
-        //DefaultTableModel model = (DefaultTableModel) newStatus.getModel(); //AQUI PONGO LAS MODIFICAICONES DEL ABSTRACT TABLE MODEL
+        //ProcesoTableModel model = (ProcesoTableModel) newStatus.getModel(); //casteamos el tablemodel custom de 
+        DefaultTableModel model = (DefaultTableModel) newStatus.getModel(); //AQUI PONGO LAS MODIFICAICONES DEL ABSTRACT TABLE MODEL
         //model.setRowCount(0); // Limpiar tabla
         model.setRowCount(0); // Limpiar tabla. Aqu{i el setrowcount de modelo de tabla ten{ie el mismo nombre de metodo.
         Nodo<Proceso> aux = colaNuevo.Head; // vas a conseguir el primero de los nodos
         while (aux != null) { // mientras que no haya ningún proceso anteriormente... (carga inicial de
                               // procesos aleatorios)
             Proceso p = aux.getData(); // consigues la referencia del proceso p
-            model.addProceso(new Proceso[] {
+            model.addRow(new Object[] {
                     p.getID(),
                     p.getPrioridad(),
                     p.getNombre(),
