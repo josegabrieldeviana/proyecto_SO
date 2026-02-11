@@ -24,15 +24,17 @@ public class controladorMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        var log = System.getLogger("logSO");
+        var log =System.getLogger("logSO");
 
         
         /*
          * LAS COMPONENTES
          */
-        CPU cpu = new CPU();
-        RAM ram = new RAM();
-        DISCO disco = new DISCO();
+        CPU cpu = new CPU(1); //se inicializa la cantidad de int del semaforo
+        RAM ram = new RAM(100);
+        DISCO disco = new DISCO(150);
+
+        
 
         RTOSmaster RTOS1 = new RTOSmaster(0); // inicializo el RTOS con el PSW en 0 (modo kernel).
 
@@ -75,8 +77,8 @@ public class controladorMain {
         /*
          * GUI (LO COMENTAMOS PARA ENFOCARNOS EN ALGORITMOS)
          */
-        // Vista_1 vista = new Vista_1(RTOS1, colaNuevo, reloj);
-        // vista.setVisible(true);
+         Vista_1 vista = new Vista_1(RTOS1, colaNuevo, reloj);
+         vista.setVisible(true);
 
         
 
@@ -90,7 +92,7 @@ public class controladorMain {
         Proceso P1 = (Proceso) colaNuevo.buscarLast();
         P1.cambiarEstado("RUNNING", colasPorEstado);
         
-        FCFS FCFS = new FCFS(colasPorEstado, cpu, disco, ram);
+        //FCFS FCFS = new FCFS(colasPorEstado, cpu, disco, ram);
         
         //P1.debugPrint();
 

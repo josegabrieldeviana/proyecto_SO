@@ -495,5 +495,9 @@ public class Proceso extends Thread {
         //System.out.println("[INFO] Transición exitosa: " + estadoActual + " -> " + estadoDestino + " En la cola..."+ ColasEstadoDestino.BuscarPosicion(indiceCola).printString()); PARA PROPOSITOS DE DEBUGGING.
         return true;
     }
+    
+    public void run(){
+    
+    }
 
 }

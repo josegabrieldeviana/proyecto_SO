@@ -16,5 +16,18 @@ import java.util.concurrent.Semaphore;
  * @author joseg
  */
 public class RAM {
-    public final Semaphore capacidadRAM=new Semaphore(150);
+    public final Semaphore capacidadRAM;
+
+    public RAM(int capacidadRAMint) {
+        this.capacidadRAM=new Semaphore(capacidadRAMint);
+    }
 }
+/*
+public class DISCO {
+    public final Semaphore capacidadDISCO; //la capacidad tiene que ser mucho mayor que la de la RAM.
+
+    public DISCO(int capacidadDisco) {
+        this.capacidadDISCO =new Semaphore(capacidadDisco);
+    }
+}
+*/

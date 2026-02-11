@@ -13,5 +13,9 @@ import java.util.concurrent.Semaphore;
  * @author joseg
  */
 public class DISCO {
-    public final Semaphore capacidadDISCO=new Semaphore(200); //la capacidad tiene que ser mucho mayor que la de la RAM.
+    public final Semaphore capacidadDISCO; //la capacidad tiene que ser mucho mayor que la de la RAM.
+
+    public DISCO(int capacidadDiscoint) {
+        this.capacidadDISCO =new Semaphore(capacidadDiscoint);
+    }
 }

@@ -10,6 +10,7 @@ import Modelo.clasesSO.DISCO;
 import Modelo.clasesSO.Proceso;
 import Modelo.clasesSO.RAM;
 import Modelo.clasesSO.RTOSmaster;
+import java.util.concurrent.Semaphore;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,7 +32,7 @@ public class FCFS {
         
 //}
     
-    public FCFS(Lista<Lista<Proceso>> colasPorEstado, CPU cpu, DISCO disco, RAM ram) {
+    public FCFS(Lista<Lista<Proceso>> colasPorEstado, Semaphore cpu, Semaphore disco, Semaphore ram) {
         
 
 
@@ -46,9 +47,23 @@ public class FCFS {
         for (int i = 0; i < colasPorEstado.BuscarPosicion(1).size(); i++) {
             Proceso PReadyIteracion=colasPorEstado.BuscarPosicion(1).BuscarPosicion(i);
             PReadyIteracion.cambiarEstado("RUNNING", colasPorEstado);
+            /*
             
+            APLICAR AL FINAL TODA LA PARTE DE SEMAFOROSSSSSS
+            APLICAR AL FINAL TODA LA PARTE DE SEMAFOROSSSSSS
+            APLICAR AL FINAL TODA LA PARTE DE SEMAFOROSSSSSS
+            APLICAR AL FINAL TODA LA PARTE DE SEMAFOROSSSSSS
+            APLICAR AL FINAL TODA LA PARTE DE SEMAFOROSSSSSS
+            APLICAR AL FINAL TODA LA PARTE DE SEMAFOROSSSSSS
+            APLICAR AL FINAL TODA LA PARTE DE SEMAFOROSSSSSS
+            
+            */
             //entrando a CPU a iniciarse
-            PReadyIteracion.start();
+//            PReadyIteracion.start();
+//            try {
+//                cpu.acquire();
+//            } catch (Exception e) {
+//            }
             /*
             aqui abajo hago sección critica para cada uno de los recursos y después se va-
             */
