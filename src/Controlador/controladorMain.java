@@ -39,7 +39,17 @@ public class controladorMain {
         RoundRobin robin1 = new RoundRobin(RTOS1);
 
         Proceso P1 = (Proceso) colaNuevo.buscarLast();
-
+        
+        /*
+        DEBUG DE CPU Y RAM
+        
+        
+        PONER PROCESOS EN CPU 
+        */
+        CPU cpu=new CPU();
+        RAM ram=new RAM();
+        DISCO disco=new DISCO();
+        
     }
 
 }
