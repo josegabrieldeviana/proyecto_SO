@@ -16,5 +16,5 @@ import java.util.concurrent.Semaphore;
  * @author joseg
  */
 public class RAM {
-    public final Semaphore capacidadRAM=new Semaphore(10);
+    public final Semaphore capacidadRAM=new Semaphore(150);
 }
