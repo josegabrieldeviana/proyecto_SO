@@ -93,7 +93,7 @@ public class controladorMain {
         P1.cambiarEstado("RUNNING", colasPorEstado);
         
         FCFS FCFS=new FCFS(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM);
-        
+        //los atributos de cpu, ram y disco son todos semaforos
         //P1.debugPrint();
 
         /* ROUNRROBIN */

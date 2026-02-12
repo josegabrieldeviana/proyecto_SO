@@ -49,6 +49,10 @@ public class FCFS {
             PReadyIteracion.cambiarEstado("RUNNING", colasPorEstado);
             /*
             
+            NECESITO PRIMERO PONER TODOS LOS PROCESOS EN UN ESTADO DE "RUNNING" (DONDE VAN A EMPEZAR CON SU BURST TIME), 
+            Y QUE EL MOMENTO EN QUE SEAN ACEPTADOS 
+            ("ADENTRO DE SECCIÓN CRITICA EN EJECUCION CON SU BURST"), VAN A PONERSE DE "`PRIMERO" EN LA LISTA
+            
             APLICAR AL FINAL TODA LA PARTE DE SEMAFOROSSSSSS
             APLICAR AL FINAL TODA LA PARTE DE SEMAFOROSSSSSS
             APLICAR AL FINAL TODA LA PARTE DE SEMAFOROSSSSSS
@@ -59,11 +63,12 @@ public class FCFS {
             
             */
             //entrando a CPU a iniciarse
-//            PReadyIteracion.start();
-//            try {
-//                cpu.acquire();
-//            } catch (Exception e) {
-//            }
+            PReadyIteracion.start();
+            try {
+                cpu.acquire();
+                System.out.println("");
+            } catch (Exception e) {
+            }
             /*
             aqui abajo hago sección critica para cada uno de los recursos y después se va-
             */
