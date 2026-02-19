@@ -72,7 +72,7 @@ public class RTOSmaster {
      * Prioridad PRIORIDAD del proceso
      * duracion on del proceso
      * 
-     * @return Lista de 20 procesos con todos sus atributos random
+     * 
      */
 
     /*

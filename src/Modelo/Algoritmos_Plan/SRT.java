@@ -4,7 +4,11 @@
  */
 package Modelo.Algoritmos_Plan;
 
+import Modelo.EDD.Lista;
+import Modelo.clasesSO.Proceso;
 import Modelo.clasesSO.RTOSmaster;
+import Modelo.clasesSO.RelojSO;
+import java.util.concurrent.Semaphore;
 
 /**
  *
@@ -32,7 +36,28 @@ Step 9: Display completion, waiting, and turnaround times for each process, alon
      * 
      */
     public RTOSmaster RTOS; 
-
-    public SRT(RTOSmaster RTOS) {
+    
+    public Lista<Lista<Proceso>> colasPorEstado;
+    public Semaphore cpu;
+    public Semaphore disco;
+    public Semaphore ram;
+    public RelojSO reloj;
+    
+    public SRT(Lista<Lista<Proceso>> colasPorEstado, Semaphore cpu, Semaphore disco, Semaphore ram) {
+        
         this.RTOS = RTOS;
+        this.colasPorEstado=colasPorEstado;
+        this.cpu=cpu;
+        this.disco=disco;
+        this.ram=ram;
+        this.reloj=reloj;
+        
+        /*
+        manera de conseguir los ticks del reloj con un semaforo
+        usando volatile. El reloj puede ser visto como un recurso compartido
+        */
+        
+        
+        
+
 }}

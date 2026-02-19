@@ -16,7 +16,7 @@ import javax.swing.table.AbstractTableModel;
  * información correspondiente.
  * 
  * @version 1
- * @param Lista<Proceso> procesos
+ * @param Lista procesos
  * @author joseg
  */
 public class ProcesoTableModel extends AbstractTableModel {

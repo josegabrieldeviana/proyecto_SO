@@ -10,6 +10,7 @@ import Modelo.clasesSO.DISCO;
 import Modelo.clasesSO.Proceso;
 import Modelo.clasesSO.RAM;
 import Modelo.clasesSO.RTOSmaster;
+import Modelo.clasesSO.RelojSO;
 import java.util.concurrent.Semaphore;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,8 +24,15 @@ public class FCFS {
      * sistemas de planificación, el cambio de estados implican interrupciones
      * que cambian de modo al RTOS. 
      */
-    public RTOSmaster RTOS; 
-
+    public RTOSmaster RTOS;
+    
+    /*añadidura el 19 de feb, esto es para poder acceder a atributos modificados, abajo del constructor
+    se pondra el this. de c/uno*/
+    public Lista<Lista<Proceso>> colasPorEstado;
+    public Semaphore cpu;
+    public Semaphore disco;
+    public Semaphore ram;
+    public RelojSO reloj;
     
     //PARA CUANDO HAGA LA INTEGRACIÓN CON EL DEFAULT MODEL CUSTOM QUE TENGA LAS LISTAS Y TAL.
  //   public FCFS(RTOSmaster RTOS, DefaultTableModel modelNew) {
@@ -32,9 +40,13 @@ public class FCFS {
         
 //}
     
-    public FCFS(Lista<Lista<Proceso>> colasPorEstado, Semaphore cpu, Semaphore disco, Semaphore ram) {
+    public FCFS(Lista<Lista<Proceso>> colasPorEstado, Semaphore cpu, Semaphore disco, Semaphore ram, RelojSO reloj) {
         
-
+        this.colasPorEstado=colasPorEstado;
+        this.cpu=cpu;
+        this.disco=disco;
+        this.ram=ram;
+        this.reloj=reloj;
 
         //iterar por los new y pasarlo a ready
         for (int i = 0; i < colasPorEstado.BuscarPosicion(0).size(); i++) {
@@ -63,7 +75,28 @@ public class FCFS {
             
             */
             //entrando a CPU a iniciarse
-            PReadyIteracion.start();
+            
+            /*
+            19/2/26 COMENTADO
+            *COMENTO, NO COMIENZO
+            COMIENZO THREAD PARA ESTAR EN RUNNING
+            
+            COMIENZO THREAD PARA ESTAR EN RUNNING
+            
+            COMIENZO THREAD PARA ESTAR EN RUNNING
+            
+            COMIENZO THREAD PARA ESTAR EN RUNNING
+            
+            COMIENZO THREAD PARA ESTAR EN RUNNING
+            
+            COMIENZO THREAD PARA ESTAR EN RUNNING
+            
+            COMIENZO THREAD PARA ESTAR EN RUNNING
+            
+            
+            
+            */
+            //PReadyIteracion.start();
             try {
                 cpu.acquire();
                 System.out.println("");
