@@ -6,6 +6,7 @@ package Controlador;
 
 import Modelo.Algoritmos_Plan.FCFS;
 import Modelo.Algoritmos_Plan.RoundRobin;
+import Modelo.Algoritmos_Plan.SRT;
 import Modelo.EDD.Lista;
 import Modelo.EDD.ListaSimple;
 import Modelo.clasesSO.*;
@@ -92,7 +93,7 @@ public class controladorMain {
         Proceso P1 = (Proceso) colaNuevo.buscarLast();
         P1.cambiarEstado("RUNNING", colasPorEstado);
         
-        FCFS FCFS=new FCFS(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
+       // FCFS FCFS=new FCFS(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
         
         
 //los atributos de cpu, ram y disco son todos semaforos
@@ -101,7 +102,13 @@ public class controladorMain {
         /* ROUNRROBIN */
 
         /* SRT */
+        SRT SRT=new SRT(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
 
+        SRT.start();
+        /*
+        AVERIGUAR FORMA DE QUITAR ESTE THREAD DE EJECUCIÓN!
+        */
+        
 
     }
 

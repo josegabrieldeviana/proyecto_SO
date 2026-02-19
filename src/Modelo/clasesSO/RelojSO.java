@@ -4,6 +4,8 @@
  */
 package Modelo.clasesSO;
 
+import java.util.concurrent.Semaphore;
+
 /**
  *
  * Se asume que 1 ciclo de reloj= 1 seg
@@ -13,8 +15,13 @@ package Modelo.clasesSO;
 public class RelojSO extends Thread {
 
     private static long sleepTime = 1000; // Default: 1 second
-    private int ciclos = 0;
+    private volatile int ciclos = 0;
     private boolean activo = true;
+    private Semaphore CicloEvent=new Semaphore(0);
+    /*
+    Este semaforo va a notificarle a c/política de planificación
+    que un tick ha pasado
+    */
 
     @Override
     public void run() {
@@ -23,6 +30,18 @@ public class RelojSO extends Thread {
                 Thread.sleep(sleepTime);
                 ciclos++;
                 // System.out.println("Ciclo: " + ciclos);
+                CicloEvent.release();
+                
+                /*
+                SECCIÓN DE DEBUGGEO
+                */
+                
+                //System.out.println("Estos son sus permitrs"+this.CicloEvent.toString());
+                /*
+                Esto es un signal, aquí se libera el semaforo "un tick ha pasado"
+                */
+                
+                
             } catch (InterruptedException ex) {
                 System.getLogger(RelojSO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
@@ -48,4 +67,34 @@ public class RelojSO extends Thread {
     public void deternereReloj() {
         this.activo = false;
     }
+
+    public static long getSleepTime() {
+        return sleepTime;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public Semaphore getCicloEvent() {
+        return CicloEvent;
+    }
+
+    public static void setSleepTime(long sleepTime) {
+        RelojSO.sleepTime = sleepTime;
+    }
+
+    public void setCiclos(int ciclos) {
+        this.ciclos = ciclos;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public void setCicloEvent(Semaphore CicloEvent) {
+        this.CicloEvent = CicloEvent;
+    }
+    
+    
 }

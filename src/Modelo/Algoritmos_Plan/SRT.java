@@ -8,13 +8,14 @@ import Modelo.EDD.Lista;
 import Modelo.clasesSO.Proceso;
 import Modelo.clasesSO.RTOSmaster;
 import Modelo.clasesSO.RelojSO;
+import java.time.Duration;
 import java.util.concurrent.Semaphore;
 
 /**
  *
  * @author joseg
  */
-public class SRT {
+public class SRT extends Thread {
     /**
      * Debo pasar el RTOSmaster como un parametro, puesto que en cada aplicación
      * sistemas de planificación, el cambio de estados implican interrupciones
@@ -43,7 +44,24 @@ Step 9: Display completion, waiting, and turnaround times for each process, alon
     public Semaphore ram;
     public RelojSO reloj;
     
-    public SRT(Lista<Lista<Proceso>> colasPorEstado, Semaphore cpu, Semaphore disco, Semaphore ram) {
+    /*
+En una simulación de sistema operativo, no se desea que el programador se ejecute a la velocidad de la CPU (millones de veces por segundo); se desea que se ejecute exactamente a la velocidad del reloj.
+
+A. Cambia el estado del hilo (Eficiencia)
+Al llamar a acquire(), la Máquina Virtual Java (JVM) le indica al sistema operativo: "Este hilo SRT está ahora en estado de ESPERA. Retírelo de la CPU. No le dé más energía".
+El hilo SRT deja de existir para la CPU hasta que el reloj llama a release(). Esto ahorra el 100% de energía y recursos durante la espera.
+B. Simula una "Interrupción" (Realismo)
+En una PC real, cuando el temporizador alcanza su tiempo, envía una señal eléctrica física (una interrupción) a la CPU. La CPU abandona lo que está haciendo y ejecuta el Programador. Al usar un semáforo, se simula lo siguiente:
+Reloj: "¡TICK! (Liberar)"
+SRT: "¡Estoy despierto! Restaré el tiempo restante ahora".
+C. Gestiona el "Tiempo de Ráfaga" con precisión.
+Como se desea restar el tiempo de ráfaga restante, el semáforo garantiza una proporción de 1 a 1:
+1 Permiso Liberado = 1 Segundo Transcurrido.
+1 Permiso Adquirido = 1 Unidad de Tiempo de Ráfaga Restada.
+Si la lógica de SRT tarda 0,1 segundos en calcular cuál es el proceso más corto, ¡no importa! El hilo del reloj ya está de vuelta en su propio bucle, esperando a que pase el siguiente segundo. Se ejecutan en paralelo.
+    */
+    
+    public SRT(Lista<Lista<Proceso>> colasPorEstado, Semaphore cpu, Semaphore disco, Semaphore ram, RelojSO reloj)  {
         
         this.RTOS = RTOS;
         this.colasPorEstado=colasPorEstado;
@@ -53,6 +71,7 @@ Step 9: Display completion, waiting, and turnaround times for each process, alon
         this.reloj=reloj;
         
         /*
+        El reloj aqui va a representar los ticks DESDE la ejecución del algo de planificación
         manera de conseguir los ticks del reloj con un semaforo
         usando volatile. El reloj puede ser visto como un recurso compartido
         */
@@ -60,4 +79,41 @@ Step 9: Display completion, waiting, and turnaround times for each process, alon
         
         
 
-}}
+}
+
+        /*
+        El run en este caso va a ser para conseguir los ticks respectivos al inicio de
+        planificación. 
+        Esto nos va a ser util al momento de iniciar 
+        */
+        public void run(){
+        while(true){
+            try {
+                reloj.getCicloEvent().acquire(); //te devuelve los permits del semaforo que serían como ticks globales
+                //Esta es la función para poder 
+                verificarListo();
+                preemptRunning();
+                         
+            } catch (Exception e) {
+                break;
+            }
+  
+        }}
+        
+       /*
+        Verifica si hay procesos en listo
+        */
+       public void verificarListo(){
+           System.out.println("HOLA COMO ESTAS, SOY RUNNING");
+       }
+       
+       
+       /*
+       1) 
+       2)
+       3)
+       */
+       public void preemptRunning(){
+           System.out.println("HOLA COMO ESTAS, SOY PREEMPT JAJA");
+       }
+}

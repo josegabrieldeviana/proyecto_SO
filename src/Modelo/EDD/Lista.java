@@ -251,5 +251,7 @@ public class Lista<T> {
         this.Head = null;
         this.Tail = null;
     }
-
+/*
+        busca
+        */
 }
