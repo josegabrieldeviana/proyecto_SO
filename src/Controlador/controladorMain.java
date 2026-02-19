@@ -104,11 +104,17 @@ public class controladorMain {
         /* SRT */
         SRT SRT=new SRT(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
 
-        SRT.start();
+        //SRT.start();
         /*
         AVERIGUAR FORMA DE QUITAR ESTE THREAD DE EJECUCIÓN!
         */
         
+        /*DEBUG DE METODO PARA CONSEGUIR ATRIBUTO MENOR*/
+        RTOSmaster RTOS2 = new RTOSmaster(0); // inicializo el RTOS con el PSW en 0 (modo kernel).
+        Lista<Proceso> NUEVOSDEBUG20 = new Lista<>();
+        RTOS2.xPRand(5, NUEVOSDEBUG20);
+        Proceso PMinAtrib=NUEVOSDEBUG20.buscarPMinAtributo("burstTime");
+        System.out.println("EL BT MÁS BAJO ES: "+PMinAtrib);
 
     }
 

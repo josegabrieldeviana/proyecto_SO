@@ -17,16 +17,15 @@ public class Lista<T> {
         this.Head = this.Tail = null;
 
     }
-    
+
     /*
     *
     */
-    
-//    public String nombreDebug(){
-//      return this.  
-//    }
-    
-    
+
+    // public String nombreDebug(){
+    // return this.
+    // }
+
     /**
      *
      * @param n
@@ -246,12 +245,49 @@ public class Lista<T> {
         }
         return stringList;
     }
-    
-        public void vaciar() {
+
+    public void vaciar() {
         this.Head = null;
         this.Tail = null;
     }
-/*
-        busca
-        */
+
+    /**
+     * Busca en la lista el objeto que tenga el valor más bajo en un atributo
+     * numérico específico (int).
+     * 
+     * @param nombreAtributo El nombre del atributo (field) a comparar.
+     * @return El objeto con el valor más bajo, o null si la lista está vacía o hay
+     *         un error.
+     */
+    public T buscarPMinAtributo(String nombreAtributo) {
+        if (isEmpty()) {
+            return null;
+        }
+
+        T minObjeto = null;
+        int minValor = Integer.MAX_VALUE;
+
+        try {
+            Nodo<T> aux = this.Head;
+            while (aux != null) {
+                T obj = aux.getData();
+                if (obj != null) {
+                    java.lang.reflect.Field field = obj.getClass().getDeclaredField(nombreAtributo);
+                    field.setAccessible(true);
+                    int valor = field.getInt(obj);
+
+                    if (valor < minValor) {
+                        minValor = valor;
+                        minObjeto = obj;
+                    }
+                }
+                aux = aux.getNext();
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            System.err.println("[ERROR] No se pudo acceder al atributo '" + nombreAtributo + "': " + e.getMessage());
+            return null;
+        }
+
+        return minObjeto;
+    }
 }

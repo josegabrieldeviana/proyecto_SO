@@ -641,6 +641,7 @@ public class Vista_1 extends javax.swing.JFrame {
     private void gen20ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_gen20ActionPerformed
         // if (RTOSref != null)
         RTOSref.xPRand(20, colaNuevo);
+        outputStreamConsole.append("SISTEMA dice que el valor más pequeño de estos es");
         actualizarTableNuevos();
         outputStreamConsole.append("[SISTEMA] Se han generado 20 procesos aleatorios adicionales.\n");
     }// GEN-LAST:event_gen20ActionPerformed
