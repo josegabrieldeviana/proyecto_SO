@@ -109,13 +109,6 @@ public class SRT extends Thread {
 
     }
 
-    private volatile boolean running = true;
-
-    public void stopAlgorithm() {
-        this.running = false;
-        System.out.println("SRT -> Deteniendo planificador por solicitud externa.");
-    }
-
     /*
      * El run en este caso va a ser para conseguir los ticks respectivos al inicio
      * de
@@ -123,10 +116,11 @@ public class SRT extends Thread {
      * Esto nos va a ser util al momento de iniciar
      */
     public void run() {
-        while (running) {
+        while (true) {
             try {
                 /* 0) Sincronización reloj */
                 reloj.getCicloEvent().acquire(); // te devuelve los permits del semaforo que serían como ticks globales
+                System.out.println("SRT -> Tick recibido del reloj.");
 
                 /*
                  * 2) verifico si listo y runnning estan vacíos, si lo estan entonces paro este
@@ -142,16 +136,11 @@ public class SRT extends Thread {
                 /* 4) Ver si es necesario hacer preemption. */
                 preemptRunning();
 
-            } catch (InterruptedException e) {
-                System.out.println("SRT -> Hilo interrumpido.");
-                break;
             } catch (Exception e) {
-                System.err.println("SRT -> Error en el bucle principal: " + e.getMessage());
                 break;
             }
 
         }
-        System.out.println("SRT -> Planificador SRT detenido totalmente.");
     }
 
     /*
@@ -161,6 +150,7 @@ public class SRT extends Thread {
         Lista<Proceso> colaRunning = colasPorEstado.BuscarPosicion(2); // 2: RUNNING
         if (!colaRunning.isEmpty()) {
             Proceso pActual = colaRunning.buscarLast();
+            System.out.println("SRT -> Ejecutando P" + pActual.ID + " (Tiempo restante: " + pActual.burstTime + ")");
 
             // Ejecutamos el tick y verificamos si terminó
             boolean terminado = pActual.ejecutarTick();
@@ -177,9 +167,10 @@ public class SRT extends Thread {
      */
     public boolean verificarListoYRunningVacio() {
         if (colasPorEstado.BuscarPosicion(1).isEmpty() && colasPorEstado.BuscarPosicion(2).isEmpty()) {
+            System.out.println("SRT -> No hay procesos en READY ni en RUNNING. Deteniendo planificador.");
             return true;
         } else {
-            System.out.println("EN EFECTO..........WAO....NO HAY PROCESOS EN LISTO!");
+            // System.out.println("EN EFECTO..........WAO....NO HAY PROCESOS EN LISTO!");
             return false;
         }
     }
@@ -224,6 +215,7 @@ public class SRT extends Thread {
 
         // CASO A CPU vacía
         if (colaRunning.isEmpty()) {
+            System.out.println("SRT -> CPU vacía. Seleccionando P" + candidatoSRT.ID + " para ejecutar.");
             candidatoSRT.cambiarEstado("RUNNING", colasPorEstado);
         }
 
@@ -232,21 +224,26 @@ public class SRT extends Thread {
             Proceso procesoRunning = colaRunning.buscarLast();
 
             if (candidatoSRT.burstTime < procesoRunning.burstTime) {
-                System.out.println("SRT -> PREEMPTION: P" + candidatoSRT.ID + " entra por P" + procesoRunning.ID);
+                System.out.println("SRT -> PREEMPTION: P" + candidatoSRT.ID + " (BT: " + candidatoSRT.burstTime
+                        + ") entra por P" + procesoRunning.ID + " (BT: " + procesoRunning.burstTime + ")");
                 procesoRunning.cambiarEstado("READY", colasPorEstado);
                 candidatoSRT.cambiarEstado("RUNNING", colasPorEstado);
 
+            } else {
+                System.out.println("SRT -> Manteniendo P" + procesoRunning.ID + " (BT: " + procesoRunning.burstTime
+                        + "). Candidato P" + candidatoSRT.ID + " tiene BT mayor (" + candidatoSRT.burstTime + ").");
             }
 
         }
     }
-}
 
-/*
- * COMENTARIOS PARA ARREGLAR SRT
- * 
- * 
- * 
- * 
- * 
- */
+    /*
+     * COMENTARIOS PARA ARREGLAR SRT
+     * 
+     * 
+     * 
+     * 
+     * 
+     */
+
+}
