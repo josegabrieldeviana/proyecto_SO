@@ -109,6 +109,13 @@ public class SRT extends Thread {
 
     }
 
+    private volatile boolean running = true;
+
+    public void stopAlgorithm() {
+        this.running = false;
+        System.out.println("SRT -> Deteniendo planificador por solicitud externa.");
+    }
+
     /*
      * El run en este caso va a ser para conseguir los ticks respectivos al inicio
      * de
@@ -116,7 +123,7 @@ public class SRT extends Thread {
      * Esto nos va a ser util al momento de iniciar
      */
     public void run() {
-        while (true) {
+        while (running) {
             try {
                 /* 0) Sincronización reloj */
                 reloj.getCicloEvent().acquire(); // te devuelve los permits del semaforo que serían como ticks globales
@@ -136,11 +143,16 @@ public class SRT extends Thread {
                 /* 4) Ver si es necesario hacer preemption. */
                 preemptRunning();
 
+            } catch (InterruptedException e) {
+                System.out.println("SRT -> Hilo interrumpido.");
+                break;
             } catch (Exception e) {
+                System.err.println("SRT -> Error en el bucle principal: " + e.getMessage());
                 break;
             }
 
         }
+        System.out.println("SRT -> Planificador SRT detenido totalmente.");
     }
 
     /*
