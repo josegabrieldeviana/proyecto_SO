@@ -125,25 +125,71 @@ Si la lógica de SRT tarda 0,1 segundos en calcular cuál es el proceso más cor
        }
        
        
-       /*
-       1) 
-       2)
-       3)
-       */
+       public void procesoTickSynced(Proceso P1){
+           //para los ticks sincronizados con el reloj del proceso
+           boolean P1Exit=P1.ejecutarTick();
+           /*
+           Si el proceso "se acaba", entonces se pone en 
+           True y de ahí podemos cambiar proceso a "EXIT"
+           para que pueda borrarse.
+           
+           */
+           
+           if (P1Exit) {
+               P1.cambiarEstado("EXIT", colasPorEstado);
+               /*
+               Aqui, o en akgún otro lugar capaz en cambiar estado pondre
+               para que exit lo ponga en su tabla EXIT respectiva.
+               cualquier cosa puesta en EXIT se borra pero aún necesito testeo.
+               */
+           }else{}
+       }
+       
        public void preemptRunning(){
            
            Lista<Proceso> colaReady=colasPorEstado.BuscarPosicion(1);
            Lista<Proceso> colaRunning=colasPorEstado.BuscarPosicion(2);
-           Proceso ProcesoBTMin=colaReady.buscarPMinAtributo("burstTime");
-           Proceso procesoRunnning=colaRunning.buscarLast();
+
+
+//           Proceso ProcesoBTMin=colaReady.buscarPMinAtributo("burstTime");
+//           Proceso procesoRunnning=colaRunning.buscarLast();
+
+
            //si no hay ningun proceso en running entonces...
            //se ejecuta normalmente solo una vez, va a ser cuando no haya ningun proceso en running.
+           
+           
+           
            if (verificarListo()) {
-           if (colaRunning==null) {
+               
+           Proceso ProcesoBTMin=colaReady.buscarPMinAtributo("burstTime");
+           ProcesoBTMin.cambiarEstado("RUNNING", colasPorEstado);
+           Proceso procesoRunnning=colaRunning.buscarLast();               
+               /*
+               aquí solo va a haber siempre UN solo proceso corriendo.
+               por lo que cuando un proceso
+               */
+               
+               
+               
+           if (colaRunning==null) { 
                ProcesoBTMin.cambiarEstado("RUNNING", colasPorEstado);
+               
+               //pondras en la lista running y después harás un tick
+               procesoRunnning.ejecutarTick();
+               /*
+               Creo que aquí llamaré a un método externo para poder poder ejecutar el "tick" (ejecutarTick)
+               Más que nada debido a que dependería del mismo tick del reloj, y eso
+               quiero setearlo como en la GUI
+               */
            }else{
+               //harás un tick
+               procesoRunnning.ejecutarTick();
+               
+               
                //aqui se verifica si se le hace preempt
                if (ProcesoBTMin.burstTime<procesoRunnning.burstTime) {
+                   procesoRunnning.ejecutarTick();
                    ProcesoBTMin.cambiarEstado("RUNNING", colasPorEstado);
                    procesoRunnning.cambiarEstado("READY", colasPorEstado);
                }

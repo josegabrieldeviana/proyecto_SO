@@ -475,6 +475,8 @@ public class Proceso extends Thread {
 
         // Si la transición es válida, cambiar el estado
         this.Status = estadoDestino;
+        
+        
 
         // Identificar el índice de la cola de destino
         int indiceCola = -1;
@@ -562,11 +564,18 @@ public class Proceso extends Thread {
     
     que regresaran "TRUE" si ya se ha "Ejeecutado" tras su BT
     
-    
+    Poner a ejecutar tick de esta forma nos permite controlar que cuando "ocurra"
+    un tick con semaforos, que este pueda hacerse
     */
-    public boolean ejecutarCiclo(){
-    return true;
+      public boolean ejecutarTick() {
+        
+        if (this.burstTime > 0) {
+            this.burstTime--;
+            System.out.println(this.ID+"  SE HA EJECUTADO UN TICK DE  "+this.Nombre + "TIEMPO RESTANTE: "+this.burstTime);
+        }
+        return this.burstTime <= 0; // Devuelve true si terminó
     }
+
     
 
 }

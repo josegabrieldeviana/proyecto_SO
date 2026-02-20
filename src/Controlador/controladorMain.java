@@ -86,37 +86,37 @@ public class controladorMain {
 
         RoundRobin robin1 = new RoundRobin(RTOS1);
 
-        /* FCFS 
-        SOLO PARA UNA SOLA VEZ QUE SE EJECUTA (SE INSTANCIA)
-        EN EL MAIN DE VISTA SERÁ CADA VEZ QUE SE PRESIONA EL BOTÓN
-        */
         
         //comento esto porque la cola 
 //        Proceso P1 = (Proceso) colaNuevo.buscarLast();
 //        P1.cambiarEstado("RUNNING", colasPorEstado);
 //        
-        
+
+
+
+
+
+        /* FCFS */
        // FCFS FCFS=new FCFS(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
         
         
 //los atributos de cpu, ram y disco son todos semaforos
         //P1.debugPrint();
         //System.exit(0);
-        /* ROUNRROBIN */
+        
 
+        
+        
+        
         /* SRT */
         SRT SRT=new SRT(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
         SRT.start();
-        /*
-        AVERIGUAR FORMA DE QUITAR ESTE THREAD DE EJECUCIÓN!
-        */
         
-        /*DEBUG DE METODO PARA CONSEGUIR ATRIBUTO MENOR*/
-//        RTOSmaster RTOS2 = new RTOSmaster(0); // inicializo el RTOS con el PSW en 0 (modo kernel).
-//        Lista<Proceso> NUEVOSDEBUG20 = new Lista<>();
-//        RTOS2.xPRand(5, NUEVOSDEBUG20);
-//        Proceso PMinAtrib=NUEVOSDEBUG20.buscarPMinAtributo("burstTime");
-//        System.out.println("EL BT MÁS BAJO ES: "+PMinAtrib);
+        
+        
+        
+        /* RR */
+        RoundRobin robin = new RoundRobin(RTOS1, 4);
 
     }
 
