@@ -32,7 +32,7 @@ public class Proceso extends Thread {
     public int ciclosParaSatisfacerIO; //
 
     // Para algoritmos dinámicos
-    public int tiempoLlegada; // Útil para FCFS y SRT
+    public int tiempoLlegada; // Útil para FC"FS y SRT
 
     // Parámetros de instrucción
     public int cantidadInstrucciones; // Cantidad de instrucciones del proceso (1-10)

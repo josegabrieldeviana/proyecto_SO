@@ -28,7 +28,7 @@ public class Vista_1 extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Vista_1.class.getName());
     private final RTOSmaster RTOSref;
-    private final Lista<Proceso> colaNuevo;
+    public Lista<Lista<Proceso>> colasPorEstado;
     private final RelojSO relojref;
     private javax.swing.JButton btnGenerar20;
     private javax.swing.JSpinner duraCiclospinner;
@@ -36,11 +36,12 @@ public class Vista_1 extends javax.swing.JFrame {
     /**
      * Creates new form Vista_1
      */
-    public Vista_1(RTOSmaster par0, Lista<Proceso> colaNuevo, RelojSO relojNuevo) {
+    public Vista_1(RTOSmaster par0, RelojSO relojNuevo, Lista<Lista<Proceso>> colasXEstadoNuevos) {
         this.RTOSref = par0;
-        this.colaNuevo = colaNuevo;
+        
         this.relojref = relojNuevo;
         this.duraCiclospinner = new javax.swing.JSpinner();
+        this.colasPorEstado=colasXEstadoNuevos;
 
         initComponents();
         custominitComponents();
@@ -640,8 +641,7 @@ public class Vista_1 extends javax.swing.JFrame {
 
     private void gen20ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_gen20ActionPerformed
         // if (RTOSref != null)
-        RTOSref.xPRand(20, colaNuevo);
-        outputStreamConsole.append("SISTEMA dice que el valor más pequeño de estos es");
+        RTOSref.xPRand(20, colasPorEstado.BuscarPosicion(0));
         actualizarTableNuevos();
         outputStreamConsole.append("[SISTEMA] Se han generado 20 procesos aleatorios adicionales.\n");
     }// GEN-LAST:event_gen20ActionPerformed
@@ -689,14 +689,14 @@ public class Vista_1 extends javax.swing.JFrame {
     }// GEN-LAST:event_genISRActionPerformed
 
     public void actualizarTableNuevos() {
-        if (colaNuevo == null)
+        if (colasPorEstado.BuscarPosicion(0) == null)
             return;
 
         //ProcesoTableModel model = (ProcesoTableModel) newStatus.getModel(); //casteamos el tablemodel custom de 
         DefaultTableModel model = (DefaultTableModel) newStatus.getModel(); //AQUI PONGO LAS MODIFICAICONES DEL ABSTRACT TABLE MODEL
         //model.setRowCount(0); // Limpiar tabla
         model.setRowCount(0); // Limpiar tabla. Aqu{i el setrowcount de modelo de tabla ten{ie el mismo nombre de metodo.
-        Nodo<Proceso> aux = colaNuevo.Head; // vas a conseguir el primero de los nodos
+        Nodo<Proceso> aux = colasPorEstado.BuscarPosicion(0).Head; // vas a conseguir el primero de los nodos
         while (aux != null) { // mientras que no haya ningún proceso anteriormente... (carga inicial de
                               // procesos aleatorios)
             Proceso p = aux.getData(); // consigues la referencia del proceso p

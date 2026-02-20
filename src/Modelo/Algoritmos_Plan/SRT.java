@@ -77,6 +77,18 @@ Si la lógica de SRT tarda 0,1 segundos en calcular cuál es el proceso más cor
         */
         
         
+        /*
+        Se manda todo a la cola de "Ready"
+        */
+        for (int i = 0; i < colasPorEstado.BuscarPosicion(0).size(); i++) {
+            Proceso PNuevoIteracion = colasPorEstado.BuscarPosicion(0).BuscarPosicion(i);
+            if (PNuevoIteracion.Status!="NUEVO"){
+                
+            }else{
+            PNuevoIteracion.cambiarEstado("READY", colasPorEstado);
+            }
+            //entrando a RAM a quedarse ahí
+        }
         
 
 }
@@ -103,8 +115,13 @@ Si la lógica de SRT tarda 0,1 segundos en calcular cuál es el proceso más cor
        /*
         Verifica si hay procesos en listo
         */
-       public void verificarListo(){
-           System.out.println("HOLA COMO ESTAS, SOY RUNNING");
+       public boolean verificarListo(){
+           if (!colasPorEstado.BuscarPosicion(1).isEmpty()) {
+               return true;
+           }else{
+           System.out.println("EN EFECTO..........WAO....NO HAY PROCESOS EN LISTO!");
+           return false;
+           }
        }
        
        
@@ -114,6 +131,22 @@ Si la lógica de SRT tarda 0,1 segundos en calcular cuál es el proceso más cor
        3)
        */
        public void preemptRunning(){
-           System.out.println("HOLA COMO ESTAS, SOY PREEMPT JAJA");
+           
+           Lista<Proceso> colaReady=colasPorEstado.BuscarPosicion(1);
+           Lista<Proceso> colaRunning=colasPorEstado.BuscarPosicion(2);
+           Proceso ProcesoBTMin=colaReady.buscarPMinAtributo("burstTime");
+           Proceso procesoRunnning=colaRunning.buscarLast();
+           //si no hay ningun proceso en running entonces...
+           //se ejecuta normalmente solo una vez, va a ser cuando no haya ningun proceso en running.
+           if (verificarListo()) {
+           if (colaRunning==null) {
+               ProcesoBTMin.cambiarEstado("RUNNING", colasPorEstado);
+           }else{
+               //aqui se verifica si se le hace preempt
+               if (ProcesoBTMin.burstTime<procesoRunnning.burstTime) {
+                   ProcesoBTMin.cambiarEstado("RUNNING", colasPorEstado);
+                   procesoRunnning.cambiarEstado("READY", colasPorEstado);
+               }
+           }}
        }
 }
