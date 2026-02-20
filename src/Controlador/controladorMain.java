@@ -30,8 +30,8 @@ public class controladorMain {
 
         // Generación inicial de 10 procesos random
         RTOS1.xPRand(10, colaNuevo);
-        
-        RelojSO reloj=new RelojSO();
+
+        RelojSO reloj = new RelojSO();
 
         Vista_1 vista = new Vista_1(RTOS1, colaNuevo, reloj);
         vista.setVisible(true);

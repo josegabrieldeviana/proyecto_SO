@@ -42,7 +42,7 @@ public class RTOSmaster {
     public RTOSmaster(int PSW) {
         this.PSW = 0;
     }
-    
+
     /**
      * Función para hacer procesos, debería ejecutarse en main.
      * 
@@ -104,8 +104,9 @@ public class RTOSmaster {
         // System.out.println(nombrePruebaLista);
         //
 
-        //Lista pList = new Lista(); // lista en que se van a poner procesos, después de pasar de paramlist los
-                                   // parametros
+        // Lista pList = new Lista(); // lista en que se van a poner procesos, después
+        // de pasar de paramlist los
+        // parametros
 
         var LOG = System.getLogger("logSO");
         LOG.log(Level.INFO, "hola");
@@ -113,7 +114,7 @@ public class RTOSmaster {
         // un for para cada proceso
         for (int counter = 0; counter < numeroProcesosGen; counter++) {
             Lista paramList = new Lista(); // lista en que se van a poner parametros
-            int sizeList=colaNuevo.size();
+            int sizeList = colaNuevo.size();
             int ID = counter + 1 + sizeList;
             paramList.addLast(ID); // añado un ID.
             LOG.log(Level.TRACE, "añadido ID"); // TESTING PURPOSES ONLY
@@ -125,7 +126,7 @@ public class RTOSmaster {
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
-                    //System.out.println(critRandomINT); // temporal
+                    // System.out.println(critRandomINT); // temporal
                     String crmitRandomSTRING = String.valueOf(critRandomINT); // convierto a String para poder elegir
                                                                               // entre casos de nombres
                     switch (critRandomINT) {
@@ -163,6 +164,13 @@ public class RTOSmaster {
                             paramList.addLast("Control_Térmico");
                             break;
 
+                        case 11:
+                            paramList.addLast("Giroscopio telemetrico");
+                            break;
+
+                        case 12:
+                            paramList.addLast("Estabilizador atmosferico");
+                            break;
                         // STATUS
 
                     }
@@ -174,9 +182,10 @@ public class RTOSmaster {
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
-                    //System.out.println(critRandomINT); // temporal
-                    //String critRandomSTRING = String.valueOf(critRandomINT); // convierto a String para poder elegir
-                                                                             // entre casos de nombres
+                    // System.out.println(critRandomINT); // temporal
+                    // String critRandomSTRING = String.valueOf(critRandomINT); // convierto a
+                    // String para poder elegir
+                    // entre casos de nombres
                     paramList.addLast("NUEVO");
                     switch (critRandomINT) {
                         case 0:
@@ -239,7 +248,7 @@ public class RTOSmaster {
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
-                    //System.out.println(critRandomINT); // temporal
+                    // System.out.println(critRandomINT); // temporal
                     String critRandomSTRING = String.valueOf(critRandomINT); // convierto a String para poder elegir
                                                                              // entre casos de nombres
                     switch (critRandomINT) {
@@ -287,7 +296,7 @@ public class RTOSmaster {
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
-                    //System.out.println(critRandomINT); // temporal
+                    // System.out.println(critRandomINT); // temporal
                     paramList.addLast(critRandomINT);
 
                 }
@@ -298,7 +307,7 @@ public class RTOSmaster {
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
-                    //System.out.println(critRandomINT); // temporal
+                    // System.out.println(critRandomINT); // temporal
                     paramList.addLast(critRandomINT);
 
                 }
@@ -309,7 +318,7 @@ public class RTOSmaster {
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
-                    //System.out.println(critRandomINT); // temporal
+                    // System.out.println(critRandomINT); // temporal
                     paramList.addLast(critRandomINT);
 
                 }
@@ -320,14 +329,14 @@ public class RTOSmaster {
                     // del 1 al 7 te da el nombre respectivo a su posición en nombresList, del 1 al
                     // 8 se repite.
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
-                    //System.out.println(critRandomINT); // temporal
+                    // System.out.println(critRandomINT); // temporal
                     paramList.addLast(critRandomINT);
 
                 }
 
                 if (i == 9) {
                     // cantidad de instrucciones (tiempo llegada)
-                    //es 0, porque aun no ha llegado a a la cola de listos
+                    // es 0, porque aun no ha llegado a a la cola de listos
                     paramList.addLast(0);
 
                 }
@@ -336,7 +345,7 @@ public class RTOSmaster {
                     // cantidadInstrucciones
                     double critRandomDOUBLE = (Math.random() * 10) + 1; // genera del 1 al 10
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
-                    //System.out.println(critRandomINT); // temporal
+                    // System.out.println(critRandomINT); // temporal
                     paramList.addLast(critRandomINT);
                 }
 
@@ -344,7 +353,7 @@ public class RTOSmaster {
                     // duracionCicloInstruccion
                     double critRandomDOUBLE = (Math.random() * 5) + 1; // genera del 1 al 5
                     int critRandomINT = (int) critRandomDOUBLE; // solo tomo la parte entera
-                    //System.out.println(critRandomINT); // temporal
+                    // System.out.println(critRandomINT); // temporal
                     paramList.addLast(critRandomINT);
                 }
 
@@ -385,28 +394,28 @@ public class RTOSmaster {
                     tiempoLlegada,
                     cantidadInstrucciones,
                     duracionCicloInstruccion);
-            
+
             NuevoProceso.debugPrint();
             colaNuevo.addLast(NuevoProceso);
             paramList.vaciar();
-            
+
             // metodo para imprimir todos los atributos
         }
         ;
     }
-    
+
     /***
      * Método que nos cambia del modo a usuario a kernel, o viceversa
      * 
      */
-    public void changePSW(){
-        if (this.PSW==1) {
-        this.PSW=0;
-        }else{
-        this.PSW=1;
+    public void changePSW() {
+        if (this.PSW == 1) {
+            this.PSW = 0;
+        } else {
+            this.PSW = 1;
         }
     }
-    
+
     /**
     
     */
