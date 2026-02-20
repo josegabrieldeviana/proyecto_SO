@@ -101,10 +101,19 @@ Si la lógica de SRT tarda 0,1 segundos en calcular cuál es el proceso más cor
         public void run(){
         while(true){
             try {
+                /*0) Sincronización reloj*/
                 reloj.getCicloEvent().acquire(); //te devuelve los permits del semaforo que serían como ticks globales
-                //Esta es la función para poder 
-                verificarListo();
+                
+                /*2) verifico si listo y runnning estan vacíos, si lo estan entonces paro este Thread scheduler*/
+
+                /*3) Manejar el proceso en la CPU.*/
+                procesarTickenEjecucion();
+                
+                /*4) Ver si es necesario hacer preemption.*/
                 preemptRunning();
+                
+                
+                
                          
             } catch (Exception e) {
                 break;
@@ -115,12 +124,30 @@ Si la lógica de SRT tarda 0,1 segundos en calcular cuál es el proceso más cor
        /*
         Verifica si hay procesos en listo
         */
-       public boolean verificarListo(){
-           if (!colasPorEstado.BuscarPosicion(1).isEmpty()) {
-               return true;
+       private void procesarTickenEjecucion(){
+       Lista<Proceso> colaRunning = colasPorEstado.BuscarPosicion(2); // 2: RUNNING
+        if (!colaRunning.isEmpty()) {
+        Proceso pActual = colaRunning.buscarLast();
+        
+        // Ejecutamos el tick y verificamos si terminó
+        boolean terminado = pActual.ejecutarTick();
+        
+        if (terminado) {
+            System.out.println("SRT -> P" + pActual.ID + " ha terminado.");
+            pActual.cambiarEstado("EXIT", colasPorEstado);
+        }
+    }
+       } 
+        
+       /*
+       AQUÍ YO VERIFICO SI NO HAY NINGUNO EN LISTO NI 
+       */
+       public void verificarListoYRunningVacio(){
+           if (colasPorEstado.BuscarPosicion(1).isEmpty() && colasPorEstado.BuscarPosicion(2).isEmpty()) {
+               
            }else{
            System.out.println("EN EFECTO..........WAO....NO HAY PROCESOS EN LISTO!");
-           return false;
+           
            }
        }
        
@@ -154,46 +181,31 @@ Si la lógica de SRT tarda 0,1 segundos en calcular cuál es el proceso más cor
 //           Proceso ProcesoBTMin=colaReady.buscarPMinAtributo("burstTime");
 //           Proceso procesoRunnning=colaRunning.buscarLast();
 
-
+        if(colaReady.isEmpty()) return; //Si no hay nadie listo, no hay nada ue decidir
+        
            //si no hay ningun proceso en running entonces...
            //se ejecuta normalmente solo una vez, va a ser cuando no haya ningun proceso en running.
            
+           Proceso candidatoSRT=colaReady.buscarPMinAtributo("burstTime");
            
+           //CASO A CPU vacía
+           if (colaRunning.isEmpty()) {
+               candidatoSRT.cambiarEstado("RUNNING", colasPorEstado);
+           }
            
-           if (verificarListo()) {
+           //CASO B> hay alguien en el CPU, comparamos a ver si lo sacamos
+           else{
+           Proceso procesoRunning=colaRunning.buscarLast();
+           
+           if(candidatoSRT.burstTime < procesoRunning.burstTime){
+            System.out.println("SRT -> PREEMPTION: P" + candidatoSRT.ID + " entra por P" + procesoRunning.ID);
+            procesoRunning.cambiarEstado("READY", colasPorEstado);
+            candidatoSRT.cambiarEstado("RUNNING", colasPorEstado);
+
                
-           Proceso ProcesoBTMin=colaReady.buscarPMinAtributo("burstTime");
-           ProcesoBTMin.cambiarEstado("RUNNING", colasPorEstado);
-           Proceso procesoRunnning=colaRunning.buscarLast();               
-               /*
-               aquí solo va a haber siempre UN solo proceso corriendo.
-               por lo que cuando un proceso
-               */
-               
-               
-               
-           if (colaRunning==null) { 
-               ProcesoBTMin.cambiarEstado("RUNNING", colasPorEstado);
-               
-               //pondras en la lista running y después harás un tick
-               procesoRunnning.ejecutarTick();
-               /*
-               Creo que aquí llamaré a un método externo para poder poder ejecutar el "tick" (ejecutarTick)
-               Más que nada debido a que dependería del mismo tick del reloj, y eso
-               quiero setearlo como en la GUI
-               */
-           }else{
-               //harás un tick
-               procesoRunnning.ejecutarTick();
-               
-               
-               //aqui se verifica si se le hace preempt
-               if (ProcesoBTMin.burstTime<procesoRunnning.burstTime) {
-                   procesoRunnning.ejecutarTick();
-                   ProcesoBTMin.cambiarEstado("RUNNING", colasPorEstado);
-                   procesoRunnning.cambiarEstado("READY", colasPorEstado);
-               }
-           }}
+           }
+           
+           }
        }
 }
 
