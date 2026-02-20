@@ -109,6 +109,12 @@ public class SRT extends Thread {
 
     }
 
+    private volatile boolean running=true;
+    
+    public void paraAlgoritmo(){
+        this.running = false;
+        System.out.println("SRT -> Deteniendo planificador por solicitud externa.");
+    }
     /*
      * El run en este caso va a ser para conseguir los ticks respectivos al inicio
      * de
@@ -116,7 +122,7 @@ public class SRT extends Thread {
      * Esto nos va a ser util al momento de iniciar
      */
     public void run() {
-        while (true) {
+        while (running) {
             try {
                 /* 0) Sincronización reloj */
                 reloj.getCicloEvent().acquire(); // te devuelve los permits del semaforo que serían como ticks globales
@@ -127,6 +133,9 @@ public class SRT extends Thread {
                  * Thread scheduler
                  */
                 if (verificarListoYRunningVacio()) {
+                // Cuando pasen a exit y aparezca ahí procesos en exit, esperaran al menos como 1 seg
+                //las tablas reflajan las listas
+                //this.colasPorEstado.BuscarPosicion(6).vaciar();
                     break;
                 }
 
@@ -136,11 +145,16 @@ public class SRT extends Thread {
                 /* 4) Ver si es necesario hacer preemption. */
                 preemptRunning();
 
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
+                System.out.println("SRT -> Hilo Interrumpido");
+                break;
+            }catch(Exception e){
+                System.out.println("SRT -> Error en el bucle principal: " + e.getMessage());
                 break;
             }
 
         }
+        System.out.println("SRT -> Planificador SRT detenido totalemnte.");
     }
 
     /*
@@ -219,15 +233,15 @@ public class SRT extends Thread {
             candidatoSRT.cambiarEstado("RUNNING", colasPorEstado);
         }
 
-        // CASO B> hay alguien en el CPU, comparamos a ver si lo sacamos
+        // CASO B hay alguien en el CPU, comparamos a ver si lo sacamos
         else {
             Proceso procesoRunning = colaRunning.buscarLast();
 
             if (candidatoSRT.burstTime < procesoRunning.burstTime) {
                 System.out.println("SRT -> PREEMPTION: P" + candidatoSRT.ID + " (BT: " + candidatoSRT.burstTime
                         + ") entra por P" + procesoRunning.ID + " (BT: " + procesoRunning.burstTime + ")");
-                procesoRunning.cambiarEstado("READY", colasPorEstado);
-                candidatoSRT.cambiarEstado("RUNNING", colasPorEstado);
+                procesoRunning.cambiarEstado("READY", colasPorEstado); //pongo en ready el que esta corriende
+                candidatoSRT.cambiarEstado("RUNNING", colasPorEstado); //pongo en running
 
             } else {
                 System.out.println("SRT -> Manteniendo P" + procesoRunning.ID + " (BT: " + procesoRunning.burstTime

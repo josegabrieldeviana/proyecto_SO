@@ -97,6 +97,7 @@ public class controladorMain {
         
         /* SRT */
         SRT SRT=new SRT(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
+        vista.setSrtThread(SRT);
         SRT.start();
         
         
