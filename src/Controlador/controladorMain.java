@@ -81,21 +81,8 @@ public class controladorMain {
          Vista_1 vista = new Vista_1(RTOS1, reloj, colasPorEstado);
          vista.setVisible(true);
 
-        
-
-
-        RoundRobin robin1 = new RoundRobin(RTOS1);
-
-        
-        //comento esto porque la cola 
-//        Proceso P1 = (Proceso) colaNuevo.buscarLast();
-//        P1.cambiarEstado("RUNNING", colasPorEstado);
-//        
-
-
-
-
-
+         
+         
         /* FCFS */
        // FCFS FCFS=new FCFS(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
         
