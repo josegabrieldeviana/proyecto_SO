@@ -554,5 +554,19 @@ public class Proceso extends Thread {
         System.out.println(
                 "[INFO] Proceso " + this.ID + " ha terminado su ejecución después de " + burstTime + " ciclos.");
     }
+    
+    /*
+    NUNCA se va a ejecutar en running los procesos porque .stop y .interrupt
+    pueden ser riesgosas en su ejecución y causan más overhead del necesario
+    por tanto, los procesos se ejecutaran con el su¡iguiente metodo
+    
+    que regresaran "TRUE" si ya se ha "Ejeecutado" tras su BT
+    
+    
+    */
+    public boolean ejecutarCiclo(){
+    return true;
+    }
+    
 
 }

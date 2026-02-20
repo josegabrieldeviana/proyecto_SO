@@ -150,3 +150,12 @@ Si la lógica de SRT tarda 0,1 segundos en calcular cuál es el proceso más cor
            }}
        }
 }
+
+/*
+COMENTARIOS PARA ARREGLAR SRT
+
+
+
+
+
+*/
