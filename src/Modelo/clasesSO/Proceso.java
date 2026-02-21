@@ -479,46 +479,20 @@ public class Proceso extends Thread {
             return false;
         }
 
-        // Identificar el índice de la cola ORIGEN (antes de cambiar el estado)
-        int indiceColaOrigen = -1;
-        switch (estadoActual) {
-            case "NEW":
-            case "NUEVO":
-                indiceColaOrigen = 0;
-                break;
-            case "READY":
-            case "LISTO":
-                indiceColaOrigen = 1;
-                break;
-            case "RUNNING":
-            case "EJECUCION":
-                indiceColaOrigen = 2;
-                break;
-            case "BLOCKED":
-            case "BLOQUEADO":
-                indiceColaOrigen = 3;
-                break;
-            case "READYSUSPENDED":
-            case "SUSPENDIDO":
-                indiceColaOrigen = 4;
-                break;
-            case "BLOCKEDSUSPENDED":
-            case "BLOQUEADOYSUSPENDIDO":
-                indiceColaOrigen = 5;
-                break;
-            case "EXIT":
-            case "TERMINADO":
-                indiceColaOrigen = 6;
-                break;
-            default:
-                System.err.println("[WARN] Estado origen desconocido para cola: " + estadoActual);
-                break;
+        // SI LA TRANSICIÓN ES VÁLIDA:
+        // 1) ELIMINAR el proceso de cualquier cola donde esté actualmente (para evitar
+        // duplicados)
+        if (ColasEstadoDestino != null) {
+            for (int i = 0; i < 7; i++) { // Las 7 colas (0 a 6)
+                Lista<Proceso> colaActual = ColasEstadoDestino.BuscarPosicion(i);
+                if (colaActual != null) {
+                    colaActual.remove(this);
+                }
+            }
         }
 
-        // Si la transición es válida, cambiar el estado
+        // 2) Cambiar el estado interno e identificar el índice de la cola de destino
         this.Status = estadoDestino;
-
-        // Identificar el índice de la cola de destino
         int indiceCola = -1;
         switch (estadoDestino) {
             case "NEW":
@@ -554,13 +528,13 @@ public class Proceso extends Thread {
                 return false;
         }
 
-        // Añadir el proceso a la cola correspondiente
+        // 3) Añadir el proceso a la cola correspondiente
         if (ColasEstadoDestino != null) {
             Lista<Proceso> colaDestino = ColasEstadoDestino.BuscarPosicion(indiceCola);
             if (colaDestino != null) {
                 colaDestino.addLast(this);
-                System.out
-                        .println("[INFO] Proceso añadido a la cola " + estadoDestino + " (indice " + indiceCola + ")");
+                System.out.println("[INFO] Proceso P" + this.ID + " movido a la cola " + estadoDestino + " (indice "
+                        + indiceCola + ")");
             } else {
                 System.err.println("[ERROR] La cola de destino para el índice " + indiceCola + " es nula.");
                 return false;
@@ -568,19 +542,6 @@ public class Proceso extends Thread {
         } else {
             System.err.println("[ERROR] La lista de colas ColasEstadoDestino es nula.");
             return false;
-        }
-
-        // Eliminar el proceso del final de la cola ORIGEN (el proceso transitado
-        // siempre es el último)
-        if (indiceColaOrigen >= 0) {
-            Lista<Proceso> colaOrigen = ColasEstadoDestino.BuscarPosicion(indiceColaOrigen);
-            if (colaOrigen != null) {
-                colaOrigen.deleteLast();
-                System.out.println("[INFO] Proceso eliminado (deleteLast) de la cola " + estadoActual + " (indice "
-                        + indiceColaOrigen + ")");
-            } else {
-                System.err.println("[WARN] Cola origen (" + estadoActual + ") no encontrada en ColasEstadoDestino.");
-            }
         }
 
         System.out.println("[INFO] Transición exitosa: " + estadoActual + " -> " + estadoDestino);
@@ -626,5 +587,4 @@ public class Proceso extends Thread {
         }
         return this.burstTime <= 0; // Devuelve true si terminó
     }
-
 }
