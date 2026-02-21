@@ -111,15 +111,12 @@ public class SRT extends Thread {
         RESTALE 1 AL SIZE
         
         */
-        for (int i = 0; i < colasPorEstado.BuscarPosicion(0).size(); i++) {
-            Proceso PNuevoIteracion = colasPorEstado.BuscarPosicion(0).BuscarPosicion(i);
-            if (PNuevoIteracion.Status != "NUEVO" || PNuevoIteracion.Status==null) {
-
-            } else {
-                PNuevoIteracion.cambiarEstado("READY", colasPorEstado);
-            }
-            // entrando a RAM a quedarse ahí
-        }
+        Lista<Proceso> colaNuevos = colasPorEstado.BuscarPosicion(0);
+while (!colaNuevos.isEmpty()) {
+    Proceso p = colaNuevos.BuscarPosicion(0); // Siempre agarra el primero
+    p.cambiarEstado("READY", colasPorEstado);
+}
+        
         
 //        System.out.println("-----------------------[DEBUG] LOS NUEVOS AL FINAL DE CONSTRUCTOR--------------------");
 //                    for (int i = 0; i <= this.colasPorEstado.BuscarPosicion(0).size(); i++) {
