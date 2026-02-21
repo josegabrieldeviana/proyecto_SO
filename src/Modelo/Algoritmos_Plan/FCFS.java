@@ -34,7 +34,35 @@ public class FCFS extends Thread {
         this.ram = ram;
         this.reloj = reloj;
     }
+    private volatile boolean running = true;
+
+    public void paraAlgoritmo(){
+        this.running = false;
+        System.out.println("FCFS -> Deteniendo planificador por solicitud externa.");
+    }
     
+    public void run() {
+        while (running) {
+            try {
+                /* 0) Sincronización reloj */
+                reloj.getCicloEvent().acquire();
+                System.out.println("FCFS -> Tick recibido del reloj.");
+                
+                /* resto de los running aquí:
+                 * - Tomar el proceso en la cabeza de la cola FIFO.
+                 * - Ejecutarlo por 1 tick.
+                 * - IMPORTANTE: FCFS no es expropiativo, así que el proceso actual 
+                 *   no se suelta hasta que termine o se bloquee por E/S.
+                 */
+            } catch (InterruptedException e) {
+                System.out.println("FCFS -> Hilo Interrumpido");
+                break;
+            } catch(Exception e){
+                System.out.println("FCFS -> Error en el bucle principal: " + e.getMessage());
+                break;
+            }
+        }
+    }
     
 }
 

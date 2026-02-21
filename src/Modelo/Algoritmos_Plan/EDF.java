@@ -34,5 +34,33 @@ public class EDF{
         this.reloj = reloj;
     }
     
+    private volatile boolean running=true;
+    public void paraAlgoritmo(){
+        this.running = false;
+        System.out.println("EDF -> Deteniendo planificador por solicitud externa.");
+    }
+    
+    public void run() {
+        while (running) {
+            try {
+                /* 0) Sincronización reloj */
+                reloj.getCicloEvent().acquire();
+                System.out.println("EDF -> Tick recibido del reloj.");
+                
+                /* resto de los running aquí:
+                 * - Revisar la cola de listos (PriorityQueue).
+                 * - Ordenar o extraer el proceso con el menor valor de 'deadline'.
+                 * - Ejecutarlo por 1 tick.
+                 */
+            } catch (InterruptedException e) {
+                System.out.println("EDF -> Hilo Interrumpido");
+                break;
+            } catch(Exception e){
+                System.out.println("EDF -> Error en el bucle principal: " + e.getMessage());
+                break;
+            }
+        }
+    }
+    
     
 }

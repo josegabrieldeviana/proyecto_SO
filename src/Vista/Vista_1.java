@@ -30,22 +30,22 @@ public class Vista_1 extends javax.swing.JFrame {
 
     
     /*
-    ESTO SE VA A HACER CON CADA ALGORITMO DE PLANIFICACION.
+    AQUI SE SETEAN TODOS LOS ALGORITMOS DE PLANIFICACIÓN.
     */
        public void setSrtThread(Modelo.Algoritmos_Plan.SRT srtThread){
         this.srtThread=srtThread;
     }
-       public void setFcfsThread(Modelo.Algoritmos_Plan.SRT srtThread){
-        this.srtThread=srtThread;
+       public void setFcfsThread(Modelo.Algoritmos_Plan.FCFS fcfsThread){
+        this.fcfsThread=fcfsThread;
     }
-       public void setRRThread(Modelo.Algoritmos_Plan.SRT srtThread){
-        this.srtThread=srtThread;
+       public void setRRThread(Modelo.Algoritmos_Plan.RoundRobin rrThread){
+        this.rrThread=rrThread;
     }
-       public void setPEPPThread(Modelo.Algoritmos_Plan.SRT srtThread){
-        this.srtThread=srtThread;
+       public void setPEPPThread(Modelo.Algoritmos_Plan.PEPP peppThread){
+        this.peppThread=peppThread;
     }
-       public void setEDFThread(Modelo.Algoritmos_Plan.SRT srtThread){
-        this.srtThread=srtThread;
+       public void setEDFThread(Modelo.Algoritmos_Plan.EDF edfThread){
+        this.edfThread=edfThread;
     }
     
        
@@ -56,6 +56,10 @@ public class Vista_1 extends javax.swing.JFrame {
     private javax.swing.JButton btnGenerar20;
     private javax.swing.JSpinner duraCiclospinner;
     private Modelo.Algoritmos_Plan.SRT srtThread; //para que GUI interactúe con el algoritmo de planificación.
+    private Modelo.Algoritmos_Plan.FCFS fcfsThread; //para que GUI interactúe con el algoritmo de planificación.
+    private Modelo.Algoritmos_Plan.RoundRobin rrThread ; //para que GUI interactúe con el algoritmo de planificación.
+    private Modelo.Algoritmos_Plan.PEPP peppThread; //para que GUI interactúe con el algoritmo de planificación.
+    private Modelo.Algoritmos_Plan.EDF edfThread; //para que GUI interactúe con el algoritmo de planificación.
     private javax.swing.Timer pollingTimer; //esto nos servirá para esperar un tiempo determinado y REFRESCAR LAS TABLAS.
  
     /**
@@ -146,6 +150,10 @@ public class Vista_1 extends javax.swing.JFrame {
         JSpinnerContainer = new javax.swing.JPanel();
         genISR = new javax.swing.JButton();
         pararThreadSRT = new javax.swing.JButton();
+        pararThreadFCFS = new javax.swing.JButton();
+        pararThreadRR = new javax.swing.JButton();
+        pararThreadPEPP = new javax.swing.JButton();
+        pararThreadEDF = new javax.swing.JButton();
         vistaMemoria = new javax.swing.JPanel();
         vistaMetricas = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -314,7 +322,7 @@ public class Vista_1 extends javax.swing.JFrame {
             }
         });
 
-        pararThreadSRT.setText("STOP");
+        pararThreadSRT.setText("STOP SRT");
         pararThreadSRT.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 pararThreadSRTMouseClicked(evt);
@@ -323,6 +331,54 @@ public class Vista_1 extends javax.swing.JFrame {
         pararThreadSRT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pararThreadSRTActionPerformed(evt);
+            }
+        });
+
+        pararThreadFCFS.setText("STOP FCFS");
+        pararThreadFCFS.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pararThreadFCFSMouseClicked(evt);
+            }
+        });
+        pararThreadFCFS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pararThreadFCFSActionPerformed(evt);
+            }
+        });
+
+        pararThreadRR.setText("STOP RR");
+        pararThreadRR.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pararThreadRRMouseClicked(evt);
+            }
+        });
+        pararThreadRR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pararThreadRRActionPerformed(evt);
+            }
+        });
+
+        pararThreadPEPP.setText("STOP PEPP");
+        pararThreadPEPP.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pararThreadPEPPMouseClicked(evt);
+            }
+        });
+        pararThreadPEPP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pararThreadPEPPActionPerformed(evt);
+            }
+        });
+
+        pararThreadEDF.setText("STOP EDF");
+        pararThreadEDF.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pararThreadEDFMouseClicked(evt);
+            }
+        });
+        pararThreadEDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pararThreadEDFActionPerformed(evt);
             }
         });
 
@@ -349,24 +405,35 @@ public class Vista_1 extends javax.swing.JFrame {
                                     .addComponent(relojNUMERO)
                                     .addComponent(ciclosText)
                                     .addComponent(relojTEXT2))
-                                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
-                                        .addGap(113, 113, 113)
-                                        .addComponent(jLabel15))
-                                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
-                                        .addGap(33, 33, 33)
-                                        .addComponent(JSpinnerContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(genISR)
-                                            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
-                                                .addComponent(sOmsCiclosCOMBOBOX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(resetCiclo))))))
+                                .addGap(113, 113, 113)
+                                .addComponent(jLabel15))
                             .addGroup(vistaGCProcesosLayout.createSequentialGroup()
                                 .addGap(219, 219, 219)
-                                .addComponent(genSim)))
-                        .addContainerGap(123, Short.MAX_VALUE))
+                                .addComponent(genSim))
+                            .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                        .addGap(124, 124, 124)
+                                        .addComponent(JSpinnerContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                        .addGap(49, 49, 49)
+                                        .addComponent(pararThreadSRT)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(pararThreadFCFS)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(genISR)
+                                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                        .addComponent(sOmsCiclosCOMBOBOX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(resetCiclo))
+                                    .addGroup(vistaGCProcesosLayout.createSequentialGroup()
+                                        .addComponent(pararThreadRR)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(pararThreadPEPP)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(pararThreadEDF)))))
+                        .addContainerGap(86, Short.MAX_VALUE))
                     .addGroup(vistaGCProcesosLayout.createSequentialGroup()
                         .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(vistaGCProcesosLayout.createSequentialGroup()
@@ -385,10 +452,8 @@ public class Vista_1 extends javax.swing.JFrame {
                                 .addComponent(gen1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(5, 5, 5)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(PSWbutton)
-                            .addComponent(pararThreadSRT))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(PSWbutton)
+                        .addContainerGap(213, Short.MAX_VALUE))))
         );
         vistaGCProcesosLayout.setVerticalGroup(
             vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -404,9 +469,7 @@ public class Vista_1 extends javax.swing.JFrame {
                             .addComponent(gen20)
                             .addComponent(jLabel11))
                         .addGap(18, 18, 18)
-                        .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(pararThreadSRT))
+                        .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(CPUbut)
@@ -427,8 +490,7 @@ public class Vista_1 extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ciclosText)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel13)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel13))
                             .addGroup(vistaGCProcesosLayout.createSequentialGroup()
                                 .addGap(12, 12, 12)
                                 .addComponent(jLabel15)
@@ -440,7 +502,15 @@ public class Vista_1 extends javax.swing.JFrame {
                                         .addComponent(JSpinnerContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(63, 63, 63)
                                 .addComponent(genISR)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 293, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 113, Short.MAX_VALUE)
+                                .addGroup(vistaGCProcesosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(pararThreadSRT)
+                                    .addComponent(pararThreadFCFS)
+                                    .addComponent(pararThreadRR)
+                                    .addComponent(pararThreadPEPP)
+                                    .addComponent(pararThreadEDF))
+                                .addGap(112, 112, 112)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                         .addComponent(jLabel14)
                         .addGap(20, 20, 20))
                     .addGroup(vistaGCProcesosLayout.createSequentialGroup()
@@ -696,6 +766,56 @@ public class Vista_1 extends javax.swing.JFrame {
     private void pararThreadSRTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pararThreadSRTActionPerformed
    
     }//GEN-LAST:event_pararThreadSRTActionPerformed
+
+    private void pararThreadFCFSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pararThreadFCFSMouseClicked
+    for (int i = 0; i < this.colasPorEstado.size(); i++) {
+           this.colasPorEstado.BuscarPosicion(i).vaciar();
+            System.out.println(i+"  Esta es la lista:  "+this.colasPorEstado.BuscarPosicion(i).printString());
+        }
+        this.fcfsThread.paraAlgoritmo();
+        System.out.println("SE HA DETENIDO EL ALGORITMO.");
+    }//GEN-LAST:event_pararThreadFCFSMouseClicked
+
+    private void pararThreadFCFSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pararThreadFCFSActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pararThreadFCFSActionPerformed
+
+    private void pararThreadRRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pararThreadRRMouseClicked
+    for (int i = 0; i < this.colasPorEstado.size(); i++) {
+           this.colasPorEstado.BuscarPosicion(i).vaciar();
+            System.out.println(i+"  Esta es la lista:  "+this.colasPorEstado.BuscarPosicion(i).printString());
+        }
+        this.rrThread.paraAlgoritmo();
+        System.out.println("SE HA DETENIDO EL ALGORITMO.");
+    }//GEN-LAST:event_pararThreadRRMouseClicked
+
+    private void pararThreadRRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pararThreadRRActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pararThreadRRActionPerformed
+
+    private void pararThreadPEPPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pararThreadPEPPMouseClicked
+for (int i = 0; i < this.colasPorEstado.size(); i++) {
+           this.colasPorEstado.BuscarPosicion(i).vaciar();
+            System.out.println(i+"  Esta es la lista:  "+this.colasPorEstado.BuscarPosicion(i).printString());
+        }
+        this.peppThread.paraAlgoritmo();
+        System.out.println("SE HA DETENIDO EL ALGORITMO.");    }//GEN-LAST:event_pararThreadPEPPMouseClicked
+
+    private void pararThreadPEPPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pararThreadPEPPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pararThreadPEPPActionPerformed
+
+    private void pararThreadEDFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pararThreadEDFMouseClicked
+for (int i = 0; i < this.colasPorEstado.size(); i++) {
+           this.colasPorEstado.BuscarPosicion(i).vaciar();
+            System.out.println(i+"  Esta es la lista:  "+this.colasPorEstado.BuscarPosicion(i).printString());
+        }
+        this.edfThread.paraAlgoritmo();
+        System.out.println("SE HA DETENIDO EL ALGORITMO.");    }//GEN-LAST:event_pararThreadEDFMouseClicked
+
+    private void pararThreadEDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pararThreadEDFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pararThreadEDFActionPerformed
 
     private void custominitComponents() {
         JSpinnerContainer.setLayout(new java.awt.BorderLayout());
@@ -1270,6 +1390,10 @@ public class Vista_1 extends javax.swing.JFrame {
     private javax.swing.JLabel modoU;
     private javax.swing.JTable newStatus;
     private javax.swing.JTextArea outputStreamConsole;
+    private javax.swing.JButton pararThreadEDF;
+    private javax.swing.JButton pararThreadFCFS;
+    private javax.swing.JButton pararThreadPEPP;
+    private javax.swing.JButton pararThreadRR;
     private javax.swing.JButton pararThreadSRT;
     private javax.swing.JComboBox<String> politicasCOMBOBOX;
     private javax.swing.JTable readySStatus;

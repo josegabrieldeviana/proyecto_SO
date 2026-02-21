@@ -30,5 +30,35 @@ public class PEPP extends Thread{
         this.ram = ram;
         this.reloj = reloj;
     }
+    
+    private volatile boolean running = true;
+
+    public void paraAlgoritmo(){
+        this.running = false;
+        System.out.println("PEPP -> Deteniendo planificador por solicitud externa.");
+    }
+    
+    public void run() {
+        while (running) {
+            try {
+                /* 0) Sincronización reloj */
+                reloj.getCicloEvent().acquire();
+                System.out.println("PEPP -> Tick recibido del reloj.");
+                
+                /* resto de los running aquí:
+                 * - Revisar la cola de listos (ordenada por prioridad).
+                 * - Si el proceso en cabeza tiene mayor prioridad que el actual en CPU,
+                 *   se hace un cambio de contexto (expropiación/preemption).
+                 * - Ejecutar el proceso seleccionado por 1 tick.
+                 */
+            } catch (InterruptedException e) {
+                System.out.println("PEPP -> Hilo Interrumpido");
+                break;
+            } catch(Exception e){
+                System.out.println("PEPP -> Error en el bucle principal: " + e.getMessage());
+                break;
+            }
+        }
+    }
 
 }

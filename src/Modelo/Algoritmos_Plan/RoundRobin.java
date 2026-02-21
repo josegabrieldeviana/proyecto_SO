@@ -36,6 +36,36 @@ public class RoundRobin extends Thread {
         this.reloj = reloj;
     }
     
+    private volatile boolean running = true;
+
+    public void paraAlgoritmo(){
+        this.running = false;
+        System.out.println("RR -> Deteniendo planificador por solicitud externa.");
+    }
+    
+    public void run() {
+        while (running) {
+            try {
+                /* 0) Sincronización reloj */
+                reloj.getCicloEvent().acquire();
+                System.out.println("RR -> Tick recibido del reloj.");
+                
+                /* resto de los running aquí:
+                 * - Ejecutar el proceso en la cabeza de la cola FIFO por 1 tick.
+                 * - Restar 1 al quantum del proceso actual.
+                 * - Si el quantum llega a 0, se saca de la CPU (expropiación),
+                 *   se manda al final de la cola de listos y se reinicia su quantum.
+                 */
+            } catch (InterruptedException e) {
+                System.out.println("RR -> Hilo Interrumpido");
+                break;
+            } catch(Exception e){
+                System.out.println("RR -> Error en el bucle principal: " + e.getMessage());
+                break;
+            }
+        }
+    }
+    
 }
 
 // ALGORITMO SEBAS
