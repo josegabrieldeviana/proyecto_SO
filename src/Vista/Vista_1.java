@@ -693,7 +693,19 @@ public class Vista_1 extends javax.swing.JFrame {
     }// GEN-LAST:event_gen1ActionPerformed
 
     private void genSimActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_genSimActionPerformed
-        // TODO add your handling code here:
+        int planEscogida=politicasCOMBOBOX.getSelectedIndex();
+        switch (planEscogida){
+            case 0:
+                
+            case 1:
+                
+            case 2:
+                this.srtThread.start();
+            case 3:
+                
+            case 4:
+         
+        }
     }// GEN-LAST:event_genSimActionPerformed
 
     private void resetCicloActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_resetCicloActionPerformed
