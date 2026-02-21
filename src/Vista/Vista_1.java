@@ -32,21 +32,7 @@ public class Vista_1 extends javax.swing.JFrame {
     /*
     AQUI SE SETEAN TODOS LOS ALGORITMOS DE PLANIFICACIÓN.
     */
-       public void setSrtThread(Modelo.Algoritmos_Plan.SRT srtThread){
-        this.srtThread=srtThread;
-    }
-       public void setFcfsThread(Modelo.Algoritmos_Plan.FCFS fcfsThread){
-        this.fcfsThread=fcfsThread;
-    }
-       public void setRRThread(Modelo.Algoritmos_Plan.RoundRobin rrThread){
-        this.rrThread=rrThread;
-    }
-       public void setPEPPThread(Modelo.Algoritmos_Plan.PEPP peppThread){
-        this.peppThread=peppThread;
-    }
-       public void setEDFThread(Modelo.Algoritmos_Plan.EDF edfThread){
-        this.edfThread=edfThread;
-    }
+       
     
        
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Vista_1.class.getName());
@@ -61,7 +47,42 @@ public class Vista_1 extends javax.swing.JFrame {
     private Modelo.Algoritmos_Plan.PEPP peppThread; //para que GUI interactúe con el algoritmo de planificación.
     private Modelo.Algoritmos_Plan.EDF edfThread; //para que GUI interactúe con el algoritmo de planificación.
     private javax.swing.Timer pollingTimer; //esto nos servirá para esperar un tiempo determinado y REFRESCAR LAS TABLAS.
- 
+    public Lista planEscogidas; //el plan de cual opcion se ha escogido. Da una referencia para aquello
+    public Lista politicasLista; //es como colas x estado pero para políticas.
+    
+    /*
+    AQUI ARRIBA SE NECESITA INICIALIZAR (NO CORRER) LOS THREADS DE CADA PLANIFICACIÓN.
+    */
+    
+    public void setSrtThread(Modelo.Algoritmos_Plan.SRT srtThread){
+        this.srtThread=srtThread;
+        this.politicasLista.addLast(srtThread);
+        
+    }
+       public void setFcfsThread(Modelo.Algoritmos_Plan.FCFS fcfsThread){
+        this.fcfsThread=fcfsThread;
+        this.politicasLista.addLast(fcfsThread);
+
+    }
+       public void setRRThread(Modelo.Algoritmos_Plan.RoundRobin rrThread){
+        this.rrThread=rrThread;
+        this.politicasLista.addLast(rrThread);
+
+    }
+       public void setPEPPThread(Modelo.Algoritmos_Plan.PEPP peppThread){
+        this.peppThread=peppThread;
+        this.politicasLista.addLast(peppThread);
+
+    }
+       public void setEDFThread(Modelo.Algoritmos_Plan.EDF edfThread){
+        this.edfThread=edfThread;
+        this.politicasLista.addLast(edfThread);
+
+    }
+    /*
+    para llevar registro
+    */
+    
     /**
      * Creates new form Vista_1
      */
@@ -71,6 +92,8 @@ public class Vista_1 extends javax.swing.JFrame {
         this.relojref = relojNuevo;
         this.duraCiclospinner = new javax.swing.JSpinner();
         this.colasPorEstado=colasXEstadoNuevos;
+        this.politicasLista=new Lista();
+        
 
         initComponents();
         custominitComponents();
@@ -837,29 +860,76 @@ for (int i = 0; i < this.colasPorEstado.size(); i++) {
         // TODO add your handling code here:
     }// GEN-LAST:event_gen1ActionPerformed
 
+    /*
+    List<Thread> hilos = Arrays.asList(fcfsThread, rrThread, srtThread, peppThread, edfThread);
+
+private void stopAnyRunningThread() {
+    for (Thread t : hilos) {
+        if (t != null && t.isAlive()) {
+            t.interrupt(); // This sends the signal to stop
+        }
+    }
+}
+    */
+    
+    private boolean AnyRunningThread() {
+        
+        int procesoCorriendo=0;
+        for (int i = 0; i < 4; i++) {
+            Thread politicaActiva=(Thread)politicasLista.BuscarPosicion(i);
+            if (politicaActiva.isAlive()) {
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return false; 
+    }
+    
     private void genSimActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_genSimActionPerformed
         int planEscogida=politicasCOMBOBOX.getSelectedIndex();
-        
+        if (pollingTimer.isRunning()) {
+            //si ya esta corriendo pollingtimer que refresca las tablas no hagas nada
+        }else{
+            pollingTimer.start(); //sino ve haciendolas
+        }
         switch (planEscogida){
             case 0:
+                /*
+                check here if there any other scheduler threads are running. if they are, just stop them
+                */
+                fcfsThread.start();
                 
             case 1:
+                /*
+                
+                */
+                rrThread.start();
                 
             case 2:
+                /*
                 
-                if (this.srtThread==null || !this.srtThread.isAlive()) {
-                    System.out.println("[DEBUG] INICIALIZANDO.");
-                    this.srtThread.start();
-                    this.pollingTimer.start();
-                }else{
-                    System.out.println("[DEBUG] UNA INSTANCIA THREAD SRT AUN EN EJECUCION");
-                }                
+                */
+                srtThread.start();
+                
+                
             case 3:
+                /*
+                
+                */
+                peppThread.start();
+                
                 
             case 4:
-         
-        }
-    }// GEN-LAST:event_genSimActionPerformed
+                /*
+                
+                */
+                edfThread.start();
+                
+                
+                
+        }}
+    // GEN-LAST:event_genSimActionPerformed
 
     private void resetCicloActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_resetCicloActionPerformed
         if (relojref != null) {

@@ -22,22 +22,11 @@ import java.util.concurrent.Semaphore;
  *
  * @author joseg
  */
-public class EDF extends Thread {
-
-    // ─────────────────────────────── Atributos del sistema ────────────────────
-    /** Referencia al RTOS para cambios de modo kernel/usuario. */
-    public RTOSmaster RTOS;
-
-    /**
-     * Lista de colas por estado:
-     * índice 0 = NEW
-     * índice 1 = READY
-     * índice 2 = RUNNING
-     * índice 3 = BLOCKED
-     * índice 4 = READY SUSPENDED
-     * índice 5 = BLOCKED SUSPENDED
-     * índice 6 = EXIT
-     */
+public class EDF extends Thread{
+        public RTOSmaster RTOS;
+    
+    /*añadidura el 19 de feb, esto es para poder acceder a atributos modificados, abajo del constructor
+    se pondra el this. de c/uno*/
     public Lista<Lista<Proceso>> colasPorEstado;
 
     /** Reloj del sistema operativo. Proporciona el semáforo de ticks. */
@@ -112,13 +101,15 @@ public class EDF extends Thread {
         }
         System.out.println("EDF -> Inicialización completa.");
     }
-
-    /**
-     * Constructor alternativo que incluye referencia al RTOS.
-     */
-    public EDF(RTOSmaster RTOS, Lista<Lista<Proceso>> colasPorEstado, RelojSO reloj) {
-        this(colasPorEstado, null, null, null, reloj);
-        this.RTOS = RTOS;
+    
+    private volatile boolean running=true;
+    public void paraAlgoritmo(){
+        try {
+        this.running = false;
+        System.out.println("EDF -> Deteniendo planificador por solicitud externa.");    
+        } catch (Exception e) {
+        }
+        
     }
 
     // ──────────────────────────────────────────────────────────────────────────
