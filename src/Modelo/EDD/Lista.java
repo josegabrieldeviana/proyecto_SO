@@ -62,8 +62,6 @@ public class Lista<T> {
         if (isEmpty()) {
             this.Head = n;
             this.Tail = n;
-            this.Head.setNext(this.Tail);
-            this.Tail.setNext(null);
         } else {
             n.setNext(this.Head);
             this.Head = n;
@@ -109,31 +107,36 @@ public class Lista<T> {
     public T deleteFirst() {
         if (isEmpty()) {
             return null;
-        } else if (size() == 1) {
+        }
+        T data = this.Head.getData();
+        if (this.Head == this.Tail) {
             this.Head = null;
             this.Tail = null;
-            return null;
         } else {
             Nodo<T> temp = this.Head;
             this.Head = this.Head.getNext();
             temp.setNext(null);
-            return temp.getData();
         }
+        return data;
     }
 
     public T deleteLast() {
         if (isEmpty()) {
             return null;
         }
-        Nodo<T> pre = this.Head;
-        while (pre.getNext().getNext() != null) {
-            pre = pre.getNext();
+        T data = this.Tail.getData();
+        if (this.Head == this.Tail) {
+            this.Head = null;
+            this.Tail = null;
+        } else {
+            Nodo<T> pre = this.Head;
+            while (pre.getNext() != this.Tail) {
+                pre = pre.getNext();
+            }
+            pre.setNext(null);
+            this.Tail = pre;
         }
-        Nodo<T> temp = pre.getNext();
-        pre.setNext(null);
-        this.Tail = pre;
-        temp.setNext(null);
-        return temp.getData();
+        return data;
     }
 
     public T delete(int i) {
@@ -205,12 +208,12 @@ public class Lista<T> {
      * @return
      */
     public boolean buscar(T dato) {
-        Nodo aux = this.Head;
-
+        Nodo<T> aux = this.Head;
         while (aux != null) {
             if (aux.getData().toString().equals(dato.toString())) {
                 return true;
             }
+            aux = aux.getNext();
         }
         return false;
     }
@@ -289,5 +292,40 @@ public class Lista<T> {
         }
 
         return minObjeto;
+    }
+
+    /**
+     * Elimina la primera ocurrencia de un dato específico en la lista.
+     * 
+     * @param dato El dato a eliminar.
+     * @return true si se eliminó, false si no se encontró.
+     */
+    public boolean remove(T dato) {
+        if (isEmpty() || dato == null)
+            return false;
+
+        if (this.Head.getData().equals(dato)) {
+            deleteFirst();
+            return true;
+        }
+
+        Nodo<T> prev = this.Head;
+        Nodo<T> curr = this.Head.getNext();
+
+        while (curr != null) {
+            if (curr.getData().equals(dato)) {
+                if (curr == this.Tail) {
+                    this.Tail = prev;
+                    prev.setNext(null);
+                } else {
+                    prev.setNext(curr.getNext());
+                    curr.setNext(null);
+                }
+                return true;
+            }
+            prev = curr;
+            curr = curr.getNext();
+        }
+        return false;
     }
 }
