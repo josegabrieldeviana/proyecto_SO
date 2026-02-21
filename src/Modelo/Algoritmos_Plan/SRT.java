@@ -95,18 +95,56 @@ public class SRT extends Thread {
          */
 
         /*
-         * Se manda todo a la cola de "Ready"
+         * NECESITO CAMBIARLO A <= Y QUE NO ME DE ERRORES.
+           SON 10 PROCESOS, SOLO APARECEN 5.
+           PERO AHORA ME VOY A OCUPAR DE TABLAS 
+            
          */
+        
+        /*
+        RESTALE 1 AL SIZE
+        RESTALE 1 AL SIZE
+        RESTALE 1 AL SIZE
+        RESTALE 1 AL SIZE
+        RESTALE 1 AL SIZE
+        RESTALE 1 AL SIZE
+        
+        */
         for (int i = 0; i < colasPorEstado.BuscarPosicion(0).size(); i++) {
             Proceso PNuevoIteracion = colasPorEstado.BuscarPosicion(0).BuscarPosicion(i);
-            if (PNuevoIteracion.Status != "NUEVO") {
+            if (PNuevoIteracion.Status != "NUEVO" || PNuevoIteracion.Status==null) {
 
             } else {
                 PNuevoIteracion.cambiarEstado("READY", colasPorEstado);
             }
             // entrando a RAM a quedarse ahí
         }
-
+        
+//        System.out.println("-----------------------[DEBUG] LOS NUEVOS AL FINAL DE CONSTRUCTOR--------------------");
+//                    for (int i = 0; i <= this.colasPorEstado.BuscarPosicion(0).size(); i++) {
+//                        Proceso readycolaproceso;
+//                        readycolaproceso = this.colasPorEstado.BuscarPosicion(0).BuscarPosicion(i);
+//                        if (readycolaproceso==null) {
+//                            System.out.println("");    
+//                            break;
+//                        }else{
+//                        readycolaproceso.debugPrint();
+//                        }
+//                    }
+//                    
+//        System.out.println("-----------------------[DEBUG] LOS READY AL FINAL DE CONSTRUCTOR--------------------");
+//                    for (int i = 0; i <= this.colasPorEstado.BuscarPosicion(1).size(); i++) {
+//                        Proceso readycolaproceso;
+//                        readycolaproceso = this.colasPorEstado.BuscarPosicion(1).BuscarPosicion(i);
+//                        if (readycolaproceso==null) {
+//                            System.out.println("");    
+//                            break;
+//                        }else{
+//                        readycolaproceso.debugPrint();
+//                        }
+//                    }
+        
+       
     }
 
     private volatile boolean running=true;
@@ -120,6 +158,11 @@ public class SRT extends Thread {
      * de
      * planificación.
      * Esto nos va a ser util al momento de iniciar
+    
+    YA VI EL ERROR ARREGLAR DESPUES DE TABLAS
+    
+    EL CONTEO EMPIEZA EN 0, SIZE EMPIEZA EN 1, NECESITO RESTARLE 1
+    
      */
     public void run() {
         while (running) {
@@ -132,11 +175,37 @@ public class SRT extends Thread {
                  * 2) verifico si listo y runnning estan vacíos, si lo estan entonces paro este
                  * Thread scheduler
                  */
+                
+                
+//                System.out.println("-----------------------LOS READY-----------------------");
+//                    for (int i = 0; i < this.colasPorEstado.BuscarPosicion(1).size(); i++) {
+//                        Proceso readycolaproceso;
+//                        readycolaproceso = this.colasPorEstado.BuscarPosicion(1).BuscarPosicion(i);
+//                        if (readycolaproceso==null) {
+//                            System.out.println("");    
+//                            break;
+//                        }else{
+//                        readycolaproceso.debugPrint();
+//                        }
+//                    }
+//                    System.out.println("-----------------------LOS RUNNING-----------------------");
+//                    for (int i = 0; i < this.colasPorEstado.BuscarPosicion(2).size(); i++) {
+//                        Proceso runningcolaproceso;
+//                        runningcolaproceso=this.colasPorEstado.BuscarPosicion(2).BuscarPosicion(i);
+//                        if (runningcolaproceso==null) {
+//                          System.out.println("NO HAY NADA AQUÍ");
+//                          break;
+//                        }else{
+//                        runningcolaproceso.debugPrint();
+//                        }
+//                    }
+                
                 if (verificarListoYRunningVacio()) {
                 // Cuando pasen a exit y aparezca ahí procesos en exit, esperaran al menos como 1 seg
                 //las tablas reflajan las listas
-                //this.colasPorEstado.BuscarPosicion(6).vaciar();
-                    break;
+                    
+                
+                break;
                 }
 
                 /* 3) Manejar el proceso en la CPU. */

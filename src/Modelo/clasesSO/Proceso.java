@@ -1,5 +1,4 @@
 
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -446,6 +445,13 @@ public class Proceso extends Thread {
         String estadoDestino = nuevoEstado.toUpperCase();
         String estadoActual = this.Status.toUpperCase();
 
+        // Validar auto-transición (mismo estado)
+        if (estadoActual.equals(estadoDestino)) {
+            System.err.println(
+                    "[ERROR] Transición imposible: " + estadoActual + " -> " + estadoDestino + " (mismo estado)");
+            return false;
+        }
+
         // Validar transiciones imposibles
         if (estadoActual.equals("READY") && estadoDestino.equals("BLOCKED")) {
             System.err.println("[ERROR] Transición imposible: READY -> BLOCKED");
@@ -473,10 +479,44 @@ public class Proceso extends Thread {
             return false;
         }
 
+        // Identificar el índice de la cola ORIGEN (antes de cambiar el estado)
+        int indiceColaOrigen = -1;
+        switch (estadoActual) {
+            case "NEW":
+            case "NUEVO":
+                indiceColaOrigen = 0;
+                break;
+            case "READY":
+            case "LISTO":
+                indiceColaOrigen = 1;
+                break;
+            case "RUNNING":
+            case "EJECUCION":
+                indiceColaOrigen = 2;
+                break;
+            case "BLOCKED":
+            case "BLOQUEADO":
+                indiceColaOrigen = 3;
+                break;
+            case "READYSUSPENDED":
+            case "SUSPENDIDO":
+                indiceColaOrigen = 4;
+                break;
+            case "BLOCKEDSUSPENDED":
+            case "BLOQUEADOYSUSPENDIDO":
+                indiceColaOrigen = 5;
+                break;
+            case "EXIT":
+            case "TERMINADO":
+                indiceColaOrigen = 6;
+                break;
+            default:
+                System.err.println("[WARN] Estado origen desconocido para cola: " + estadoActual);
+                break;
+        }
+
         // Si la transición es válida, cambiar el estado
         this.Status = estadoDestino;
-        
-        
 
         // Identificar el índice de la cola de destino
         int indiceCola = -1;
@@ -530,23 +570,33 @@ public class Proceso extends Thread {
             return false;
         }
 
+        // Eliminar el proceso del final de la cola ORIGEN (el proceso transitado
+        // siempre es el último)
+        if (indiceColaOrigen >= 0) {
+            Lista<Proceso> colaOrigen = ColasEstadoDestino.BuscarPosicion(indiceColaOrigen);
+            if (colaOrigen != null) {
+                colaOrigen.deleteLast();
+                System.out.println("[INFO] Proceso eliminado (deleteLast) de la cola " + estadoActual + " (indice "
+                        + indiceColaOrigen + ")");
+            } else {
+                System.err.println("[WARN] Cola origen (" + estadoActual + ") no encontrada en ColasEstadoDestino.");
+            }
+        }
+
         System.out.println("[INFO] Transición exitosa: " + estadoActual + " -> " + estadoDestino);
-        // System.out.println("[INFO] Transición exitosa: " + estadoActual + " -> " +
-        // estadoDestino + " En la cola..."+
-        // ColasEstadoDestino.BuscarPosicion(indiceCola).printString()); PARA PROPOSITOS
-        // DE DEBUGGING.
         return true;
     }
 
     @Override
-    public void run() { //EL BURST TIME (S)=CANTIDAD DE INSTRUCCIONES EN UN PROCESO*N INSTRUCCIONES EN UN CICLO=TIEMPO EN CPU.
-        for (int i = 0; i < burstTime; i++) { //CICLO
+    public void run() { // EL BURST TIME (S)=CANTIDAD DE INSTRUCCIONES EN UN PROCESO*N INSTRUCCIONES EN
+                        // UN CICLO=TIEMPO EN CPU.
+        for (int i = 0; i < burstTime; i++) { // CICLO
             try {
-                System.out.println("[DEBUG] DURACION DE PROCESO RUNNING"+RelojSO.getCicloDuracion());
-                Thread.sleep(RelojSO.getCicloDuracion()); //VA A ESTAR ACTIVO EL THREAD POR EL TIEMPO EN CADA CICLO
+                System.out.println("[DEBUG] DURACION DE PROCESO RUNNING" + RelojSO.getCicloDuracion());
+                Thread.sleep(RelojSO.getCicloDuracion()); // VA A ESTAR ACTIVO EL THREAD POR EL TIEMPO EN CADA CICLO
                 this.PC++;
                 this.MAR++;
-                System.out.println("[DEBUG] SEGUNDOS EN EJECUCIÓN DE PROCESO......"+i);
+                System.out.println("[DEBUG] SEGUNDOS EN EJECUCIÓN DE PROCESO......" + i);
             } catch (InterruptedException ex) {
                 System.err.println("[ERROR] Proceso " + this.ID + " interrumpido.");
                 return;
@@ -556,26 +606,25 @@ public class Proceso extends Thread {
         System.out.println(
                 "[INFO] Proceso " + this.ID + " ha terminado su ejecución después de " + burstTime + " ciclos.");
     }
-    
+
     /*
-    NUNCA se va a ejecutar en running los procesos porque .stop y .interrupt
-    pueden ser riesgosas en su ejecución y causan más overhead del necesario
-    por tanto, los procesos se ejecutaran con el su¡iguiente metodo
-    
-    que regresaran "TRUE" si ya se ha "Ejeecutado" tras su BT
-    
-    Poner a ejecutar tick de esta forma nos permite controlar que cuando "ocurra"
-    un tick con semaforos, que este pueda hacerse
-    */
-      public boolean ejecutarTick() {
-        
+     * NUNCA se va a ejecutar en running los procesos porque .stop y .interrupt
+     * pueden ser riesgosas en su ejecución y causan más overhead del necesario
+     * por tanto, los procesos se ejecutaran con el su¡iguiente metodo
+     * 
+     * que regresaran "TRUE" si ya se ha "Ejeecutado" tras su BT
+     * 
+     * Poner a ejecutar tick de esta forma nos permite controlar que cuando "ocurra"
+     * un tick con semaforos, que este pueda hacerse
+     */
+    public boolean ejecutarTick() {
+
         if (this.burstTime > 0) {
             this.burstTime--;
-            System.out.println(this.ID+"  SE HA EJECUTADO UN TICK DE  "+this.Nombre + "TIEMPO RESTANTE: "+this.burstTime);
+            System.out.println(
+                    this.ID + "  SE HA EJECUTADO UN TICK DE  " + this.Nombre + "TIEMPO RESTANTE: " + this.burstTime);
         }
         return this.burstTime <= 0; // Devuelve true si terminó
     }
-
-    
 
 }

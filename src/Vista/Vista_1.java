@@ -29,11 +29,14 @@ import raven.tabbed.TabbedPaneCustom;
 public class Vista_1 extends javax.swing.JFrame {
 
     
-    //para facilitar acc
+    /*
+    ESTO SE VA A HACER CON CADA ALGORITMO DE PLANIFICACION.
+    */
        public void setSrtThread(Modelo.Algoritmos_Plan.SRT srtThread){
         this.srtThread=srtThread;
     }
     
+       
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Vista_1.class.getName());
     private final RTOSmaster RTOSref;
     public Lista<Lista<Proceso>> colasPorEstado;
@@ -47,8 +50,8 @@ public class Vista_1 extends javax.swing.JFrame {
      * Creates new form Vista_1
      */
     public Vista_1(RTOSmaster par0, RelojSO relojNuevo, Lista<Lista<Proceso>> colasXEstadoNuevos) {
-        this.RTOSref = par0;
         
+        this.RTOSref = par0;
         this.relojref = relojNuevo;
         this.duraCiclospinner = new javax.swing.JSpinner();
         this.colasPorEstado=colasXEstadoNuevos;
@@ -760,6 +763,71 @@ public class Vista_1 extends javax.swing.JFrame {
             });
             aux = aux.getNext();
             */
+        }
+    }
+    
+    public void actualizarTableGeneral(){
+        if (colasPorEstado==null){
+            return;}
+        DefaultTableModel tablaNuevos = (DefaultTableModel) newStatus.getModel(); 
+        DefaultTableModel tablaListos = (DefaultTableModel) readyStatus.getModel(); 
+        DefaultTableModel tablaRunning = (DefaultTableModel) runningStatus.getModel(); 
+        DefaultTableModel tablaBloqueados = (DefaultTableModel) blockedStatus.getModel(); 
+        DefaultTableModel tablaReadyS = (DefaultTableModel) readySStatus.getModel(); 
+        DefaultTableModel tablaBlockedS = (DefaultTableModel) blockedSStatus.getModel(); 
+        DefaultTableModel tablaExit = (DefaultTableModel) exitStatus.getModel(); 
+
+        /*
+        Limpio todos los rows de las tablas
+        */
+        
+        
+        
+        Lista<DefaultTableModel> listaTablas=new Lista<DefaultTableModel>();
+        
+        listaTablas.addLast(tablaNuevos);
+        listaTablas.addLast(tablaListos);
+        listaTablas.addLast(tablaRunning);
+        listaTablas.addLast(tablaBloqueados);
+        listaTablas.addLast(tablaReadyS);
+        listaTablas.addLast(tablaBlockedS);
+        
+        tablaListos.setRowCount(0);
+        tablaRunning.setRowCount(0);
+        tablaBloqueados.setRowCount(0);
+        tablaReadyS.setRowCount(0);
+        tablaBlockedS.setRowCount(0);
+        tablaExit.setRowCount(0);
+        
+        //recorro cada una de las listas de estados disponible...
+        for (int i = 0; i <=colasPorEstado.size()-1; i++) {
+            //recorro cada lista dentro de colas por estado
+            Nodo<Proceso> aux = colasPorEstado.BuscarPosicion(i).Head; // vas a conseguir el primero de los nodos
+        while (aux != null) { // mientras que no haya ningún proceso anteriormente... (carga inicial de
+                              // procesos aleatorios)
+            Proceso p = aux.getData(); // consigues la referencia del proceso p
+            listaTablas.BuscarPosicion(i).addRow(new Object[] {
+                    p.getID(),
+                    p.getPrioridad(),
+                    p.getNombre(),
+                    p.getMAR(),
+                    p.getPC(),
+                    p.getTiempoRestanteDeadline()
+            });
+            aux = aux.getNext();
+            /*
+            model.addRow(new Proceso[] {
+                    p.getID(),
+                    p.getPrioridad(),
+                    p.getNombre(),
+                    p.getMAR(),
+                    p.getPC(),
+                    p.getT
+            iempoRestanteDeadline()
+            });
+            aux = aux.getNext();
+            */
+        }
         }
     }
 

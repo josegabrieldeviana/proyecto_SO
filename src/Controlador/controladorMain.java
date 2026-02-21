@@ -7,6 +7,7 @@ package Controlador;
 import Modelo.Algoritmos_Plan.FCFS;
 import Modelo.Algoritmos_Plan.RoundRobin;
 import Modelo.Algoritmos_Plan.SRT;
+import Modelo.EDD.DebugObject;
 import Modelo.EDD.Lista;
 import Modelo.EDD.ListaSimple;
 import Modelo.clasesSO.*;
@@ -42,6 +43,7 @@ public class controladorMain {
         
         Lista<Proceso> colaNuevo = new Lista<>(); // puede funcionar como pila por addfirst o deletefirst, etc
         RTOS1.xPRand(10, colaNuevo); //LOS 10 PROCESOS INICIALES
+//        System.out.println("-----------------------LOS READY-----------------------");
 
         /*
          * DEBUGGING LOGICA
@@ -70,7 +72,18 @@ public class controladorMain {
 
         
         
-        
+//        System.out.println("[DEBUG MAIN]  -----------------------LOS READY-----------------------");
+//        int listaTamaño=colasPorEstado.BuscarPosicion(0).size();
+//        for (int i = 0; i <= colasPorEstado.BuscarPosicion(0).size(); i++) {
+//            Proceso readycolaproceso;
+//            readycolaproceso = colasPorEstado.BuscarPosicion(0).BuscarPosicion(i);
+//            if (readycolaproceso==null) {
+//             System.out.println("");
+//             break;
+//            }else{
+//                readycolaproceso.debugPrint();
+//            }
+//        }
         
 
         RelojSO reloj = new RelojSO();
@@ -99,7 +112,6 @@ public class controladorMain {
         SRT SRT=new SRT(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
         vista.setSrtThread(SRT);
         SRT.start();
-        
         
         
         
