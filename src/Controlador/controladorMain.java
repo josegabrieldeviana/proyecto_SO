@@ -100,14 +100,14 @@ public class controladorMain {
          
         /* FCFS */
         FCFS FCFS=new FCFS(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
-        
-        
-//los atributos de cpu, ram y disco son todos semaforos
-        //P1.debugPrint();
-        //System.exit(0);
-        
+        vista.setFcfsThread(FCFS);
+     
 
         
+
+        /* RR */
+        RoundRobin RR=new RoundRobin(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
+        vista.setRRThread(RR);
         
         
         /* SRT */
@@ -115,16 +115,13 @@ public class controladorMain {
         vista.setSrtThread(SRT);
         
         
-        
-        
-        /* RR */
-        RoundRobin RR=new RoundRobin(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
-        
         /*PEPP (preemptiva)*/
         PEPP PEPP=new PEPP(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
+        vista.setPEPPThread(PEPP);
         
         /*EDF*/
         EDF EDF=new EDF(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
+        vista.setEDFThread(EDF);
 
     }
 

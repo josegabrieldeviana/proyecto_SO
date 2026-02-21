@@ -14,7 +14,7 @@ import java.util.concurrent.Semaphore;
  *
  * @author joseg
  */
-public class EDF{
+public class EDF extends Thread{
         public RTOSmaster RTOS;
     
     /*añadidura el 19 de feb, esto es para poder acceder a atributos modificados, abajo del constructor
@@ -36,8 +36,12 @@ public class EDF{
     
     private volatile boolean running=true;
     public void paraAlgoritmo(){
+        try {
         this.running = false;
-        System.out.println("EDF -> Deteniendo planificador por solicitud externa.");
+        System.out.println("EDF -> Deteniendo planificador por solicitud externa.");    
+        } catch (Exception e) {
+        }
+        
     }
     
     public void run() {
