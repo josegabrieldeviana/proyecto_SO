@@ -35,6 +35,18 @@ public class Vista_1 extends javax.swing.JFrame {
        public void setSrtThread(Modelo.Algoritmos_Plan.SRT srtThread){
         this.srtThread=srtThread;
     }
+       public void setFcfsThread(Modelo.Algoritmos_Plan.SRT srtThread){
+        this.srtThread=srtThread;
+    }
+       public void setRRThread(Modelo.Algoritmos_Plan.SRT srtThread){
+        this.srtThread=srtThread;
+    }
+       public void setPEPPThread(Modelo.Algoritmos_Plan.SRT srtThread){
+        this.srtThread=srtThread;
+    }
+       public void setEDFThread(Modelo.Algoritmos_Plan.SRT srtThread){
+        this.srtThread=srtThread;
+    }
     
        
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Vista_1.class.getName());
@@ -44,7 +56,7 @@ public class Vista_1 extends javax.swing.JFrame {
     private javax.swing.JButton btnGenerar20;
     private javax.swing.JSpinner duraCiclospinner;
     private Modelo.Algoritmos_Plan.SRT srtThread; //para que GUI interactúe con el algoritmo de planificación.
-    
+    private javax.swing.Timer pollingTimer; //esto nos servirá para esperar un tiempo determinado y REFRESCAR LAS TABLAS.
  
     /**
      * Creates new form Vista_1
@@ -74,6 +86,8 @@ public class Vista_1 extends javax.swing.JFrame {
             PSWbutton.setText("Modo: USUARIO");
         }
 
+        
+        
         relojNuevo.start();
 
         // Timer para actualizar la interfaz del reloj
@@ -81,6 +95,17 @@ public class Vista_1 extends javax.swing.JFrame {
             relojNUMERO.setText(String.valueOf(relojref.getCiclos()));
         }).start();
 
+        
+        /*
+        ver si esto cambia algo
+        */
+        //ESTO ES PARA REFRESCAR LOS PROCESOS. SOLO START DESPUES DE ELEGIR PLANIFICACIÓN
+        this.pollingTimer=new javax.swing.Timer(100, new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(java.awt.event.ActionEvent e) {
+            actualizarTableGeneral(); // Llamamos al método que llena las tablas
+        }
+    });
     }
 
     /**
@@ -694,13 +719,21 @@ public class Vista_1 extends javax.swing.JFrame {
 
     private void genSimActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_genSimActionPerformed
         int planEscogida=politicasCOMBOBOX.getSelectedIndex();
+        
         switch (planEscogida){
             case 0:
                 
             case 1:
                 
             case 2:
-                this.srtThread.start();
+                
+                if (this.srtThread==null || !this.srtThread.isAlive()) {
+                    System.out.println("[DEBUG] INICIALIZANDO.");
+                    this.srtThread.start();
+                    this.pollingTimer.start();
+                }else{
+                    System.out.println("[DEBUG] UNA INSTANCIA THREAD SRT AUN EN EJECUCION");
+                }                
             case 3:
                 
             case 4:

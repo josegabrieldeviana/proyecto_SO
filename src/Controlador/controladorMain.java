@@ -4,7 +4,9 @@
  */
 package Controlador;
 
+import Modelo.Algoritmos_Plan.EDF;
 import Modelo.Algoritmos_Plan.FCFS;
+import Modelo.Algoritmos_Plan.PEPP;
 import Modelo.Algoritmos_Plan.RoundRobin;
 import Modelo.Algoritmos_Plan.SRT;
 import Modelo.EDD.DebugObject;
@@ -97,7 +99,7 @@ public class controladorMain {
          
          
         /* FCFS */
-       // FCFS FCFS=new FCFS(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
+        FCFS FCFS=new FCFS(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
         
         
 //los atributos de cpu, ram y disco son todos semaforos
@@ -116,7 +118,13 @@ public class controladorMain {
         
         
         /* RR */
-        RoundRobin robin = new RoundRobin(RTOS1, 4);
+        RoundRobin RR=new RoundRobin(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
+        
+        /*PEPP (preemptiva)*/
+        PEPP PEPP=new PEPP(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
+        
+        /*EDF*/
+        EDF EDF=new EDF(colasPorEstado, cpu.capacidadCPU, disco.capacidadDISCO, ram.capacidadRAM, reloj);
 
     }
 

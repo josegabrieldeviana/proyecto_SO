@@ -48,7 +48,7 @@ public class SRT extends Thread {
     public Semaphore disco;
     public Semaphore ram;
     public RelojSO reloj;
-    public int RefreshSignal; //esta variable va aumentar cada vez que se 
+    ; //esta variable va aumentar cada vez que se 
 
     /*
      * En una simulación de sistema operativo, no se desea que el programador se

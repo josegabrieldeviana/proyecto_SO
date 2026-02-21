@@ -18,35 +18,29 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author joseg
  */
-public class FCFS {
-    /**
-     * Debo pasar el RTOSmaster como un parametro, puesto que en cada aplicación
-     * sistemas de planificación, el cambio de estados implican interrupciones
-     * que cambian de modo al RTOS. 
-     */
+public class FCFS extends Thread {
     public RTOSmaster RTOS;
-    
-    /*añadidura el 19 de feb, esto es para poder acceder a atributos modificados, abajo del constructor
-    se pondra el this. de c/uno*/
     public Lista<Lista<Proceso>> colasPorEstado;
     public Semaphore cpu;
     public Semaphore disco;
     public Semaphore ram;
     public RelojSO reloj;
     
-    //PARA CUANDO HAGA LA INTEGRACIÓN CON EL DEFAULT MODEL CUSTOM QUE TENGA LAS LISTAS Y TAL.
- //   public FCFS(RTOSmaster RTOS, DefaultTableModel modelNew) {
- //       this.RTOS = RTOS;
-        
-//}
-    
     public FCFS(Lista<Lista<Proceso>> colasPorEstado, Semaphore cpu, Semaphore disco, Semaphore ram, RelojSO reloj) {
-        
-        this.colasPorEstado=colasPorEstado;
-        this.cpu=cpu;
-        this.disco=disco;
-        this.ram=ram;
-        this.reloj=reloj;
+        this.RTOS = RTOS;
+        this.colasPorEstado = colasPorEstado;
+        this.cpu = cpu;
+        this.disco = disco;
+        this.ram = ram;
+        this.reloj = reloj;
+    }
+    
+    
+}
+
+
+/*
+CODIGO VIEJO
 
         //iterar por los new y pasarlo a ready
         for (int i = 0; i < colasPorEstado.BuscarPosicion(0).size(); i++) {
@@ -96,24 +90,18 @@ public class FCFS {
             
             
             */
-            //PReadyIteracion.start();
-            try {
-                cpu.acquire();
-                System.out.println("");
-            } catch (Exception e) {
-            }
-            /*
-            aqui abajo hago sección critica para cada uno de los recursos y después se va-
-            */
-        }
-        //iterar por los running y pasarlo a exit
-        for (int i = 0; i < colasPorEstado.BuscarPosicion(2).size(); i++) {
-            Proceso PRunningIteracion=colasPorEstado.BuscarPosicion(2).BuscarPosicion(i);
-            PRunningIteracion.cambiarEstado("EXIT", colasPorEstado);
-            
-            ////sacando a 
-        }
-}
+//            //PReadyIteracion.start();
+//            try {
+//                cpu.acquire();
+//                System.out.println("");
+//            } catch (Exception e) {
+//            }
+//            /*
+//            aqui abajo hago sección critica para cada uno de los recursos y después se va-
+//            */
+//        }
+//        //iterar por los running y pasarlo a exit
+//        for (int i = 0; i < colasPorEstado.BuscarPosicion(2).size(); i++) {
+//            Proceso PRunningIteracion=colasPorEstado.BuscarPosicion(2).BuscarPosicion(i);
+//            PRunningIteracion.cambiarEstado("EXIT", colasPorEstado);
 
-
-}

@@ -4,20 +4,31 @@
  */
 package Modelo.Algoritmos_Plan;
 
+import Modelo.EDD.Lista;
+import Modelo.clasesSO.Proceso;
 import Modelo.clasesSO.RTOSmaster;
+import Modelo.clasesSO.RelojSO;
+import java.util.concurrent.Semaphore;
 
 /**
  *
  * @author joseg
  */
-public class PEPP {
-    /**
-     * Debo pasar el RTOSmaster como un parametro, puesto que en cada aplicación
-     * sistemas de planificación, el cambio de estados implican interrupciones
-     * que cambian de modo al RTOS. 
-     */
-    public RTOSmaster RTOS; 
+public class PEPP extends Thread{
+    public RTOSmaster RTOS;
+    public Lista<Lista<Proceso>> colasPorEstado;
+    public Semaphore cpu;
+    public Semaphore disco;
+    public Semaphore ram;
+    public RelojSO reloj; 
 
-    public PEPP(RTOSmaster RTOS) {
+    public PEPP(Lista<Lista<Proceso>> colasPorEstado, Semaphore cpu, Semaphore disco, Semaphore ram, RelojSO reloj) {
         this.RTOS = RTOS;
-}}
+        this.colasPorEstado = colasPorEstado;
+        this.cpu = cpu;
+        this.disco = disco;
+        this.ram = ram;
+        this.reloj = reloj;
+    }
+
+}
