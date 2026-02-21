@@ -137,19 +137,19 @@ public class EDF extends Thread {
                         "  EDF -> Tick #" + ticksTotales + " recibido del reloj.\n" +
                         "[==================================================]");
 
-                // ── 1) Verificar si ya terminaron todos los procesos ────────
+                // ── 1) Verificar si hay procesos ────────
                 if (verificarListoYRunningVacio()) {
-                    break;
+                    System.out.println("EDF -> IDLE: Esperando procesos...");
+                } else {
+                    // ── 2) Decrementar deadlines de todos los procesos activos ──
+                    decrementarDeadlines();
+
+                    // ── 3) Ejecutar un tick en el proceso RUNNING ───────────────
+                    procesarTickEnEjecucion();
+
+                    // ── 4) Aplicar política EDF (selección / apropiación) ───────
+                    preemptEDF();
                 }
-
-                // ── 2) Decrementar deadlines de todos los procesos activos ──
-                decrementarDeadlines();
-
-                // ── 3) Ejecutar un tick en el proceso RUNNING ───────────────
-                procesarTickEnEjecucion();
-
-                // ── 4) Aplicar política EDF (selección / apropiación) ───────
-                preemptEDF();
 
                 // ── 5) Imprimir snapshot completo del sistema ───────────────
                 imprimirEstadoCompleto();

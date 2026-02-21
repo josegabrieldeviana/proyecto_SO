@@ -1,5 +1,4 @@
 
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -473,12 +472,20 @@ public class Proceso extends Thread {
             return false;
         }
 
-        // Si la transición es válida, cambiar el estado
-        this.Status = estadoDestino;
-        
-        
+        // SI LA TRANSICIÓN ES VÁLIDA:
+        // 1) ELIMINAR el proceso de cualquier cola donde esté actualmente (para evitar
+        // duplicados)
+        if (ColasEstadoDestino != null) {
+            for (int i = 0; i < 7; i++) { // Las 7 colas (0 a 6)
+                Lista<Proceso> colaActual = ColasEstadoDestino.BuscarPosicion(i);
+                if (colaActual != null) {
+                    colaActual.remove(this);
+                }
+            }
+        }
 
-        // Identificar el índice de la cola de destino
+        // 2) Cambiar el estado interno e identificar el índice de la cola de destino
+        this.Status = estadoDestino;
         int indiceCola = -1;
         switch (estadoDestino) {
             case "NEW":
@@ -514,13 +521,13 @@ public class Proceso extends Thread {
                 return false;
         }
 
-        // Añadir el proceso a la cola correspondiente
+        // 3) Añadir el proceso a la cola correspondiente
         if (ColasEstadoDestino != null) {
             Lista<Proceso> colaDestino = ColasEstadoDestino.BuscarPosicion(indiceCola);
             if (colaDestino != null) {
                 colaDestino.addLast(this);
-                System.out
-                        .println("[INFO] Proceso añadido a la cola " + estadoDestino + " (indice " + indiceCola + ")");
+                System.out.println("[INFO] Proceso P" + this.ID + " movido a la cola " + estadoDestino + " (indice "
+                        + indiceCola + ")");
             } else {
                 System.err.println("[ERROR] La cola de destino para el índice " + indiceCola + " es nula.");
                 return false;
@@ -539,14 +546,15 @@ public class Proceso extends Thread {
     }
 
     @Override
-    public void run() { //EL BURST TIME (S)=CANTIDAD DE INSTRUCCIONES EN UN PROCESO*N INSTRUCCIONES EN UN CICLO=TIEMPO EN CPU.
-        for (int i = 0; i < burstTime; i++) { //CICLO
+    public void run() { // EL BURST TIME (S)=CANTIDAD DE INSTRUCCIONES EN UN PROCESO*N INSTRUCCIONES EN
+                        // UN CICLO=TIEMPO EN CPU.
+        for (int i = 0; i < burstTime; i++) { // CICLO
             try {
-                System.out.println("[DEBUG] DURACION DE PROCESO RUNNING"+RelojSO.getCicloDuracion());
-                Thread.sleep(RelojSO.getCicloDuracion()); //VA A ESTAR ACTIVO EL THREAD POR EL TIEMPO EN CADA CICLO
+                System.out.println("[DEBUG] DURACION DE PROCESO RUNNING" + RelojSO.getCicloDuracion());
+                Thread.sleep(RelojSO.getCicloDuracion()); // VA A ESTAR ACTIVO EL THREAD POR EL TIEMPO EN CADA CICLO
                 this.PC++;
                 this.MAR++;
-                System.out.println("[DEBUG] SEGUNDOS EN EJECUCIÓN DE PROCESO......"+i);
+                System.out.println("[DEBUG] SEGUNDOS EN EJECUCIÓN DE PROCESO......" + i);
             } catch (InterruptedException ex) {
                 System.err.println("[ERROR] Proceso " + this.ID + " interrumpido.");
                 return;
@@ -556,26 +564,25 @@ public class Proceso extends Thread {
         System.out.println(
                 "[INFO] Proceso " + this.ID + " ha terminado su ejecución después de " + burstTime + " ciclos.");
     }
-    
+
     /*
-    NUNCA se va a ejecutar en running los procesos porque .stop y .interrupt
-    pueden ser riesgosas en su ejecución y causan más overhead del necesario
-    por tanto, los procesos se ejecutaran con el su¡iguiente metodo
-    
-    que regresaran "TRUE" si ya se ha "Ejeecutado" tras su BT
-    
-    Poner a ejecutar tick de esta forma nos permite controlar que cuando "ocurra"
-    un tick con semaforos, que este pueda hacerse
-    */
-      public boolean ejecutarTick() {
-        
+     * NUNCA se va a ejecutar en running los procesos porque .stop y .interrupt
+     * pueden ser riesgosas en su ejecución y causan más overhead del necesario
+     * por tanto, los procesos se ejecutaran con el su¡iguiente metodo
+     * 
+     * que regresaran "TRUE" si ya se ha "Ejeecutado" tras su BT
+     * 
+     * Poner a ejecutar tick de esta forma nos permite controlar que cuando "ocurra"
+     * un tick con semaforos, que este pueda hacerse
+     */
+    public boolean ejecutarTick() {
+
         if (this.burstTime > 0) {
             this.burstTime--;
-            System.out.println(this.ID+"  SE HA EJECUTADO UN TICK DE  "+this.Nombre + "TIEMPO RESTANTE: "+this.burstTime);
+            System.out.println(
+                    this.ID + "  SE HA EJECUTADO UN TICK DE  " + this.Nombre + "TIEMPO RESTANTE: " + this.burstTime);
         }
         return this.burstTime <= 0; // Devuelve true si terminó
     }
-
-    
 
 }
