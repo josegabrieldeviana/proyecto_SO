@@ -33,13 +33,13 @@ public class EDF extends Thread {
 
     /**
      * Lista de colas por estado:
-     *   índice 0 = NEW
-     *   índice 1 = READY
-     *   índice 2 = RUNNING
-     *   índice 3 = BLOCKED
-     *   índice 4 = READY SUSPENDED
-     *   índice 5 = BLOCKED SUSPENDED
-     *   índice 6 = EXIT
+     * índice 0 = NEW
+     * índice 1 = READY
+     * índice 2 = RUNNING
+     * índice 3 = BLOCKED
+     * índice 4 = READY SUSPENDED
+     * índice 5 = BLOCKED SUSPENDED
+     * índice 6 = EXIT
      */
     public Lista<Lista<Proceso>> colasPorEstado;
 
@@ -60,11 +60,13 @@ public class EDF extends Thread {
     /** Número total de ticks procesados desde el inicio. */
     private int ticksTotales;
 
-    /** Número total de cambios de contexto (preemptions + asignaciones iniciales). */
+    /**
+     * Número total de cambios de contexto (preemptions + asignaciones iniciales).
+     */
     private int cambiosDeContexto;
 
     // ──────────────────────────────────────────────────────────────────────────
-    //  CONSTRUCTORES
+    // CONSTRUCTORES
     // ──────────────────────────────────────────────────────────────────────────
 
     /**
@@ -78,13 +80,13 @@ public class EDF extends Thread {
      * @param reloj          Reloj del SO que emite ticks periódicos.
      */
     public EDF(RTOSmaster RTOS, Lista<Lista<Proceso>> colasPorEstado, RelojSO reloj) {
-        this.RTOS           = RTOS;
+        this.RTOS = RTOS;
         this.colasPorEstado = colasPorEstado;
-        this.reloj          = reloj;
+        this.reloj = reloj;
         this.procesosCompletados = 0;
-        this.deadlinesMissed     = 0;
-        this.ticksTotales        = 0;
-        this.cambiosDeContexto   = 0;
+        this.deadlinesMissed = 0;
+        this.ticksTotales = 0;
+        this.cambiosDeContexto = 0;
 
         // Mover todos los procesos NEW → READY al inicializar
         System.out.println("EDF -> Inicializando planificador. Moviendo procesos NEW a READY...");
@@ -110,17 +112,17 @@ public class EDF extends Thread {
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    //  HILO PRINCIPAL  (run)
+    // HILO PRINCIPAL (run)
     // ──────────────────────────────────────────────────────────────────────────
 
     /**
      * Bucle principal del planificador EDF.
      *
      * Por cada tick del RelojSO:
-     *   1. Decrementa el tiempoRestanteDeadline de todos los procesos activos.
-     *   2. Ejecuta un tick en el proceso RUNNING (si existe).
-     *   3. Aplica la lógica EDF de selección/apropiación.
-     *   4. Imprime un snapshot completo del estado del sistema en consola.
+     * 1. Decrementa el tiempoRestanteDeadline de todos los procesos activos.
+     * 2. Ejecuta un tick en el proceso RUNNING (si existe).
+     * 3. Aplica la lógica EDF de selección/apropiación.
+     * 4. Imprime un snapshot completo del estado del sistema en consola.
      */
     @Override
     public void run() {
@@ -131,9 +133,9 @@ public class EDF extends Thread {
                 reloj.getCicloEvent().acquire();
                 ticksTotales++;
                 System.out.println("\n" +
-                    "╔══════════════════════════════════════════════════╗\n" +
-                    "  EDF -> Tick #" + ticksTotales + " recibido del reloj.\n" +
-                    "╚══════════════════════════════════════════════════╝");
+                        "[==================================================]\n" +
+                        "  EDF -> Tick #" + ticksTotales + " recibido del reloj.\n" +
+                        "[==================================================]");
 
                 // ── 1) Verificar si ya terminaron todos los procesos ────────
                 if (verificarListoYRunningVacio()) {
@@ -165,7 +167,7 @@ public class EDF extends Thread {
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    //  LÓGICA EDF
+    // LÓGICA EDF
     // ──────────────────────────────────────────────────────────────────────────
 
     /**
@@ -185,7 +187,7 @@ public class EDF extends Thread {
         if (colaReady != null) {
             colaReady.addLast(p);
             System.out.println("EDF -> Proceso P" + p.getID() + " (" + p.getNombre() +
-                               ") agregado a READY. Deadline: " + p.getTiempoRestanteDeadline());
+                    ") agregado a READY. Deadline: " + p.getTiempoRestanteDeadline());
         }
     }
 
@@ -208,7 +210,7 @@ public class EDF extends Thread {
                 if (p.getTiempoRestanteDeadline() <= 0 && p.getBurstTime() > 0) {
                     deadlinesMissed++;
                     System.err.println("EDF -> ¡DEADLINE MISS! Proceso P" + p.getID() +
-                                       " (" + p.getNombre() + ") no alcanzó su deadline en READY.");
+                            " (" + p.getNombre() + ") no alcanzó su deadline en READY.");
                 }
                 aux = aux.getNext();
             }
@@ -227,7 +229,7 @@ public class EDF extends Thread {
                 if (p.getTiempoRestanteDeadline() <= 0 && p.getBurstTime() > 0) {
                     deadlinesMissed++;
                     System.err.println("EDF -> ¡DEADLINE MISS! Proceso P" + p.getID() +
-                                       " (" + p.getNombre() + ") no alcanzó su deadline en RUNNING.");
+                            " (" + p.getNombre() + ") no alcanzó su deadline en RUNNING.");
                 }
                 aux = aux.getNext();
             }
@@ -247,29 +249,29 @@ public class EDF extends Thread {
 
         Proceso pActual = colaRunning.buscarLast();
         System.out.println("EDF -> Ejecutando P" + pActual.getID() +
-                           " (" + pActual.getNombre() +
-                           ") | BurstTime restante: " + pActual.getBurstTime() +
-                           " | Deadline restante: " + pActual.getTiempoRestanteDeadline());
+                " (" + pActual.getNombre() +
+                ") | BurstTime restante: " + pActual.getBurstTime() +
+                " | Deadline restante: " + pActual.getTiempoRestanteDeadline());
 
         boolean terminado = pActual.ejecutarTick();
 
         if (terminado) {
             procesosCompletados++;
             System.out.println("EDF -> P" + pActual.getID() + " (" + pActual.getNombre() +
-                               ") ha TERMINADO. Total completados: " + procesosCompletados);
+                    ") ha TERMINADO. Total completados: " + procesosCompletados);
             pActual.cambiarEstado("EXIT", colasPorEstado);
         }
     }
 
     /**
      * Aplica la selección EDF:
-     *   - Busca el proceso con menor tiempoRestanteDeadline en la cola READY.
-     *   - Si la CPU está libre: lo pone en RUNNING.
-     *   - Si la CPU está ocupada y el candidato tiene deadline MENOR que el proceso
-     *     actual, realiza la apropiación (preemption).
+     * - Busca el proceso con menor tiempoRestanteDeadline en la cola READY.
+     * - Si la CPU está libre: lo pone en RUNNING.
+     * - Si la CPU está ocupada y el candidato tiene deadline MENOR que el proceso
+     * actual, realiza la apropiación (preemption).
      */
     private void preemptEDF() {
-        Lista<Proceso> colaReady   = colasPorEstado.BuscarPosicion(1);
+        Lista<Proceso> colaReady = colasPorEstado.BuscarPosicion(1);
         Lista<Proceso> colaRunning = colasPorEstado.BuscarPosicion(2);
 
         if (colaReady == null || colaReady.isEmpty()) {
@@ -285,11 +287,11 @@ public class EDF extends Thread {
         // ── CASO A: CPU vacía ─────────────────────────────────────────────────
         if (colaRunning == null || colaRunning.isEmpty()) {
             System.out.println("EDF -> CPU vacía. Seleccionando P" + candidatoEDF.getID() +
-                               " (Deadline: " + candidatoEDF.getTiempoRestanteDeadline() + ") para RUNNING.");
+                    " (Deadline: " + candidatoEDF.getTiempoRestanteDeadline() + ") para RUNNING.");
             candidatoEDF.cambiarEstado("RUNNING", colasPorEstado);
             cambiosDeContexto++;
 
-        // ── CASO B: CPU ocupada, comparar deadlines ───────────────────────────
+            // ── CASO B: CPU ocupada, comparar deadlines ───────────────────────────
         } else {
             Proceso procesoRunning = colaRunning.buscarLast();
             if (procesoRunning == null) {
@@ -299,32 +301,36 @@ public class EDF extends Thread {
             if (candidatoEDF.getTiempoRestanteDeadline() < procesoRunning.getTiempoRestanteDeadline()) {
                 // ── PREEMPTION ─────────────────────────────────────────────
                 System.out.println("EDF -> PREEMPTION: P" + candidatoEDF.getID() +
-                                   " (Deadline: " + candidatoEDF.getTiempoRestanteDeadline() +
-                                   ") desplaza a P" + procesoRunning.getID() +
-                                   " (Deadline: " + procesoRunning.getTiempoRestanteDeadline() + ")");
+                        " (Deadline: " + candidatoEDF.getTiempoRestanteDeadline() +
+                        ") desplaza a P" + procesoRunning.getID() +
+                        " (Deadline: " + procesoRunning.getTiempoRestanteDeadline() + ")");
 
                 // Cambio de modo a KERNEL para el cambio de contexto
-                if (RTOS != null) { RTOS.PSW = 0; }
+                if (RTOS != null) {
+                    RTOS.PSW = 0;
+                }
 
-                procesoRunning.cambiarEstado("READY", colasPorEstado);  // Devolver a READY
-                candidatoEDF.cambiarEstado("RUNNING", colasPorEstado);  // Llevar a CPU
+                procesoRunning.cambiarEstado("READY", colasPorEstado); // Devolver a READY
+                candidatoEDF.cambiarEstado("RUNNING", colasPorEstado); // Llevar a CPU
                 cambiosDeContexto++;
 
                 // Volver a modo USUARIO
-                if (RTOS != null) { RTOS.PSW = 1; }
+                if (RTOS != null) {
+                    RTOS.PSW = 1;
+                }
 
             } else {
                 // Sin cambio: el proceso actual es el de menor deadline
                 System.out.println("EDF -> Manteniendo P" + procesoRunning.getID() +
-                                   " (Deadline: " + procesoRunning.getTiempoRestanteDeadline() +
-                                   "). Candidato P" + candidatoEDF.getID() +
-                                   " tiene deadline mayor (" + candidatoEDF.getTiempoRestanteDeadline() + ").");
+                        " (Deadline: " + procesoRunning.getTiempoRestanteDeadline() +
+                        "). Candidato P" + candidatoEDF.getID() +
+                        " tiene deadline mayor (" + candidatoEDF.getTiempoRestanteDeadline() + ").");
             }
         }
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    //  SNAPSHOT DE CONSOLA
+    // SNAPSHOT DE CONSOLA
     // ──────────────────────────────────────────────────────────────────────────
 
     /**
@@ -332,56 +338,57 @@ public class EDF extends Thread {
      * al finalizar cada tick. Muestra cada proceso con todos sus datos relevantes.
      *
      * Columnas por proceso:
-     *   ID | Nombre | Status | Bound | BurstTime | Deadline restante | Prioridad | PC | MAR
+     * ID | Nombre | Status | Bound | BurstTime | Deadline restante | Prioridad | PC
+     * | MAR
      */
     private void imprimirEstadoCompleto() {
         String[] nombresEstados = {
-            "NEW (0)", "READY (1)", "RUNNING (2)", "BLOCKED (3)",
-            "READY_SUSPENDED (4)", "BLOCKED_SUSPENDED (5)", "EXIT (6)"
+                "NEW (0)", "READY (1)", "RUNNING (2)", "BLOCKED (3)",
+                "READY_SUSPENDED (4)", "BLOCKED_SUSPENDED (5)", "EXIT (6)"
         };
 
-        System.out.println("\n┌─────────────────────────────────────────────────────────────────────────────────────┐");
-        System.out.printf("│  %-82s│%n", " ESTADO DEL SISTEMA — Tick #" + ticksTotales);
-        System.out.println("├─────────────────────────────────────────────────────────────────────────────────────┤");
+        System.out.println("\n+-------------------------------------------------------------------------------------+");
+        System.out.printf("|  %-82s|%n", " ESTADO DEL SISTEMA - Tick #" + ticksTotales);
+        System.out.println("+-------------------------------------------------------------------------------------+");
 
         for (int i = 0; i < nombresEstados.length; i++) {
             Lista<Proceso> cola = colasPorEstado.BuscarPosicion(i);
             int tamanio = (cola == null) ? 0 : cola.size();
 
-            System.out.printf("│  Cola %-25s  (%d proceso/s)%-30s│%n",
-                nombresEstados[i], tamanio, "");
+            System.out.printf("|  Cola %-25s  (%d proceso/s)%-30s|%n",
+                    nombresEstados[i], tamanio, "");
 
             if (cola != null && !cola.isEmpty()) {
                 // Encabezado de columnas
-                System.out.printf("│    %-4s %-22s %-10s %-5s %-9s %-10s %-4s %-6s %-6s│%n",
-                    "ID", "Nombre", "Status", "Bound", "BurstTime", "Deadline", "Pri", "PC", "MAR");
-                System.out.println("│    " + "─".repeat(81) + "│");
+                System.out.printf("|    %-4s %-22s %-10s %-5s %-9s %-10s %-4s %-6s %-6s|%n",
+                        "ID", "Nombre", "Status", "Bound", "BurstTime", "Deadline", "Pri", "PC", "MAR");
+                System.out.println("|    " + "-".repeat(81) + "|");
 
                 // Filas de procesos
                 Nodo<Proceso> aux = cola.Head;
                 while (aux != null) {
                     Proceso p = aux.getData();
-                    System.out.printf("│    %-4d %-22s %-10s %-5s %-9d %-10d %-4d %-6d %-6d│%n",
-                        p.getID(),
-                        truncar(p.getNombre(), 22),
-                        truncar(p.getStatus(), 10),
-                        truncar(p.getBound(), 5),
-                        p.getBurstTime(),
-                        p.getTiempoRestanteDeadline(),
-                        p.getPrioridad(),
-                        p.getPC(),
-                        p.getMAR()
-                    );
+                    System.out.printf("|    %-4d %-22s %-10s %-5s %-9d %-10d %-4d %-6d %-6d|%n",
+                            p.getID(),
+                            truncar(p.getNombre(), 22),
+                            truncar(p.getStatus(), 10),
+                            truncar(p.getBound(), 5),
+                            p.getBurstTime(),
+                            p.getTiempoRestanteDeadline(),
+                            p.getPrioridad(),
+                            p.getPC(),
+                            p.getMAR());
                     aux = aux.getNext();
                 }
             }
-            System.out.println("├─────────────────────────────────────────────────────────────────────────────────────┤");
+            System.out
+                    .println("+-------------------------------------------------------------------------------------+");
         }
 
         // Pie con estadísticas rápidas
-        System.out.printf("│  Completados: %-5d  Deadline Misses: %-5d  Cambios Contexto: %-5d  Tick: %-6d│%n",
-            procesosCompletados, deadlinesMissed, cambiosDeContexto, ticksTotales);
-        System.out.println("└─────────────────────────────────────────────────────────────────────────────────────┘\n");
+        System.out.printf("|  Completados: %-5d  Deadline Misses: %-5d  Cambios Contexto: %-5d  Tick: %-6d|%n",
+                procesosCompletados, deadlinesMissed, cambiosDeContexto, ticksTotales);
+        System.out.println("+-------------------------------------------------------------------------------------+\n");
     }
 
     /**
@@ -392,12 +399,13 @@ public class EDF extends Thread {
      * @return Cadena truncada o la original si es más corta.
      */
     private String truncar(String s, int max) {
-        if (s == null) return "null";
+        if (s == null)
+            return "null";
         return s.length() <= max ? s : s.substring(0, max - 1) + "…";
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    //  UTILIDADES
+    // UTILIDADES
     // ──────────────────────────────────────────────────────────────────────────
 
     /**
@@ -407,9 +415,9 @@ public class EDF extends Thread {
      * @return true si ambas colas están vacías.
      */
     public boolean verificarListoYRunningVacio() {
-        Lista<Proceso> colaReady   = colasPorEstado.BuscarPosicion(1);
+        Lista<Proceso> colaReady = colasPorEstado.BuscarPosicion(1);
         Lista<Proceso> colaRunning = colasPorEstado.BuscarPosicion(2);
-        boolean readyVacia   = (colaReady   == null || colaReady.isEmpty());
+        boolean readyVacia = (colaReady == null || colaReady.isEmpty());
         boolean runningVacia = (colaRunning == null || colaRunning.isEmpty());
 
         if (readyVacia && runningVacia) {
@@ -445,11 +453,22 @@ public class EDF extends Thread {
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    //  GETTERS
+    // GETTERS
     // ──────────────────────────────────────────────────────────────────────────
 
-    public int getProcesosCompletados()  { return procesosCompletados; }
-    public int getDeadlinesMissed()      { return deadlinesMissed;     }
-    public int getTicksTotales()         { return ticksTotales;        }
-    public int getCambiosDeContexto()    { return cambiosDeContexto;   }
+    public int getProcesosCompletados() {
+        return procesosCompletados;
+    }
+
+    public int getDeadlinesMissed() {
+        return deadlinesMissed;
+    }
+
+    public int getTicksTotales() {
+        return ticksTotales;
+    }
+
+    public int getCambiosDeContexto() {
+        return cambiosDeContexto;
+    }
 }
