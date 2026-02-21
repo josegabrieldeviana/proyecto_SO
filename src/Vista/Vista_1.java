@@ -15,10 +15,12 @@ import javax.swing.table.DefaultTableModel;
 import Modelo.EDD.ProcesoTableModel; //para que las listas de estados del main, cada vez que se les ponga un proceso, aparezcan en las JTable
 import Modelo.EDD.Lista;
 import Modelo.EDD.Nodo;
+import Modelo.EDD.TextAreaOutputStream;
 import Modelo.clasesSO.Proceso;
 import Modelo.clasesSO.RelojSO;
 import javax.swing.JSpinner;
 import raven.tabbed.TabbedPaneCustom;
+import java.io.PrintStream;
 
 /**
  *
@@ -116,6 +118,7 @@ public class Vista_1 extends javax.swing.JFrame {
         
         
         relojNuevo.start();
+        //configurarConsola();
 
         // Timer para actualizar la interfaz del reloj
         new javax.swing.Timer(100, (e) -> {
@@ -872,6 +875,23 @@ private void stopAnyRunningThread() {
 }
     */
     
+    private void configurarConsola() {
+        // "txtConsola" es el nombre de la variable de tu JTextArea
+        TextAreaOutputStream taos = new TextAreaOutputStream(outputStreamConsole);
+        
+        // Creamos un PrintStream que usa nuestra clase personalizada
+        java.io.PrintStream ps = new java.io.PrintStream(taos);
+        
+        // Redirigimos la salida estándar (System.out) y la de errores (System.err)
+        System.setOut(ps);
+        System.setErr(ps);
+        
+        System.out.println("Sistema -> Consola redirigida correctamente.");
+        System.out.println("SRT -> Esperando inicio de planificación...");
+    }
+
+
+    
     private boolean AnyRunningThread() {
         
         int procesoCorriendo=0;
@@ -899,38 +919,40 @@ private void stopAnyRunningThread() {
                 check here if there any other scheduler threads are running. if they are, just stop them
                 */
                 fcfsThread.start();
+                break;
                 
             case 1:
                 /*
                 
                 */
                 rrThread.start();
-                
+                break;
             case 2:
                 /*
                 
                 */
                 srtThread.start();
-                
+                break;
                 
             case 3:
                 /*
                 
                 */
                 peppThread.start();
-                
+                break;
                 
             case 4:
                 /*
                 
                 */
                 edfThread.start();
-                
+                break;
                 
                 
         }}
     // GEN-LAST:event_genSimActionPerformed
 
+    
     private void resetCicloActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_resetCicloActionPerformed
         if (relojref != null) {
             try {
@@ -1002,68 +1024,58 @@ private void stopAnyRunningThread() {
     }
     
     public void actualizarTableGeneral(){
-        if (colasPorEstado==null){
-            return;}
-        DefaultTableModel tablaNuevos = (DefaultTableModel) newStatus.getModel(); 
-        DefaultTableModel tablaListos = (DefaultTableModel) readyStatus.getModel(); 
-        DefaultTableModel tablaRunning = (DefaultTableModel) runningStatus.getModel(); 
-        DefaultTableModel tablaBloqueados = (DefaultTableModel) blockedStatus.getModel(); 
-        DefaultTableModel tablaReadyS = (DefaultTableModel) readySStatus.getModel(); 
-        DefaultTableModel tablaBlockedS = (DefaultTableModel) blockedSStatus.getModel(); 
-        DefaultTableModel tablaExit = (DefaultTableModel) exitStatus.getModel(); 
+    if (colasPorEstado == null) return;
 
-        /*
-        Limpio todos los rows de las tablas
-        */
-        
-        
-        
-        Lista<DefaultTableModel> listaTablas=new Lista<DefaultTableModel>();
-        
-        listaTablas.addLast(tablaNuevos);
-        listaTablas.addLast(tablaListos);
-        listaTablas.addLast(tablaRunning);
-        listaTablas.addLast(tablaBloqueados);
-        listaTablas.addLast(tablaReadyS);
-        listaTablas.addLast(tablaBlockedS);
-        
-        tablaListos.setRowCount(0);
-        tablaRunning.setRowCount(0);
-        tablaBloqueados.setRowCount(0);
-        tablaReadyS.setRowCount(0);
-        tablaBlockedS.setRowCount(0);
-        tablaExit.setRowCount(0);
-        
-        //recorro cada una de las listas de estados disponible...
-        for (int i = 0; i <=colasPorEstado.size()-1; i++) {
-            //recorro cada lista dentro de colas por estado
-            Nodo<Proceso> aux = colasPorEstado.BuscarPosicion(i).Head; // vas a conseguir el primero de los nodos
-        while (aux != null) { // mientras que no haya ningún proceso anteriormente... (carga inicial de
-                              // procesos aleatorios)
-            Proceso p = aux.getData(); // consigues la referencia del proceso p
-            listaTablas.BuscarPosicion(i).addRow(new Object[] {
-                    p.getID(),
-                    p.getPrioridad(),
-                    p.getNombre(),
-                    p.getMAR(),
-                    p.getPC(),
-                    p.getTiempoRestanteDeadline()
+    // 1. Obtener modelos
+    DefaultTableModel tablaNuevos = (DefaultTableModel) newStatus.getModel();
+    DefaultTableModel tablaListos = (DefaultTableModel) readyStatus.getModel();
+    DefaultTableModel tablaRunning = (DefaultTableModel) runningStatus.getModel();
+    DefaultTableModel tablaBloqueados = (DefaultTableModel) blockedStatus.getModel();
+    DefaultTableModel tablaReadyS = (DefaultTableModel) readySStatus.getModel();
+    DefaultTableModel tablaBlockedS = (DefaultTableModel) blockedSStatus.getModel();
+    DefaultTableModel tablaExit = (DefaultTableModel) exitStatus.getModel();
+
+    // 2. Meter TODAS las tablas en la lista en el orden exacto de los estados (0 al 6)
+    Lista<DefaultTableModel> listaTablas = new Lista<>();
+    listaTablas.addLast(tablaNuevos);    // Posición 0: NUEVO
+    listaTablas.addLast(tablaListos);    // Posición 1: READY
+    listaTablas.addLast(tablaRunning);   // Posición 2: RUNNING
+    listaTablas.addLast(tablaBloqueados);// Posición 3: BLOCKED
+    listaTablas.addLast(tablaReadyS);    // Posición 4: READY_S
+    listaTablas.addLast(tablaBlockedS);  // Posición 5: BLOCKED_S
+    listaTablas.addLast(tablaExit);      // Posición 6: EXIT (FALTABA ESTA)
+
+    // 3. Limpiar TODAS las tablas antes de rellenar (Importante: tablaNuevos también)
+    tablaNuevos.setRowCount(0);
+    tablaListos.setRowCount(0);
+    tablaRunning.setRowCount(0);
+    tablaBloqueados.setRowCount(0);
+    tablaReadyS.setRowCount(0);
+    tablaBlockedS.setRowCount(0);
+    tablaExit.setRowCount(0);
+
+    // 4. Lógica de llenado optimizada
+    for (int i = 0; i < colasPorEstado.size(); i++) {
+        Lista<Proceso> colaActual = colasPorEstado.BuscarPosicion(i);
+        DefaultTableModel modeloActual = listaTablas.BuscarPosicion(i);
+
+        // Seguridad: Si por alguna razón la lista de tablas es más corta, saltar
+        if (modeloActual == null) continue;
+
+        Nodo<Proceso> aux = colaActual.Head; 
+        while (aux != null) {
+            Proceso p = aux.getData();
+            modeloActual.addRow(new Object[] {
+                p.getID(),
+                p.getPrioridad(),
+                p.getNombre(),
+                p.getMAR(),
+                p.getPC(),
+                p.getTiempoRestanteDeadline()
             });
             aux = aux.getNext();
-            /*
-            model.addRow(new Proceso[] {
-                    p.getID(),
-                    p.getPrioridad(),
-                    p.getNombre(),
-                    p.getMAR(),
-                    p.getPC(),
-                    p.getT
-            iempoRestanteDeadline()
-            });
-            aux = aux.getNext();
-            */
         }
-        }
+    }
     }
 
     /**

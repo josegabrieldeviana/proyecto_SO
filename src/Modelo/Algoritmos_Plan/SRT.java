@@ -121,6 +121,9 @@ public class SRT extends Thread {
             // entrando a RAM a quedarse ahí
         }
         
+        
+        git s
+        
 //        System.out.println("-----------------------[DEBUG] LOS NUEVOS AL FINAL DE CONSTRUCTOR--------------------");
 //                    for (int i = 0; i <= this.colasPorEstado.BuscarPosicion(0).size(); i++) {
 //                        Proceso readycolaproceso;
